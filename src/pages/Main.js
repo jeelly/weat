@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import characterface from '../img/characterface.svg';
+
 
 const Main = () => {
     return (
         <>
-            메인페이지입니다.
+            <img src={characterface} alt="smile" />
         </>
     );
 };
