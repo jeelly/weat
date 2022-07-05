@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import characterface from '../img/characterface.svg';
-import mouth from '../img/mouth.svg';
 
 const Main = () => {
     return (
