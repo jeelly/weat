@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-// import characterface from '../img/characterface.svg';
 import {ReactComponent as Characterface} from '../img/characterface.svg';
+import {Container, Btn} from '../css/Style'
+
 const Main = () => {
     return (
         // <div style={{width:"300px", border:"1px solid red", backgroundColor:"blue"}}>
         //     <img src={characterface} alt="smile" style={{position:"relative"}}/>
         // </div>
-        <Container>
+        <Containers>
          <nav>
             <button>종버튼</button>
          </nav>
@@ -19,7 +20,7 @@ const Main = () => {
                     <p>매콤한 오소리님</p>
                 </li>
                 <li>
-                <Characterface fill="black"/>
+                <Characterface fill="blue"/>
                 </li>
             </ul>
          </article>
@@ -29,16 +30,26 @@ const Main = () => {
             <Link to="/post">새로운 맛방을 만들어보세요</Link> 
             
          </article>
-         <aside>
-            <button>닫기</button>
+         <Aside>
+            <Btn>닫기</Btn>
             <div>image</div>
             <Characterface fill="white"/>
-         </aside>
-        </Container>
+         </Aside>
+        </Containers>
     );
 };
 
 export default Main;
 
-const Container = styled.div`
+const Containers = styled(Container)`
+    width:100%;
+    background-color:red;
+`
+const Aside = styled.aside`
+    width:100%;
+    height:70vh;
+    /* position:absolute; */
+    /* top:0; */
+    /* right:0; */
+    background-color:blue;
 `
