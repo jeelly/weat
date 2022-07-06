@@ -8,8 +8,13 @@ import { BrowserRouter } from 'react-router-dom';
 //redux
 import { Provider } from 'react-redux';
 import store from "./redux/store"
-
+//portal
+import {createPortal} from 'react-dom'
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+export const ReactPortal = ({children}) => {
+	return createPortal(children, document.getElementById('portal'))
+}
 
 root.render(
   // <React.StrictMode>
