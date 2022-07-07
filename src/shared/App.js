@@ -14,6 +14,9 @@ import PageNotFound from "../pages/PageNotFound";
 import Main from "../pages/Main";
 import ListPage from "../pages/ListPage";
 import Detail from "../pages/Detail";
+import Post from "../pages/Post";
+import '../css/fonts/fontFace.css'
+
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +31,7 @@ function App() {
     <AppLayout>
       <Routes>
         <Route path="/" element={isloaded && <Main />} />
+        <Route path="/post" element={<Post />} />
         <Route path="/ListPage" element={isloaded && <ListPage />} />
         <Route path="/signup" element={<Singup />} />
         <Route path="/login" element={<Login />} />
