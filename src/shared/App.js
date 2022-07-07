@@ -15,6 +15,8 @@ import Main from "../pages/Main";
 import ListPage from "../pages/ListPage";
 import Detail from "../pages/Detail";
 
+import '../css/fonts/fontFace.css'
+
 function App() {
   const dispatch = useDispatch();
   const [isloaded, setIsloaded] = useState(false);
