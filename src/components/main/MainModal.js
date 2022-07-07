@@ -39,6 +39,8 @@ const Aside = styled.aside`
     display:${({on}) => on ?'block':'none'};
     width:100%;
     height:180px;
+    text-align:center;
+    border-radius:18px 18px 0 0;
     position:absolute;
     bottom:0;
     right:0;
