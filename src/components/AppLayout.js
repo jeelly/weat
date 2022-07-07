@@ -5,7 +5,6 @@ import GlobalStyles from '../css/GlobalStyles'
 
 
 const AppLayout = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <>
       <Header />

@@ -18,6 +18,8 @@ import Post from "../pages/Post";
 import '../css/fonts/fontFace.css'
 
 
+import '../css/fonts/fontFace.css'
+
 function App() {
   const dispatch = useDispatch();
   const [isloaded, setIsloaded] = useState(false);
