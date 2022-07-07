@@ -36,6 +36,7 @@ const MainModal = () => {
 export default MainModal;
 
 const Aside = styled.aside`
+    font-family: "AppleSDGothicNeoM00", sans-serif;
     display:${({on}) => on ?'block':'none'};
     width:100%;
     height:180px;

@@ -31,13 +31,22 @@ const Main = () => {
             <MoveIcon image={positionShift}>길게 눌러 위치이동</MoveIcon> 
          </Convenience>
 
-         {/* <PostLinkWrap>
+        <Grid>
+         <PostLinkWrap>
             <PostLink to="/post">새로운 맛방을<br/>만들어보세요</PostLink>
-         </PostLinkWrap> */}
-            {/* <ReactPortal>
+         </PostLinkWrap>
+         <PostLinkWrap>
+            <PostLink to="/detail">임시<br/>디테일 페이지</PostLink>
+         </PostLinkWrap>
+         <PostLinkWrap>
+            <PostLink to="/signup">임시<br/>회원가입 페이지</PostLink>
+         </PostLinkWrap>
+         </Grid>
+
+            <ReactPortal>
                 <MainModal/>
-            </ReactPortal> */}
-            <PostList>
+            </ReactPortal>
+            {/* <PostList>
                 <PostItem>
                     <PostItemInner>
                         <li><IconImg src={flag} alt="깃발아이콘"/></li>
@@ -46,7 +55,7 @@ const Main = () => {
                         <li><p><span>3</span> members</p></li>
                     </PostItemInner>
                 </PostItem>
-            </PostList>
+            </PostList> */}
 
             <CreateModal modal={modal}>
                 <ModalBtn>공유<br/>코드</ModalBtn>
@@ -63,6 +72,7 @@ const Main = () => {
 export default Main;
 
 const NewCharacterface = styled(Characterface)`
+    font-family: "AppleSDGothicNeoM00", sans-serif;
     width:100px;
     height:100px;
 `
@@ -129,6 +139,14 @@ const MoveIcon = styled.p`
     }
 `
 // 글쓰기 페이지
+
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+    margin-top:19px;
+    /* grid-auto-rows: minmax(320px, auto); */
+`
 const PostLinkWrap = styled.article`
     display:flex;
     justify-content: center;
@@ -138,9 +156,6 @@ const PostLinkWrap = styled.article`
     height:180px;
     background-color:var(--WHITE);
     border-radius:20px;
-    position:absolute;
-    top:226px;
-    left:16px;
     box-shadow: 0px 2px 2px rgba(153, 153, 153, 0.2), 0px 3px 1px rgba(153, 153, 153, 0.2), 0px -2px 5px rgba(153, 153, 153, 0.2);
 `
 const PostLink = styled(Link)`

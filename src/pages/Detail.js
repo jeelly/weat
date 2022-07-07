@@ -82,7 +82,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -100,7 +100,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -118,7 +118,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -136,7 +136,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -154,7 +154,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -172,7 +172,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -190,7 +190,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -208,7 +208,7 @@ const Detail = () => {
                                             <HashTag>한식</HashTag>
                                         </HashTagWrap>
                                         <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해</RestaurantContent></li>
+                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -218,7 +218,7 @@ const Detail = () => {
                         </RestaurantItemWrap>
                     </RestaurantInfo>
                 </Restaurant>
-                <RestaurantAdd><img src={house} alt="집아이콘"/>맛집 추r</RestaurantAdd>
+                <RestaurantAdd><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
         </NewContainer>
     );
 };
@@ -226,6 +226,7 @@ const Detail = () => {
 export default Detail;
 
 const NewContainer = styled(Container)`
+    font-family: "AppleSDGothicNeoM00", sans-serif;
     background-color:#FF7337 ;
     /* overflow: hidden; */
     /* height:100vh; */
