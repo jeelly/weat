@@ -32,7 +32,7 @@ const GlobalStyles = createGlobalStyle`
       margin: 0;
       padding: 0;
       /* text-align: center; */
-      /* box-sizing: border-box; */
+      box-sizing: border-box;
     }
     html{
       max-width: 100vw;

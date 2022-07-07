@@ -156,14 +156,14 @@ const NickNameBox = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
-    margin-bottom: 16px;
+    margin: 10px 0 16px;
   }
   div {
     display: grid;
     grid-template-columns: 1fr 24px;
     border-bottom: 1px solid #2d2d2d;
     align-items: center;
-    padding: 8px 4px;
+    padding: 0 4px 8px;
     margin-bottom: 36px;
     input {
       border: none;
@@ -192,7 +192,7 @@ const FaceBox = styled.div`
     display: flex;
     justify-content: center;
     position: relative;
-    padding-bottom: 40px;
+    padding-bottom: 44px;
 
     div {
       width: 124px;
@@ -212,7 +212,7 @@ const FaceBox = styled.div`
     .saturation {
       display: flex;
       justify-content: center;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
       label:not(:last-child) {
         margin-right: 32px;
       }
@@ -287,6 +287,7 @@ const ColorPallet = styled.ul`
     border: 2px solid #fff;
     width: 56px;
     height: 24px;
+    box-sizing: content-box;
     overflow: hidden;
     div {
       width: 100%;
