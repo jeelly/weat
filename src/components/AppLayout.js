@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import GlobalStyles from '../css/GlobalStyles'
@@ -9,7 +9,7 @@ const AppLayout = ({ children }) => {
     <>
       <Header />
       <div>{children}</div>
-      <Footer />
+      {/* <Footer /> */}
       <GlobalStyles/>
     </>
   );
