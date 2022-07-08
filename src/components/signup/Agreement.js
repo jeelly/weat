@@ -1,9 +1,12 @@
-import { useCallback, useState } from "react";
-import styled from "styled-components";
-import { BlackButton } from "../../css/Style";
-import checkIcon from "../../img/icon/check.png"
+import { useCallback, useState } from 'react';
+import styled from 'styled-components';
+import { BlackButton } from '../../css/Style';
+import checkIcon from '../../img/icon/check.png'
+import {useNavigate} from 'react-router-dom'
 
 const Agreement = () => {
+  const navigate = useNavigate()
+
     const [check1, setCheck1] = useState(false)
     const [check2, setCheck2] = useState(false)
 
@@ -15,50 +18,60 @@ const Agreement = () => {
         setCheck2(!check2)
     },[check2])
 
+    const buttonAction = useCallback(()=>{
+      console.log(check1, check2)
+      if(check1 && check2){
+        navigate('/signup/essential')
+      }else{
+        alert('동의가 필요합니다!')
+      }      
+    },[check1,check2])
+
+
   return (
     <div>
       <WelcomMessage>
-        <p className="message">환영합니다!</p>
-        <p className="subMessage">
+        <p className='message'>환영합니다!</p>
+        <p className='subMessage'>
           회원가입을 위해
           <br />
           약관에 동의해주세요.
         </p>
       </WelcomMessage>
       <AgreementSection>
-        <p className="title">모두 동의</p>
+        <p className='title'>모두 동의</p>
         <div>
-          <div className="agreementItem">
+          <div className='agreementItem'>
             <p>
               <span>이용약관</span>과 <span>개인정보 취급방침</span>에
               동의합니다.
             </p>
-            <p className={check1 +' toggleBtn' } onClick={agreementCheck1}><img src={checkIcon} alt="" /></p>
+            <p className={check1 +' toggleBtn' } onClick={agreementCheck1}><img src={checkIcon} alt='' /></p>
           </div>
-          <div className="agreementItem">
+          <div className='agreementItem'>
             <p>위치기반의 이용약관에 동의합니다.</p>
-            <p className={check2 +' toggleBtn' } onClick={agreementCheck2}><img src={checkIcon} alt="" /></p>
+            <p className={check2 +' toggleBtn' } onClick={agreementCheck2}><img src={checkIcon} alt='' /></p>
           </div>
         </div>
       </AgreementSection>
-      <BlackButton>다 음</BlackButton>
+      <BlackButton onClick={buttonAction}>다 음</BlackButton>
     </div>
   );
 };
 
 const WelcomMessage = styled.section`
-  height: 176px;
+  height: 216px;
   text-align: center;
   padding-top: 40px;
   .message {
-    font-family: "AppleSDGothicNeoL";
+    font-family: 'AppleSDGothicNeoL';
     font-weight: 400;
     font-size: 30px;
     line-height: 150%;
     margin-bottom: 12px;
   }
   .subMessage {
-    font-family: "AppleSDGothicNeoL";
+    font-family: 'AppleSDGothicNeoL';
     font-weight: 400;
     font-size: 16px;
     line-height: 150%;
@@ -68,17 +81,16 @@ const WelcomMessage = styled.section`
 
 const AgreementSection = styled.section`
   .title {
-    font-family: "AppleSDGothicNeoSB";
-    font-weight: 700;
+    font-family: 'AppleSDGothicNeoB';
     font-size: 16px;
     line-height: 22px;
     padding-bottom: 16px;
     border-bottom: 1px solid;
-    margin-bottom: 26px;
+    margin-bottom: 28px;
   }
   .agreementItem {
-    font-family: "AppleSDGothicNeoM";
-    font-weight: 400;
+    font-family: 'AppleSDGothicNeoM';
+
     font-size: 14px;
     line-height: 22px;
     display: flex;

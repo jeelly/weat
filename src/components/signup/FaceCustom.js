@@ -1,26 +1,35 @@
-import React, { useState, useCallback, useRef } from "react";
-import styled from "styled-components";
-import resetBtn from "../../img/icon/reset.png";
-import { ReactComponent as Characterface } from "../../img/characterface.svg";
-import { BlackButton } from "../../css/Style";
+import React, { useState, useCallback, useRef } from 'react';
+import styled from 'styled-components';
+import resetBtn from '../../img/icon/reset.png';
+import {useNavigate} from 'react-router-dom'
 
-const FaceCustom = () => {
-  const [hex, setHex] = useState("#23C7C7");
-  const [faceOpacity, setFaceOpacity] = useState("1");
-  const [nickname, setNickname] = useState("");
+import { ReactComponent as Characterface } from '../../img/characterface.svg';
+import { BlackButton } from '../../css/Style';
+
+const FaceCustom = ({plusStep}) => {
+  const navigate = useNavigate()
+  const [hex, setHex] = useState('#23C7C7');
+  const [faceOpacity, setFaceOpacity] = useState('1');
+  const [nickname, setNickname] = useState('');
+  const opacity = ['0.2', '0.4', '0.6', '0.8', '1'];
   const colorList = [
-    { name: "WE_yellow", hex: "#FFBB55" },
-    { name: "WE_orange", hex: "#FF7337" },
-    { name: "WE_mint", hex: "#23C7C7" },
-    { name: "WE_purple", hex: "#7F5FFF" },
-    { name: "WE_darkgray", hex: "#404040" },
-  ];
-  const opacity = ["0.2", "0.4", "0.6", "0.8", "1"];
+    { name: 'WE_yellow', hex: '#FFBB55' },
+    { name: 'WE_orange', hex: '#FF7337' },
+    { name: 'WE_mint', hex: '#23C7C7' },
+    { name: 'WE_purple', hex: '#7F5FFF' },
+    { name: 'WE_darkgray', hex: '#404040' },
+  ];  
+
+  const buttonAction = useCallback(()=>{
+    navigate('/signup/completion')
+  },[])
+
+
 
   const onClickSaturation = useCallback((e) => {
     colorList.map((c) => {
       return c.name === e.target.id
-        ? (setHex(c.hex), setFaceOpacity("1"))
+        ? (setHex(c.hex), setFaceOpacity('1'))
         : null;
     });
   }, []);
@@ -29,13 +38,16 @@ const FaceCustom = () => {
     setFaceOpacity(o);
   }, []);
 
-  const nicknameReset = useCallback((e) => {
+  const nicknameSetting = useCallback((e) => {
     setNickname(e.target.value);
   }, []);
 
+  //닉네임 릿셋
   const cleanUp = useCallback(() => {
-    setNickname("");
+    setNickname('');
   }, []);
+
+
 
   return (
     <div>
@@ -43,73 +55,73 @@ const FaceCustom = () => {
         <p>실명 대신 닉네임을 써보세요</p>
         <div>
           <input
-            type="text"
-            placeholder="매콤한 오소리"
+            type='text'
+            placeholder='매콤한 오소리'
             value={nickname}
-            onChange={nicknameReset}
+            onChange={nicknameSetting}
           />
           <button onClick={cleanUp}></button>
         </div>
       </NickNameBox>
       <FaceBox>
-        <div className="face">
+        <div className='face'>
           <span>Face</span>
           <div>
             <Characterface fill={hex} opacity={faceOpacity} />
             {/* <img src='' alt='눈' />*/}
           </div>
         </div>
-        <div className="color">
+        <div className='color'>
           <span>Color</span>
-          <div className="saturation">
-            <Label htmlFor="WE_yellow" color={"#FFBB55"}>
+          <div className='saturation'>
+            <Label htmlFor='WE_yellow' color={'#FFBB55'}>
               <input
-                type="radio"
-                id="WE_yellow"
-                name="faceColor"
+                type='radio'
+                id='WE_yellow'
+                name='faceColor'
                 onChange={onClickSaturation}
               />
             </Label>
-            <Label htmlFor="WE_orange" color={"#FF7337"}>
+            <Label htmlFor='WE_orange' color={'#FF7337'}>
               <input
-                type="radio"
-                id="WE_orange"
-                name="faceColor"
+                type='radio'
+                id='WE_orange'
+                name='faceColor'
                 onChange={onClickSaturation}
               />
             </Label>
-            <Label htmlFor="WE_mint" color={"#23C7C7"}>
+            <Label htmlFor='WE_mint' color={'#23C7C7'}>
               <input
-                type="radio"
-                id="WE_mint"
-                name="faceColor"              
+                type='radio'
+                id='WE_mint'
+                name='faceColor'              
                 defaultChecked
                 onChange={onClickSaturation}
               />
             </Label>
-            <Label htmlFor="WE_purple" color={"#7F5FFF"}>
+            <Label htmlFor='WE_purple' color={'#7F5FFF'}>
               <input
-                type="radio"
-                id="WE_purple"
-                name="faceColor"
+                type='radio'
+                id='WE_purple'
+                name='faceColor'
                 onChange={onClickSaturation}
               />
             </Label>
-            <Label htmlFor="WE_darkgray" color={"#404040"}>
+            <Label htmlFor='WE_darkgray' color={'#404040'}>
               <input
-                type="radio"
-                id="WE_darkgray"
-                name="faceColor"
+                type='radio'
+                id='WE_darkgray'
+                name='faceColor'
                 onChange={onClickSaturation}
               />
             </Label>
           </div>
-          <div className="colorPallet">
+          <div className='colorPallet'>
             <ColorPallet color={hex}>
               {opacity.map((o, idx) => {
                 return (
                   <PalletItem
-                    className="palletItem"
+                    className='palletItem'
                     key={`faceOpacity${o}`}
                     opacity={o}
                     onClick={() => {
@@ -123,36 +135,35 @@ const FaceCustom = () => {
             </ColorPallet>
           </div>
         </div>
-        <div className="eyes">
+        <div className='eyes'>
           <p>Eyes</p>
           <div>
-            <label htmlFor="">
-              <input type="radio" name="eye" />
+            <label htmlFor=''>
+              <input type='radio' name='eye' />
             </label>
-            <label htmlFor="">
-              <input type="radio" name="eye"/>
+            <label htmlFor=''>
+              <input type='radio' name='eye'/>
             </label>
-            <label htmlFor="">
-              <input type="radio" name="eye"/>
+            <label htmlFor=''>
+              <input type='radio' name='eye'/>
             </label>
-            <label htmlFor="">
-              <input type="radio" name="eye"/>
+            <label htmlFor=''>
+              <input type='radio' name='eye'/>
             </label>
-            <label htmlFor="">
-              <input type="radio" name="eye"/>
+            <label htmlFor=''>
+              <input type='radio' name='eye'/>
             </label>
           </div>
         </div>
       </FaceBox>
-
-      <BlackButton>완 료</BlackButton>
+      <BlackButton onClick={buttonAction}>완 료</BlackButton>
     </div>
   );
 };
 
 const NickNameBox = styled.div`
   p {
-    font-family: "AppleSDGothicNeoM", sans-serif;
+    font-family: 'AppleSDGothicNeoM', sans-serif;
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
@@ -172,7 +183,7 @@ const NickNameBox = styled.div`
       outline: none;
       line-height: 38px;
       padding-right: 4px;
-      font-family: "AppleSDGothicNeoUL";
+      font-family: 'AppleSDGothicNeoUL';
       ::placeholder {
         color: var(--DEFAULT);
       }
@@ -182,6 +193,7 @@ const NickNameBox = styled.div`
       width: 24px;
       height: 24px;
       background-image: url(${resetBtn});
+      background-color: transparent;
     }
   }
 `;
@@ -226,7 +238,7 @@ const FaceBox = styled.div`
     position: relative;
     margin-bottom: 15px;
     p {
-      font-family: "Niramit", sans-serif;
+      font-family: 'Niramit', sans-serif;
       font-weight: 700;
       font-size: 12px;
       line-height: 16px;
@@ -237,7 +249,7 @@ const FaceBox = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    font-family: "Niramit", sans-serif;
+    font-family: 'Niramit', sans-serif;
     font-weight: 700;
     font-size: 12px;
     line-height: 16px;
@@ -267,7 +279,7 @@ const Label = styled.label`
     box-shadow: var(--SHADOW2);
   }
   input:checked::after {
-    content: "";
+    content: '';
     display: block;
     width: 20px;
     height: 20px;
@@ -303,7 +315,7 @@ const ColorPallet = styled.ul`
     border-radius: 0 500px 500px 0;
   }
   ::after {
-    content: "";
+    content: '';
     width: 0;
     height: 0;
     position: absolute;
