@@ -15,10 +15,13 @@ import Main from "../pages/Main";
 import ListPage from "../pages/ListPage";
 import Detail from "../pages/Detail";
 import Post from "../pages/Post";
-import '../css/fonts/fontFace.css'
+import FaceCustom from "../components/signup/FaceCustom";
+import Agreement from "../components/signup/Agreement";
+import Essential from "../components/signup/Essential";
+import BasicInfo from "../components/signup/BasicInfo";
+import Completion from "../components/signup/Completion";
 
-
-import '../css/fonts/fontFace.css'
+import "../css/fonts/fontFace.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,13 +37,19 @@ function App() {
       <Routes>
         <Route path="/" element={isloaded && <Main />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/ListPage" element={isloaded && <ListPage />} />
-        <Route path="/signup" element={<Singup />} />
+        <Route path="/listpage" element={isloaded && <ListPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/finduser" element={<FindUser />} />
         <Route path="/detail" element={<Detail />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="*" element={<PageNotFound />} />
+        <Route path="/signup" element={<Singup />}>
+          <Route path="agreement" element={<Agreement />} />
+          <Route path="essential" element={<Essential />} />
+          <Route path="basicInfo" element={<BasicInfo />} />
+          <Route path="faceCustom" element={<FaceCustom />} />
+          <Route path="completion" element={<Completion />} />
+        </Route>
+        <Route path="/finduser" element={<FindUser />} />
       </Routes>
     </AppLayout>
   );
