@@ -9,11 +9,11 @@ import arrow from '../../img/arrow.svg';
 import donut from '../../img/donut.svg';
 
 const MainModal = () => {
-    const [on, setOn] = useState(true)
+    const [modal, setModal] = useState(true)
     return (
-        <Aside close={characterface} arrow={arrow} on={on}>
+        <Aside close={characterface} arrow={arrow} modal={modal}>
             <CloseBtn onClick={()=> {
-                setOn(false)
+                setModal(false)
             }}><img src={close} alt="close"/></CloseBtn>
             <SquareWrap>
                 <li/>
@@ -37,7 +37,7 @@ export default MainModal;
 
 const Aside = styled.aside`
     font-family: "AppleSDGothicNeoM00", sans-serif;
-    display:${({on}) => on ?'block':'none'};
+    display:${({modal}) => modal ?'block':'none'};
     width:100%;
     height:180px;
     text-align:center;

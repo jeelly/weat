@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
-import plus from '../../fixed';
+import plus from '../../img/detail_plus.svg';
 
 const Members = () => {
     return (

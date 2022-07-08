@@ -4,6 +4,8 @@ import {Container} from '../css/Style'
 
 import house from '../img/house.svg';
 
+import Members from '../components/detail/Members'
+import Restaurant from '../components/detail/Restaurant'
 const Detail = () => {
     return (
         <NewContainer>
@@ -13,6 +15,8 @@ const Detail = () => {
                 <hr/>
                 </h2>
             </Title>
+            <Members/>
+            <Restaurant/>
             <RestaurantAdd><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
         </NewContainer>
     );

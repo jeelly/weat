@@ -6,6 +6,7 @@ import {Container} from '../css/Style'
 import MainModal from '../components/main/MainModal';
 import UserInfo from '../components/main/UserInfo';
 import PostList from '../components/main/PostList';
+import ModalBtn from '../components/main/ModalBtn';
 
 
 const Main = () => {
@@ -15,7 +16,8 @@ const Main = () => {
             <ReactPortal>
                 <MainModal/>
             </ReactPortal>
-            <PostList/>
+            {/* <PostList/> */}
+            <ModalBtn/>
         </Container>
     );
 };
