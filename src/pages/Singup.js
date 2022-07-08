@@ -1,13 +1,14 @@
-import React from 'react';
-import FaceCustom from '../components/signup/FaceCustom';
-import Agreement from '../components/signup/Agreement';
+import React, { useCallback, useState } from 'react';
+
 import { Container } from '../css/GlobalStyles';
+import { Outlet } from 'react-router-dom'
+
 
 const Singup = () => {
+
     return (
         <Container>
-            <FaceCustom />
-            {/* <Agreement /> */}
+            <Outlet/>
         </Container>
     );
 };
