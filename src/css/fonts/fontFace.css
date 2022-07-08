@@ -3,17 +3,32 @@
     src: url("./AppleSDGothicNeoUL.ttf");
 }
 
+
+/*Apple SD Gothic Neo 200*/
+@font-face {
+    font-family: "AppleSDGothicNeoT";
+    src: url("./AppleSDGothicNeoT.ttf");
+}
+
 /*Apple SD Gothic Neo 400*/
 @font-face {
     font-family: "AppleSDGothicNeoM";
     src: url("./AppleSDGothicNeoM.ttf");
 }
 
-/*Apple SD Gothic Neo 700*/
+/*Apple SD Gothic Neo 500*/
 @font-face {
     font-family: "AppleSDGothicNeoSB";
     src: url("./AppleSDGothicNeoSB.ttf");
 }
+
+/*Apple SD Gothic Neo 700*/
+@font-face {
+    font-family: "AppleSDGothicNeoB";
+    src: url("./AppleSDGothicNeoB.ttf");
+}
+
+
 
 @font-face {
     font-family: "AppleSDGothicNeoM00";
