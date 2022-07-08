@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Btn } from '../../css/Style';
-import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import characterface from '../../img/background_character_face.svg';
 import close from '../../img/close.svg';
 import Lock from '../../img/Lock.svg';
@@ -9,11 +7,11 @@ import arrow from '../../img/arrow.svg';
 import donut from '../../img/donut.svg';
 
 const MainModal = () => {
-    const [on, setOn] = useState(true)
+    const [modal, setModal] = useState(true)
     return (
-        <Aside close={characterface} arrow={arrow} on={on}>
+        <Aside close={characterface} arrow={arrow} modal={modal}>
             <CloseBtn onClick={()=> {
-                setOn(false)
+                setModal(false)
             }}><img src={close} alt="close"/></CloseBtn>
             <SquareWrap>
                 <li/>
@@ -36,7 +34,8 @@ const MainModal = () => {
 export default MainModal;
 
 const Aside = styled.aside`
-    display:${({on}) => on ?'block':'none'};
+    font-family: "AppleSDGothicNeoM00", sans-serif;
+    display:${({modal}) => modal ?'block':'none'};
     width:100%;
     height:180px;
     text-align:center;

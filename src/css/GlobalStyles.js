@@ -35,8 +35,8 @@ const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
     }
     html{
-      max-width: 100vw;
-      overflow: hidden;
+      /* max-width: 100vw;
+      overflow: hidden; */
     }
     body {}
     p,h1,h2,h3,h4{padding:0; margin:0;}
