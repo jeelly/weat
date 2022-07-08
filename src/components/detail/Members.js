@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import plus from '../../img/detail_plus.svg';
 
 const Members = () => {
+    let navigate = useNavigate();
     return (
             <Container>
                 <MumbersTotal>
@@ -13,7 +15,7 @@ const Members = () => {
                 </MumbersTotal>
                 <MembersIcon>
                     <Shared>
-                        <SharedBtn plus={plus} >공유하기 버튼</SharedBtn>
+                        <SharedBtn plus={plus} onClick={()=>{navigate("/");}}>공유하기 버튼</SharedBtn>
                         <p>공유하기</p>
                     </Shared>
                     <MembersInfoWrap>
@@ -169,4 +171,7 @@ const NewCharacterface = styled(Characterface)`
     width:40px;
     height:40px;
     margin-bottom:10px;
+    border-radius:50%;
+    border: 2px solid var(--WHITE);
+    background-color:var(--WHITE);
 `

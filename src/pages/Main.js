@@ -7,23 +7,29 @@ import MainModal from '../components/main/MainModal';
 import UserInfo from '../components/main/UserInfo';
 import PostList from '../components/main/PostList';
 import ModalBtn from '../components/main/ModalBtn';
+import MainDefault from '../components/main/MainDefault';
+import styled from 'styled-components';
 
 
 const Main = () => {
     return (
-        <Container>
+        <NewContainer>
             <UserInfo/>
             <ReactPortal>
                 <MainModal/>
             </ReactPortal>
-            {/* <PostList/> */}
+            <PostList/>
+            {/* <MainDefault/> */}
             <ModalBtn/>
-        </Container>
+        </NewContainer>
     );
 };
 
 export default Main;
 
+const NewContainer = styled(Container)`
+    overflow:hidden;
+`
 
 
 

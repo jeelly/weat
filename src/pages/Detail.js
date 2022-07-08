@@ -5,7 +5,8 @@ import {Container} from '../css/Style'
 import house from '../img/house.svg';
 
 import Members from '../components/detail/Members'
-import Restaurant from '../components/detail/Restaurant'
+import RestaurantList from '../components/detail/RestaurantList'
+import { Link } from 'react-router-dom';
 const Detail = () => {
     return (
         <NewContainer>
@@ -16,8 +17,8 @@ const Detail = () => {
                 </h2>
             </Title>
             <Members/>
-            <Restaurant/>
-            <RestaurantAdd><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
+            <RestaurantList/>
+            <RestaurantAdd to="/post"><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
         </NewContainer>
     );
 };
@@ -55,7 +56,7 @@ const Title = styled.div`
     }
 `
 
-const RestaurantAdd = styled.div`
+const RestaurantAdd = styled(Link)`
     width: 133px;
     height: 44px;
     display: flex;
@@ -65,6 +66,7 @@ const RestaurantAdd = styled.div`
     background:#7F5FFF;
     border-radius: 50px;
 
+    text-decoration:none;
     font-style: normal;
     font-weight: 600;
     font-size: 14px;

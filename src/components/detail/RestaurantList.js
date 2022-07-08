@@ -4,20 +4,20 @@ import styled from 'styled-components';
 
 import arrow from '../../img/Detail_Item_arrow.svg';
 
-const Restaurant = () => {
+const RestaurantList = ({listPage}) => {
     return (
         <Container>
                     <RestaurantInfo>
                         <header>
                             <Total>Total <span>62</span></Total>
-                            <ListLink to="/ListPage" >All</ListLink>
+                            <ListLink to="/listpage" >All</ListLink>
                         </header>
-                        <RestaurantItemWrap>
+                        <RestaurantItemWrap listPage={listPage}>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -28,14 +28,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -46,14 +46,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -64,14 +64,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -82,14 +82,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -100,14 +100,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -118,14 +118,14 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                             <RestaurantItem>
+                                <li>
                                 <ImgWrap>
                                     <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
                                 </ImgWrap>
-                                <li>
                                     <ul>
                                         <HashTagWrap>
                                             <HashTag>사내할인</HashTag>
@@ -136,25 +136,7 @@ const Restaurant = () => {
                                     </ul>
                                 </li>
                                 <li>
-                                    <LinkBtn to="/"><img src={arrow}/></LinkBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                <li>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <LinkBtn to="/"><img src={arrow} alt='화살표'/></LinkBtn>
+                                    <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
                                 </li>
                             </RestaurantItem>
                         </RestaurantItemWrap>
@@ -163,7 +145,7 @@ const Restaurant = () => {
     );
 };
 
-export default Restaurant;
+export default RestaurantList;
 
 const Container = styled.div`
     width:100%;
@@ -174,7 +156,7 @@ const RestaurantInfo = styled.div`
     background-color:var(--WHITE);
     box-shadow: 0px 12px 17px rgba(153, 153, 153, 0.2), 0px 5px 22px rgba(153, 153, 153, 0.2), 0px 7px 8px rgba(153, 153, 153, 0.2);
     width:100%;
-    margin-top:34px;
+    margin-top:${({listPage}) => listPage ? '10px': '34px'};
     border-radius:18px 18px 0 0;
     padding:20px 16px 0 16px;
     header {
@@ -201,8 +183,7 @@ const ListLink = styled(Link)`
 
 const RestaurantItemWrap = styled.div`
     overflow:scroll; 
-    height:578px;
-
+    height:${({listPage}) => listPage?'100vh': '55.156vh'};
     //스크롤 숨기기
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
@@ -212,9 +193,13 @@ const RestaurantItemWrap = styled.div`
 `
 const RestaurantItem = styled.ul`
     display:flex;
+    justify-content:space-between;
     flex-direction:row;
     align-items:center;
     margin-bottom:16px;
+    li:first-child {
+        display:flex;
+    }
 `
 
 const HashTagWrap = styled.div`
@@ -233,7 +218,7 @@ const HashTag = styled.div`
   margin-right:4px;
 `
 
-const ImgWrap = styled.li`
+const ImgWrap = styled.div`
     width:104px;
     height:90px;
     margin-right:8px;
@@ -257,7 +242,8 @@ const RestaurantContent = styled.p`
     color:#666;
 `
 const LinkBtn = styled(Link)`
+    margin-right:2.564%;
     /* margin-left:10px; */
     /* margin-left: 16.59px; */
-    margin-left: 36.59px;
+    /* margin-left: 36.59px; */
 `

@@ -3,16 +3,18 @@ import styled from 'styled-components';
 
 import plus from '../../img/plus.svg';
 import close from '../../img/main_modal_close.svg';
+import { useNavigate } from 'react-router-dom';
 
 const ModalBtn = () => {
+    let navigate = useNavigate();
     const [modal, setModal] = useState(false);
 
     return (
         <div>
             <CreateModal modal={modal}>
-                <Btn>공유<br/>코드</Btn>
-                <Btn>맛방<br/>편집</Btn>
-                <Btn>맛방<br/>만들기</Btn>
+                <Btn onClick={()=>{navigate("/detail");}}>공유<br/>코드</Btn>
+                <Btn onClick={()=>{navigate("/update");}}>맛방<br/>편집</Btn>
+                <Btn onClick={()=>{navigate("/post");}}>맛방<br/>만들기</Btn>
             </CreateModal>
             <CreateBtn plus={plus} close={close} modal={modal} onClick={()=> {
                 modal?setModal(false):setModal(true)
@@ -28,15 +30,15 @@ const CreateBtn = styled.button`
     height:80px;
     background-color:var(--BLACK);
     border-radius:50%;
-    position:fixed;
-    right:16px;
-    bottom:20px;
     cursor:pointer;
     text-indent:-9999px;
     background-image:url(${({plus, close, modal}) => !modal?plus:close});
     background-repeat: no-repeat;
     background-position:center;
     background-size:24px;
+    position:fixed;
+    right:16px;
+    bottom:20px;
 `
 
 const CreateModal = styled.div`
@@ -68,4 +70,5 @@ const Btn = styled.button`
     position:absolute;
     bottom:124px;
     right:22px;
+    cursor: pointer;
 `

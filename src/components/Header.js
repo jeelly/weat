@@ -1,18 +1,43 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import goBack from "../img/icon/goBack.png";
+import notice from "../img/fixed/notice.svg";
+import NoticeModal from "./NoticeModal";
 
 
 const Header = () => {
   const location = useLocation();
+  let navigate = useNavigate();
+  const [modal, setModal] = useState(false);
+
+  const goback = () => {
+    navigate(-1);
+  }
+  const headerColor = () => {
+    if(location.pathname === "/detail" || location.pathname === "/listpage") {
+      return "#FF7337"
+    }else {
+      return null
+    }
+  }
+
+
 
   return (
-    <HeaderContainer>
-      {location.pathname === "/signup" && <p>회원가입</p>}
-    </HeaderContainer>
+    <>
+      <NoticeModal modal={modal} setModal={setModal}/>
+      <HeaderContainer color={headerColor}>
+        {location.pathname === "/" && <><span/><button onClick={()=> {setModal(true)}}><img src={notice} alt="알림창"></img></button></>}
+        {location.pathname === "/signup" && <p onClick={goback}>회원가입</p>}
+        {location.pathname === "/detail" && <> <p onClick={goback}/> <LinkStyle to="/">편집하기</LinkStyle> </>}
+        {location.pathname === "/listpage" && <> <p onClick={goback}>회사근처밥집</p> <LinkStyle to="/">공유하기</LinkStyle> </>}
+      </HeaderContainer>
+    </>
   );
 };
+
+// display:${({modal}) => !modal ?'none':'block'};
 
 const HeaderContainer = styled.div`
     width: 100%;
@@ -20,16 +45,33 @@ const HeaderContainer = styled.div`
     padding:0 20px  0 24px;
     display: flex;
     align-items: center;
+    background-color:${({color}) => color? color : 'transparent'};
+    justify-content:space-between;
   p {
     font-family: "AppleSDGothicNeoM00", sans-serif;
     font-weight:400;
     font-size: 14px;
     line-height: 160%;
+    cursor: pointer;
     &:before {
       content: url(${goBack});
       padding-right: 16px;
     }
   }
+  button {
+    background-color:transparent;
+    border:none;
+    cursor: pointer;
+    text-align:right;
+  }
 `;
+const LinkStyle = styled(Link)`
+    font-family: "AppleSDGothicNeoM00", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 160%;
+    text-decoration:none;
+    color:var(--BLACK);
+`
 
 export default Header;

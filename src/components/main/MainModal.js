@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Btn } from '../../css/Style';
-import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import characterface from '../../img/background_character_face.svg';
 import close from '../../img/close.svg';
 import Lock from '../../img/Lock.svg';
