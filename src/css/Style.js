@@ -20,3 +20,21 @@ export const BlackButton = styled.button`
   line-height: 26px;
   font-family: 'Niramit', sans-serif;
 `;
+
+export const VioletButton = styled.button`
+  border: none;
+  background-color: var(--INFO);
+  width: 100%;
+  height: 72px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 26px;
+  font-family: 'Niramit', sans-serif;
+`;
