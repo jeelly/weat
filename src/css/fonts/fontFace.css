@@ -1,13 +1,16 @@
-@font-face {
-    font-family: "AppleSDGothicNeoUL";
-    src: url("./AppleSDGothicNeoUL.ttf");
-}
+
 
 
 /*Apple SD Gothic Neo 200*/
 @font-face {
     font-family: "AppleSDGothicNeoT";
     src: url("./AppleSDGothicNeoT.ttf");
+}
+
+/*Apple SD Gothic Neo 300*/
+@font-face {
+    font-family: "AppleSDGothicNeoUL";
+    src: url("./AppleSDGothicNeoUL.ttf");
 }
 
 /*Apple SD Gothic Neo 400*/
