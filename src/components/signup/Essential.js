@@ -2,24 +2,23 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { BlackButton } from '../../css/Style';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios'
+import instance from "../../shared/axios";
 
 import {useDispatch} from 'react-redux'
-import { addUserEmail } from '../../redux/modules/userSlice'
+import { addEssential } from '../../redux/modules/userSlice'
 
 
 const Essential = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [email, setEmail] = useState('')
+  const [customerId, setCustomerId] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const userInfo = {email, password, confirmPassword}
- 
+  const userInfo = {customerId, password, confirmPassword}
+  
 
-
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value)
+  const onChangeId = (e) => {
+    setCustomerId(e.target.value)
   }
   const onChangePassword = (e) => {
     setPassword(e.target.value)
@@ -30,10 +29,10 @@ const Essential = () => {
 
 
   const buttonAction = async ()=>{
-    const reg_email =  /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+    const reg_id =  /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,11}$/;
     const reg_password = /^[ㄱ-ㅎ가-힣0-9a-zA-Z@$!%#?&]{6,10}$/;
-    if(!reg_email.test(email)){
-      return alert('이메일 형식을 확인해주세요!')
+    if(!reg_id.test(customerId)){
+      return alert('아이디를 확인해주세요')
     }
     if(!reg_password.test(password)){
       return alert('비밀번호는 6자이상 한/영, 숫자, 특수문자가 가능')
@@ -42,12 +41,12 @@ const Essential = () => {
       return alert('비밀번호 불일치')
     }     
     try{
-      const respons = await axios.post('http://realprojectapiserver.com/api/users/check',userInfo)
-      console.log(respons)
+      const response = await instance.post('/api/users/check',userInfo)
+      console.log(response)
     }catch(e){
-      console.log(e)   
+      return alert('사용중인 아이디')         
     }
-    dispatch(addUserEmail(userInfo));
+    dispatch(addEssential(userInfo));
     navigate('/signup/basicInfo')
   }
 
@@ -63,8 +62,8 @@ const Essential = () => {
       </InfoMessage>
       <InputBox>
         <section>
-          <label htmlFor=''>Email</label>
-          <input type='text' placeholder='정확한 이메일 주소를 써주세요' onChange={onChangeEmail}/>
+          <label htmlFor=''>Id</label>
+          <input type='text' placeholder='3글자 이상 한글도 돼요' onChange={onChangeId}/>
         </section>
         <section>
           <label htmlFor=''>Password</label>
@@ -114,17 +113,20 @@ const InputBox = styled.div`
     input {
       height:48px;
       font-family: 'AppleSDGothicNeoL';
-      font-size: 12px;
+      font-size: 14px;
       line-height: 22px;
-      padding: 13px 20px;
+      padding: 0 20px;
       background: var(--WHITE);
-      border: 2px solid #eeeeee;
+      border: 2px solid var(--LIGHTEST);
       border-radius: 50px;
       margin-bottom: 10px;
       outline: none;
       ::placeholder{
         color: var(--DEFAULT);
-
+        font-size: 12px;
+      }
+      :focus{
+        border:2px solid var(--LIGHTER);
       }
     }
   }
