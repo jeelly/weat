@@ -8,8 +8,6 @@ import RoomCustom from "../components/makeRoom/RoomCustom";
 // import Emoji from "../components/makeRoom/Emoji_";
 import Emoji from "../components/makeRoom/Emoji"
 
-//스타일
-import '../css/EmojiPicker.css'
 
 const MakeRoom = () => {
     const keypad = useSelector(state => state.userEmoji.emojiOnOff)
