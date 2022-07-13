@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import logo from "../../img/logo_type1.png";
 import { VioletButton } from '../../css/Style';
+import { useNavigate } from "react-router-dom";
 
 const Completion = () => {
+  const navigate = useNavigate()
+  const onClickButton = () =>{
+    navigate('/login')
+  }
   return (
     <CompletionPage>
       <img src={logo} alt="" />
@@ -15,7 +20,7 @@ const Completion = () => {
           이제 맛집 히스토리를 기록해보세요
         </p>
       </div>
-      <VioletButton>확 인</VioletButton>
+      <VioletButton onClick={onClickButton}>확 인</VioletButton>
     </CompletionPage>
   );
 };

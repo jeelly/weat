@@ -2,7 +2,7 @@ import axios from "axios";
 
 //인스턴스 생성
 const instance = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL: "http://realprojectapiserver.com/",
   headers: { "Content-Type": "application/json" },
 });
 

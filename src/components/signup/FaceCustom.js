@@ -1,53 +1,81 @@
-import React, { useState, useCallback, useRef } from 'react';
-import styled from 'styled-components';
-import resetBtn from '../../img/icon/reset.png';
-import {useNavigate} from 'react-router-dom'
+//패키지
+import React, { useState, useCallback, useRef } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+//이미지
+import resetBtn from "../../img/icon/reset.png";
+import { ReactComponent as Characterface } from "../../img/characterface.svg";
+//컴포넌트
+import Eyes from "./Eyes";
+import FaceColor from "./FaceColor";
+import { eyeList } from "../../components/signup/FaceResource";
+import { BlackButton } from "../../css/Style";
+//액션함수
+import { addFace } from "../../redux/modules/userSlice";
+//axios
+import instance from "../../shared/axios";
 
-import { ReactComponent as Characterface } from '../../img/characterface.svg';
-import { BlackButton } from '../../css/Style';
+const FaceCustom = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [hex, setHex] = useState("#23C7C7");
+  const [nickname, setNickname] = useState("");
+  const [eyeItem, setEyeItem] = useState(eyeList[2]);
+  const eye = eyeItem.split(".")[0].split("/").slice(-1).join();
 
-const FaceCustom = ({plusStep}) => {
-  const navigate = useNavigate()
-  const [hex, setHex] = useState('#23C7C7');
-  const [faceOpacity, setFaceOpacity] = useState('1');
-  const [nickname, setNickname] = useState('');
-  const opacity = ['0.2', '0.4', '0.6', '0.8', '1'];
-  const colorList = [
-    { name: 'WE_yellow', hex: '#FFBB55' },
-    { name: 'WE_orange', hex: '#FF7337' },
-    { name: 'WE_mint', hex: '#23C7C7' },
-    { name: 'WE_purple', hex: '#7F5FFF' },
-    { name: 'WE_darkgray', hex: '#404040' },
-  ];  
+  const userSignupData = useSelector((state) => state.userSignup);
+  console.log(userSignupData)
+  const userInfo = {
+    nickname: nickname,
+    eyes: eye,
+    faceColor: hex,
+  };
 
-  const buttonAction = useCallback(()=>{
-    navigate('/signup/completion')
-  },[])
+  const buttonAction = useCallback(async () => {
+    const reg_nickname = /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,10}$/;    
+    if (!reg_nickname.test(nickname)) {
+      console.log(nickname);
+      return alert("닉네임 한글/영문 3~10자리!");
+    }
+    dispatch(addFace(userInfo));
+    try {
+      const response = await instance.post("/api/users/signup", {
+        birthDay: userSignupData.birthDay,
+        customerId: userSignupData.customerId,
+        email: userSignupData.email,
+        eyes: eye,
+        faceColor: hex,
+        name: userSignupData.name,
+        nickname: nickname,
+        password: userSignupData.password,
+      });
+      navigate("/signup/completion");
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }    
+  }, [nickname, eyeItem, hex]);
 
-
-
-  const onClickSaturation = useCallback((e) => {
-    colorList.map((c) => {
-      return c.name === e.target.id
-        ? (setHex(c.hex), setFaceOpacity('1'))
-        : null;
-    });
-  }, []);
-
-  const onClickBrightness = useCallback((o) => {
-    setFaceOpacity(o);
-  }, []);
-
+  //닉네임 셋팅
   const nicknameSetting = useCallback((e) => {
     setNickname(e.target.value);
   }, []);
 
   //닉네임 릿셋
   const cleanUp = useCallback(() => {
-    setNickname('');
+    setNickname("");
   }, []);
 
+  //컬러 선택
+  const colorChange = useCallback((e) => {
+    return e ? setHex(e) : null;
+  }, []);
 
+  //눈모양 선택
+  const eyeChange = useCallback((item) => {
+    setEyeItem(item);
+  }, []);
 
   return (
     <div>
@@ -55,107 +83,35 @@ const FaceCustom = ({plusStep}) => {
         <p>실명 대신 닉네임을 써보세요</p>
         <div>
           <input
-            type='text'
-            placeholder='매콤한 오소리'
+            type="text"
+            placeholder="매콤한 오소리"
             value={nickname}
             onChange={nicknameSetting}
           />
           <button onClick={cleanUp}></button>
         </div>
       </NickNameBox>
-      <FaceBox>
-        <div className='face'>
+      <MakeFace>
+        <div className="face">
           <span>Face</span>
           <div>
-            <Characterface fill={hex} opacity={faceOpacity} />
-            {/* <img src='' alt='눈' />*/}
+            <Characterface fill={hex} />
+            <img src={eyeItem} alt="눈" />
           </div>
         </div>
-        <div className='color'>
+        <div className="color">
           <span>Color</span>
-          <div className='saturation'>
-            <Label htmlFor='WE_yellow' color={'#FFBB55'}>
-              <input
-                type='radio'
-                id='WE_yellow'
-                name='faceColor'
-                onChange={onClickSaturation}
-              />
-            </Label>
-            <Label htmlFor='WE_orange' color={'#FF7337'}>
-              <input
-                type='radio'
-                id='WE_orange'
-                name='faceColor'
-                onChange={onClickSaturation}
-              />
-            </Label>
-            <Label htmlFor='WE_mint' color={'#23C7C7'}>
-              <input
-                type='radio'
-                id='WE_mint'
-                name='faceColor'              
-                defaultChecked
-                onChange={onClickSaturation}
-              />
-            </Label>
-            <Label htmlFor='WE_purple' color={'#7F5FFF'}>
-              <input
-                type='radio'
-                id='WE_purple'
-                name='faceColor'
-                onChange={onClickSaturation}
-              />
-            </Label>
-            <Label htmlFor='WE_darkgray' color={'#404040'}>
-              <input
-                type='radio'
-                id='WE_darkgray'
-                name='faceColor'
-                onChange={onClickSaturation}
-              />
-            </Label>
-          </div>
-          <div className='colorPallet'>
-            <ColorPallet color={hex}>
-              {opacity.map((o, idx) => {
-                return (
-                  <PalletItem
-                    className='palletItem'
-                    key={`faceOpacity${o}`}
-                    opacity={o}
-                    onClick={() => {
-                      onClickBrightness(o);
-                    }}
-                  >
-                    <div></div>
-                  </PalletItem>
-                );
-              })}
-            </ColorPallet>
-          </div>
+          <FaceColor colorChange={colorChange} />
+          {/* <FaceColor
+            brightnessChange={brightnessChange}
+            saturationChange={saturationChange}
+          /> */}
         </div>
-        <div className='eyes'>
+        <div className="eyes">
           <p>Eyes</p>
-          <div>
-            <label htmlFor=''>
-              <input type='radio' name='eye' />
-            </label>
-            <label htmlFor=''>
-              <input type='radio' name='eye'/>
-            </label>
-            <label htmlFor=''>
-              <input type='radio' name='eye'/>
-            </label>
-            <label htmlFor=''>
-              <input type='radio' name='eye'/>
-            </label>
-            <label htmlFor=''>
-              <input type='radio' name='eye'/>
-            </label>
-          </div>
+          <Eyes eyeChange={eyeChange} />
         </div>
-      </FaceBox>
+      </MakeFace>
       <BlackButton onClick={buttonAction}>완 료</BlackButton>
     </div>
   );
@@ -163,7 +119,7 @@ const FaceCustom = ({plusStep}) => {
 
 const NickNameBox = styled.div`
   p {
-    font-family: 'AppleSDGothicNeoM', sans-serif;
+    font-family: "AppleSDGothicNeoM", sans-serif;
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
@@ -183,7 +139,7 @@ const NickNameBox = styled.div`
       outline: none;
       line-height: 38px;
       padding-right: 4px;
-      font-family: 'AppleSDGothicNeoUL';
+      font-family: "AppleSDGothicNeoUL";
       ::placeholder {
         color: var(--DEFAULT);
       }
@@ -198,19 +154,23 @@ const NickNameBox = styled.div`
   }
 `;
 
-const FaceBox = styled.div`
+const MakeFace = styled.div`
   .face {
     width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
     padding-bottom: 44px;
-
     div {
+      position: relative;
       width: 124px;
       height: 124px;
       img {
-        width: 100%;
+        position: absolute;
+        top: 38px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 75%;
       }
     }
   }
@@ -238,7 +198,7 @@ const FaceBox = styled.div`
     position: relative;
     margin-bottom: 15px;
     p {
-      font-family: 'Niramit', sans-serif;
+      font-family: "Niramit", sans-serif;
       font-weight: 700;
       font-size: 12px;
       line-height: 16px;
@@ -249,89 +209,10 @@ const FaceBox = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    font-family: 'Niramit', sans-serif;
+    font-family: "Niramit", sans-serif;
     font-weight: 700;
     font-size: 12px;
     line-height: 16px;
-  }
-`;
-
-const Label = styled.label`
-  display: inline-flex;
-  width: 20px;
-  height: 20px;
-  border-radius: 500px;
-  position: relative;
-  background-color: ${(props) => props.color};
-  input {
-    appearance: none;
-  }
-  input:checked {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 3px;
-    box-sizing: content-box;
-    border-radius: 500px;
-    background-color: #ffffff;
-    border: 1px solid;
-    box-shadow: var(--SHADOW2);
-  }
-  input:checked::after {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-radius: 500px;
-    background-color: ${(props) => props.color};
-  }
-`;
-
-const ColorPallet = styled.ul`
-  display: flex;
-  box-shadow: var(--SHADOW1);
-  width: 300px;
-  margin: auto;
-  border-radius: 500px;
-  position: relative;
-  li.palletItem {
-    border: 2px solid #fff;
-    width: 56px;
-    height: 24px;
-    box-sizing: content-box;
-    overflow: hidden;
-    div {
-      width: 100%;
-      height: 100%;
-      background-color: ${(props) => props.color};
-      opacity: ${(props) => props.opacity};
-    }
-  }
-  li:first-child {
-    border-radius: 500px 0px 0px 500px;
-  }
-  li:last-child {
-    border-radius: 0 500px 500px 0;
-  }
-  ::after {
-    content: '';
-    width: 0;
-    height: 0;
-    position: absolute;
-    left: 50%;
-    top: -15px;
-    transform: translate(-50%, 0);
-    border-top: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 10px solid #fff;
-    border-left: 5px solid transparent;
-  }
-`;
-
-const PalletItem = styled.li`
-  div {
-    opacity: ${(props) => props.opacity};
   }
 `;
 
