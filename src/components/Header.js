@@ -49,6 +49,9 @@ const Header = () => {
             아이디 / 비밀번호 찾기
           </p>
         )}
+        {location.pathname === "/makeroom" && (
+          <p className="basicHeader" onClick={goback} />
+        )}
         {location.pathname === "/detail" && (
           <>
             <p className="basicHeader" onClick={goback} />
