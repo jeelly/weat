@@ -24,6 +24,8 @@ import Agreement from "../components/signup/Agreement";
 import Essential from "../components/signup/Essential";
 import BasicInfo from "../components/signup/BasicInfo";
 import Completion from "../components/signup/Completion";
+import EditListPage from "../pages/EditListPage";
+import Edit from "../pages/Edit";
 
 import "../css/fonts/fontFace.css";
 
@@ -44,10 +46,15 @@ function App() {
       <Routes>
         <Route path="/" element={isloaded && <Main />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/listpage" element={isloaded && <ListPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/detail" element={<Detail />} />
-        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/detail" element={isloaded && <Detail />} />
+        <Route path="/detail:id" element={isloaded && <Detail />} />
+        <Route path="/listpage" element={isloaded && <ListPage />} />
+        <Route path="/listpage:id" element={isloaded && <ListPage />} />
+        <Route path="/edit" element={<Edit />} />
+        <Route path="/edit/:id" element={<Edit />} />
+        <Route path="/editlistpage" element={isloaded && <EditListPage />} />
+        <Route path="/editlistpage:id" element={isloaded && <EditListPage />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/signup" element={<Singup />}>
           <Route path="agreement" element={<Agreement />} />
