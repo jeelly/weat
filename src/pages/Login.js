@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+
+//패키지
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+//이미지
 import logo from "../img/logo_type2.svg";
 import googleIcon from "../img/googleIcon.png";
 import kakaoIcon from "../img/kakaoIcon.png";
-import { useNavigate } from "react-router-dom";
+
+//
 import instance from "../shared/axios";
+import { loginCheck } from "../redux/modules/userSlice";
+
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [userId, setUserId] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
 
@@ -25,11 +35,13 @@ const Login = () => {
         password:userPassword,
       });
       window.localStorage.setItem('token', response.data.token)
-      console.log(response)      
+      dispatch(loginCheck(true))
+      navigate('/')      
     } catch (e) {
       console.log(e);
     }
   };
+
 
   return (
     <LoginContainer>
