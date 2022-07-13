@@ -12,8 +12,7 @@ const Detail = () => {
         <NewContainer>
             <Title>
                 <div>🤡</div>
-                <h2>회사근처맞집
-                <hr/>
+                <h2>회사근처맛집<hr/>
                 </h2>
             </Title>
             <Members/>

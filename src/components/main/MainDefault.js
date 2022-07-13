@@ -8,12 +8,6 @@ const MainDefault = () => {
          <PostLinkWrap>
             <PostLink to="/post">새로운 맛방을<br/>만들어보세요</PostLink>
          </PostLinkWrap>
-         <PostLinkWrap>
-            <PostLink to="/detail">임시<br/>디테일 페이지</PostLink>
-         </PostLinkWrap>
-         <PostLinkWrap>
-            <PostLink to="/signup">임시<br/>회원가입 페이지</PostLink>
-         </PostLinkWrap>
          </Grid>
     );
 };

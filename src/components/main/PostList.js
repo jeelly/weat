@@ -3,8 +3,11 @@ import styled from 'styled-components';
 
 import donut from '../../img/donut.svg';
 import flag from '../../img/fixed/flag.svg';
-
-
+import {ItemRotate} from '../../css/animation/PostItemAnimation'
+import {useSelector} from 'react-redux'
+import SortableList, { SortableItem } from "react-easy-sort";
+import arrayMove from "array-move";
+import { Link } from 'react-router-dom';
 
 const _PostItem = [
     {
@@ -34,69 +37,50 @@ const _PostItem = [
 ]
 
 const PostList = () => {
-    const [ lists, setLists ] = React.useState(_PostItem);
-    const [ grab, setGrab ] = React.useState(null)
 
+    const itemAnimation = useSelector(state => state.post.itemAnimation);
+    const [items, setItems] = React.useState(_PostItem)
 
-    //마우스를 올렸을때
-    const _onDragOver = e => {
-        e.preventDefault();
-    }
+    const onSortEnd = (oldIndex, newIndex) => {
+        setItems((array) => arrayMove(array, oldIndex, newIndex));
+        console.log(items)
+      };
 
-
-    //드래그를 시작할때
-    const _onDragStart = e => {
-        setGrab(e.target);
-        e.target.classList.add("grabbing");
-        e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.setData("text/html", e.target);
-    }
-
-    // 드래그가 끝날 경우 발생
-    const _onDragEnd = e => {
-        e.target.classList.remove("grabbing");
-
-        e.dataTransfer.dropEffect = "move";
-    }
-
-    //요소를 드롭할 경우 발생(ondragover에서 preventDefault()가 발생해야 함)
-    const _onDrop = e => {
-        let grabPosition = Number(grab.dataset.position);
-        let targetPosition = Number(e.target.dataset.position);
-
-        let _list = [ ...lists ];
-        _list[grabPosition] = _list.splice(targetPosition, 1, _list[grabPosition])[0];
-
-        setLists(_list);
-    }
 
     return (
-            <Container>
-                    {/* <PostItemInner>
-                        <li><IconImg src={flag} alt="깃발아이콘"/></li>
-                        <li><h3>나만알거야 디저</h3></li>
-                        <li><EmojiImg src={donut} alt="도넛아이콘"/></li>
-                        <li><p><span>3</span> members</p></li>
-                    </PostItemInner> */}
-                    {lists.map((item, index) => (
-                        <PostItem
-                            key={index}
-                            data-position={index}
-
-                            onDragOver={_onDragOver}
-                            onDragStart={_onDragStart}
-                            onDragEnd={_onDragEnd}
-                            onDrop={_onDrop}
-
-                            draggable
-                        >
-                            <PostItemInner>
-                                <li><IconImg src={item.image} alt="깃발아이콘"/></li>
-                                <li><h3>{item.title}</h3></li>
-                                <li><EmojiImg src={item.emojiImg} alt="도넛아이콘"/></li>
-                                <li><p><span>{item.member}</span>members</p></li>
-                            </PostItemInner> 
-                        </PostItem>
+            <Container
+            onSortEnd={onSortEnd}
+            className="list"
+            draggedItemClassName="dragged"
+            >
+                    {items.map((item, index) => (
+                        itemAnimation?
+                        (
+                            <SortableItem key={index}>
+                                <div>
+                                    <PostItem itemAnimation={itemAnimation}>
+                                            <PostItemInner itemAnimation={itemAnimation}>
+                                                <li><IconImg src={item.image} alt="깃발아이콘"/></li>
+                                                <li><h3>{item.title}</h3></li>
+                                                <li><EmojiImg src={item.emojiImg} alt="도넛아이콘"/></li>
+                                                <li><p><span>{item.member}</span>members</p></li>
+                                            </PostItemInner> 
+                                    </PostItem>
+                                </div>
+                            </SortableItem>
+                        ) 
+                        : (
+                            <PostLink to='/detail' key={index}>
+                                <PostItem>
+                                        <PostItemInner itemAnimation={itemAnimation}>
+                                            <li><IconImg src={item.image} alt="깃발아이콘"/></li>
+                                            <li><h3>{item.title}</h3></li>
+                                            <li><EmojiImg src={item.emojiImg} alt="도넛아이콘"/></li>
+                                            <li><p><span>{item.member}</span>members</p></li>
+                                        </PostItemInner> 
+                                </PostItem>
+                            </PostLink>
+                        )
                     ))}
             </Container>
     );
@@ -104,7 +88,7 @@ const PostList = () => {
 
 export default PostList;
 
-const Container = styled.article`
+const Container = styled(SortableList)`
     display: grid;
     width:328px;
     grid-template-columns: repeat(2, 1fr);
@@ -115,10 +99,16 @@ const PostItem = styled.div`
     width:160px;
     height:180px;
     border-radius:20px;
-    box-shadow: 0px 6px 10px rgba(153, 153, 153, 0.2), 0px 1px 18px rgba(153, 153, 153, 0.2), 0px 3px 5px rgba(153, 153, 153, 0.2);
     display:flex;
     align-items:center;
     justify-content:center;
+    animation:normal;
+    box-shadow:var(--SHADOW2);
+    background-color:var(--WHITE);
+    animation:${({itemAnimation}) => itemAnimation ? ItemRotate : 'normal'} 0.4s 1s infinite linear alternate;
+`
+const PostLink = styled(Link)`
+    text-decoration:none;
 `
 const PostItemInner = styled.ul`
     width:152px;
@@ -126,6 +116,13 @@ const PostItemInner = styled.ul`
     border:2px solid #FF7337;
     border-radius: 16px;
     position:relative;
+    transition:0.3s;
+    &:hover {
+        background-color:${({itemAnimation}) => itemAnimation ? '': '#FF7337'};
+        li > h3{
+            color:${({itemAnimation}) => itemAnimation ? '': 'var(--WHITE)'}
+        }
+    }
     li {
         text-align:center;
     }
@@ -153,6 +150,7 @@ const PostItemInner = styled.ul`
 `
 
 const IconImg = styled.img`
+    pointer-events : none;
     width:12px;
     height:16px;
     position:absolute;
@@ -163,4 +161,5 @@ const IconImg = styled.img`
 
 const EmojiImg = styled.img`
     margin:0 auto;
+    pointer-events : none;
 `

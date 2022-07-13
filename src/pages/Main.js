@@ -9,12 +9,13 @@ import PostList from '../components/main/PostList';
 import ModalBtn from '../components/main/ModalBtn';
 import MainDefault from '../components/main/MainDefault';
 import styled from 'styled-components';
-
+import Convenience from '../components/main/Convenience';
 
 const Main = () => {
     return (
         <NewContainer>
             <UserInfo/>
+            <Convenience/>
             <ReactPortal>
                 <MainModal/>
             </ReactPortal>

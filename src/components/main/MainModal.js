@@ -40,7 +40,7 @@ const Aside = styled.aside`
     height:180px;
     text-align:center;
     border-radius:18px 18px 0 0;
-    position:absolute;
+    position:fixed;
     bottom:0;
     right:0;
     background-color:var(--LIGHTEST);
