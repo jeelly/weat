@@ -1,14 +1,14 @@
 import axios from "axios";
 
 //인스턴스 생성
-const instance = axios.create({
+const instance = axios.create({  
   baseURL: "http://realprojectapiserver.com/",
   headers: { "Content-Type": "application/json" },
 });
 
 //토큰값
-// const token = getCookie("is_login");
-// instance.defaults.headers.common["Authorization"] = `Bearer ${token}`; 
+const token = localStorage.getItem('token')
+instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
 
 export default instance ;
 
