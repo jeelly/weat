@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import instance from "../../shared/axios";
 
 import {useDispatch} from 'react-redux'
-import { addEssential } from '../../redux/modules/userSlice'
+import { addEssential } from '../../redux/modules/signupSlice'
 
 
 const Essential = () => {

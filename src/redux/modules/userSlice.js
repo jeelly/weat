@@ -1,36 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from '@reduxjs/toolkit'
+import instance from '../../shared/axios'
 
+export const loggedInDB = () => {
+  return async function (dispatch) {
+    const response = await instance.get("/api/users/me");
+    console.log(response.data.user);
+    dispatch(loginUserCheck(response.data.user));
+  };
+};
 
-
-let signupSlice = createSlice({
-  name: "userSignup",
-  initialState: {
-    birthDay: "",
-    customerId: "",
-    email: "",
-    eyes: "",
-    faceColor: "",
-    name: "",
-    nickname: "",
-    password: "",
-  },
-  reducers: {
-    addEssential(state, action) {
-      state.customerId = action.payload.customerId;
-      state.password = action.payload.password;
+const userCheckSlice = createSlice({
+    name: "loggedIn",
+    initialState: {
+      isLogin: false,
+      userInfo: {
+        userId: "",
+        customerId: "",
+        name: "",
+        birthDay: "",
+        email: "",
+        nickname: "",
+        faceColor: "",
+        eyes: "",
+      },
     },
-    addDasicInfo(state, action) {
-      state.email = action.payload.email;
-      state.name = action.payload.name;
-      state.birthDay = action.payload.birthDay;
+    reducers: {
+      loginUserCheck(state, action) {
+        state.userInfo = action.payload;
+      },
+      loginCheck(state, action){
+        state.isLogin = action.payload
+      }
     },
-    addFace(state, action) {
-      state.nickname = action.payload.nickname;
-      state.eyes = action.payload.eyes;
-      state.faceColor = action.payload.faceColor;
-    },
-  },
-});
+  });
 
-export const { addEssential, addDasicInfo, addFace } = signupSlice.actions;
-export default signupSlice.reducer;
+
+  export const {loginUserCheck, loginCheck} = userCheckSlice.actions;
+  export default userCheckSlice.reducer

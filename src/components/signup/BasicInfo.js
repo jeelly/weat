@@ -4,7 +4,7 @@ import { BlackButton } from "../../css/Style";
 import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector } from "react-redux";
 import instance from "../../shared/axios";
-import {addDasicInfo} from '../../redux/modules/userSlice'
+import {addDasicInfo} from '../../redux/modules/signupSlice'
 
 const BasicInfo = () => { 
   const navigate = useNavigate();

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 //이미지
-import resetBtn from "../../img/icon/reset.png";
+import resetBtn from "../../img/icon/reset.svg";
 import { ReactComponent as Characterface } from "../../img/characterface.svg";
 //컴포넌트
 import Eyes from "./Eyes";
@@ -12,7 +12,7 @@ import FaceColor from "./FaceColor";
 import { eyeList } from "../../components/signup/FaceResource";
 import { BlackButton } from "../../css/Style";
 //액션함수
-import { addFace } from "../../redux/modules/userSlice";
+import { addFace } from "../../redux/modules/signupSlice";
 //axios
 import instance from "../../shared/axios";
 
