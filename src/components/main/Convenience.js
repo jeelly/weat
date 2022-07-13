@@ -40,7 +40,9 @@ const Total = styled.p`
         color:#2D2D2D;
 `
 
-const MoveIcon = styled.p`
+const MoveIcon = styled.button`
+    border:none;
+    background-color:transparent;
     font-size:12px;
     color:#999999;
     line-height:22px;
