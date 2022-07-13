@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+
 import styled from 'styled-components';
 
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import plus from '../../img/detail_plus.svg';
+import diagonal from '../../img/diagonal.svg';
+import { editModal } from '../../redux/modules/postSlice';
 
 const Members = () => {
     let navigate = useNavigate();
+    const dispatch = useDispatch();
+    const memberdel = useSelector(state => state.post.memberdel);
+    console.log(memberdel)
+    const delBtn = () => {
+        dispatch(editModal({Member:true}))
+    }
     return (
             <Container>
                 <MumbersTotal>
@@ -24,8 +34,9 @@ const Members = () => {
                                 <NewCharacterface fill='#23C7C7'/>
                                 <p>나</p>
                             </li>
-                            <li>
-                                <NewCharacterface fill='#FF7337'/>
+                            <li onClick={delBtn}>
+                                <NewCharacterface fill='#FF7337' memberdel={memberdel}/>
+                                <DelImg memberdel={memberdel}></DelImg>
                                 <p>회오리감자</p>
                             </li>
                             <li>
@@ -83,7 +94,7 @@ const MumbersTotal = styled.div`
         line-height: 16px;
         text-align: right;
         text-transform: capitalize;
-        color:var(--WHITE)
+        color:var(--BLACK)
     }
 `
 const Shared = styled.div`
@@ -156,7 +167,9 @@ const MembersInfo = styled.ul`
 
 
   li {
+    position:relative;
     margin-right:24px;
+    cursor:pointer;
   }
   li > p {
     font-weight: 400;
@@ -164,14 +177,32 @@ const MembersInfo = styled.ul`
     line-height: 14px;
     text-align: center;
     color:var(--DARKEST)
+    
   }
 `;
 
 const NewCharacterface = styled(Characterface)`
-    width:40px;
-    height:40px;
+    width:44px;
+    height:44px;
     margin-bottom:10px;
     border-radius:50%;
-    border: 2px solid var(--WHITE);
+    border:2px solid var(${({memberdel}) => memberdel? '--DEFAULT' : '--WHITE'});
     background-color:var(--WHITE);
+    box-shadow:var(--SHADOW1);
+    opacity:0.;
+`
+// memberdel={memberdel}
+const DelImg = styled.div`
+        display:${({memberdel})=> memberdel ? 'block' : 'none'};
+        width:44px;
+        height:44px;
+        /* background-color:blue; */
+        background-image:url(${diagonal});
+        background-size:44px;
+        background-repeat:no-repeat;
+        background-position:center;
+        position: absolute;
+        top:0;
+        left:50%;
+        transform:translate(-50%,0);
 `
