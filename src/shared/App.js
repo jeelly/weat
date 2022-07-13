@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { loadpostDB } from "../redux/modules/postSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //component
 import AppLayout from "../components/AppLayout";
+
+//슬라이스
+import { loadpostDB } from "../redux/modules/postSlice";
+import {loggedInDB} from "../redux/modules/userSlice";
 
 //Sub
 import Singup from "../pages/Singup";
@@ -15,6 +18,7 @@ import Main from "../pages/Main";
 import ListPage from "../pages/ListPage";
 import Detail from "../pages/Detail";
 import Post from "../pages/Post";
+import MakeRoom from "../pages/MakeRoom";
 import FaceCustom from "../components/signup/FaceCustom";
 import Agreement from "../components/signup/Agreement";
 import Essential from "../components/signup/Essential";
@@ -25,12 +29,15 @@ import "../css/fonts/fontFace.css";
 
 function App() {
   const dispatch = useDispatch();
+  const isLogin = useSelector(state => state.loggedIn.isLogin)
   const [isloaded, setIsloaded] = useState(false);
 
   useEffect(() => {
     setIsloaded(true);
-    dispatch(loadpostDB(0));
-  }, []);
+    // dispatch(loadpostDB(0));
+    dispatch(loggedInDB())
+  }, [isLogin]);
+
 
   return (
     <AppLayout>
@@ -50,6 +57,7 @@ function App() {
           <Route path="completion" element={<Completion />} />
         </Route>
         <Route path="/finduser" element={<FindUser />} />
+        <Route path="/makeroom" element={<MakeRoom />} />
       </Routes>
     </AppLayout>
   );
