@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import goBack from "../img/icon/goBack.png";
@@ -20,9 +20,13 @@ const Header = () => {
     if(location.pathname === "/detail" || location.pathname === "/listpage") {
       return setColor("#FF7337")
     }else {
-      return null
+      return setColor('')
     }
   }
+
+  useEffect(() => {
+    headerColor();
+  }, [location]);
 
   const delBtn = async () => {
       dispatch(editModal({Room:true}))
