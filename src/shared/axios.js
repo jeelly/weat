@@ -2,7 +2,7 @@ import axios from "axios";
 
 //인스턴스 생성
 const instance = axios.create({  
-  baseURL: "http://realprojectapiserver.com/",
+  baseURL: "https://realprojectapiserver.com/",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -12,7 +12,7 @@ instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
 
 export default instance ;
 
-export const login_instance = axios.create({
-  baseURL: "http://localhost:5001",
-  headers: { "Content-Type": "application/json" },
-});
+// export const login_instance = axios.create({
+//   baseURL: "http://localhost:5001",
+//   headers: { "Content-Type": "application/json" },
+// });
