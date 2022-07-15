@@ -17,8 +17,6 @@ const SearchBar = (props) => {
   const { searchResults } = useSelector((state) => state.roomMaking);
   const [searchInput, setSearchInput] = useState("");
   const [checkedInputs, setCheckedInputs] = useState([]);
-  const box = document.querySelector("body");
-  const bodyHeight = box.scrollHeight;
 
   //검색 키워드
   const onChangeInputValue = (e) => {
@@ -60,7 +58,7 @@ const SearchBar = (props) => {
   };
 
   return (
-    <SearchWrap serchBarPosition={props.serchBar} bodyHeight={bodyHeight}>
+    <SearchWrap serchBarPosition={props.serchBar}>
       <section className="header">
         <p>Invite Members</p>
         <button onClick={serchBarCrose} />
@@ -125,7 +123,7 @@ const SearchWrap = styled.aside`
   right: ${(props) => (props.serchBarPosition ? 0 : "-280px")};
   width: 280px;
   height: 100vh;
-  min-height: ${(props) => props.bodyHeight + "px"};
+  /* min-height: ${(props) => props.bodyHeight + "px"}; */
   overflow: hidden;
   background-color: #fff;
   z-index: 3;

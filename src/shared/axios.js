@@ -1,14 +1,21 @@
 import axios from "axios";
 
+export const getToken = () => localStorage.getItem("token")
+  ? localStorage.getItem("token")
+  : null;
+
+export const getAuthorizationHeader = () => `Bearer ${getToken()}`;
+
+
 //인스턴스 생성
-const instance = axios.create({  
+export const instance = axios.create({  
   baseURL: "https://realprojectapiserver.com/",
-  headers: { "Content-Type": "application/json" },
+  headers: {  Authorization: getAuthorizationHeader() },
 });
 
 //토큰값
-const token = localStorage.getItem('token')
-instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
+
+// instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
 
 export default instance ;
 

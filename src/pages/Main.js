@@ -20,7 +20,7 @@ const Main = () => {
     
     return (
         <NewContainer>
-            <UserInfo user={user.userInfo}/>
+            <UserInfo user={user.userInfo ? user.userInfo : ''}/>
             <Convenience roomsLength={rooms.length}/>
             <ReactPortal>
                 {rooms ? null : <MainModal/>}
