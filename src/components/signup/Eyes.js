@@ -76,7 +76,7 @@ const EyeItemLabel = styled.label`
         ::after {
           content: "";
           background-image: url(${props => (props.eyeImg)});
-          background-size: 50px auto ;
+          background-size: 100% auto ;
           background-repeat: no-repeat;
           background-position: 50% 50%;
           position: absolute;
@@ -94,10 +94,11 @@ const EyeItemLabel = styled.label`
     }
     img {
       position: absolute;
+      width: 100%;
       z-index: 1;
-      top: 18px;
-      left: 50%;
-      transform: translate(-50%, 0%);
+      top: 0;
+      left: 0;
+      /* transform: translate(-50%, 0%); */
     }
   }
 `;

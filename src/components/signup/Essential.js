@@ -1,60 +1,84 @@
-import { useCallback, useState } from 'react';
-import styled from 'styled-components';
-import { BlackButton } from '../../css/Style';
-import {useNavigate} from 'react-router-dom';
+import { useCallback, useState } from "react";
+import styled from "styled-components";
+import { BlackButton } from "../../css/Style";
+import { useNavigate } from "react-router-dom";
 import instance from "../../shared/axios";
 
-import {useDispatch} from 'react-redux'
-import { addEssential } from '../../redux/modules/signupSlice'
-
+import { useDispatch, useSelector } from "react-redux";
+import { addEssential } from "../../redux/modules/signupSlice";
+import { VioletRoundTextBtn } from "../../css/Style";
+import { useEffect } from "react";
 
 const Essential = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [customerId, setCustomerId] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const userInfo = {customerId, password, confirmPassword}
-  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [customerId, setCustomerId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const userInfo = { customerId, password};
+
+  const [idError, setIdError] = useState("");
+  const [pwError, setPwError] = useState("");
+
+  const [idCheck, setIdCheck] = useState(false);
+  const [pwCheck, setPwCheck] = useState(false);
+
+  const buttonAction = async () => {
+    dispatch(addEssential(userInfo));
+    navigate("/signup/basicInfo");
+  };
 
   const onChangeId = (e) => {
-    setCustomerId(e.target.value)
-  }
-  const onChangePassword = (e) => {
-    setPassword(e.target.value)
-  }
-  const onChangeConfirmPassword = (e) => {
-    setConfirmPassword(e.target.value)
-  }
+    setCustomerId(e.target.value);
+  };
 
+  const onChangePw = (e) => {
+    setPassword(e.target.value);
+  };
 
-  const buttonAction = async ()=>{
-    const reg_id =  /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,11}$/;
-    const reg_password = /^[ㄱ-ㅎ가-힣0-9a-zA-Z@$!%#?&]{6,10}$/;
-    if(!reg_id.test(customerId)){
-      return alert('아이디를 확인해주세요')
+  const onChangeConfirmPw = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const idDoubleCheck = async () => {
+    try {
+      await instance.post("/api/users/checkId", { customerId });
+      alert("사용 가능");
+      setIdCheck(true);
+      setIdError('')
+    } catch (e) {
+      // alert("사용 불가능");
+      setIdCheck(false);
+      setIdError('*이미 사용 중인 아이디입니다.')
     }
-    if(!reg_password.test(password)){
-      return alert('비밀번호는 6자이상 한/영, 숫자, 특수문자가 가능')
+  };
+
+  const matchCheck = async (pw = password,confirmPw = confirmPassword) => {
+    try {
+      await instance.post("/api/users/checkPass", {
+        password: pw,
+        confirmPassword: confirmPw,
+      });
+      setPwError('')
+      setPwCheck(true)
+    } catch (e) {
+      console.log(e);
+      setPwCheck(false)
+      setPwError('*비밀번호가 일치하지 않습니다.')
     }
-    if(password !== confirmPassword){
-      return alert('비밀번호 불일치')
-    }     
-    try{
-      const response = await instance.post('/api/users/check',userInfo)
-      console.log(response)
-    }catch(e){
-      return alert('사용중인 아이디')         
+  };
+  useEffect(()=>{    
+    if(password || confirmPassword){
+      matchCheck()
     }
-    dispatch(addEssential(userInfo));
-    navigate('/signup/basicInfo')
-  }
+  },[password,confirmPassword])
+  
 
   return (
     <div>
       <InfoMessage>
-        <p className='message'>가입해주셔서 감사합니다</p>
-        <p className='subMessage'>
+        <p className="message">가입해주셔서 감사합니다</p>
+        <p className="subMessage">
           아이디(이메일)은 변경이 불가합니다:&#40;
           <br />
           정확히 입력해주세요!
@@ -62,16 +86,38 @@ const Essential = () => {
       </InfoMessage>
       <InputBox>
         <section>
-          <label htmlFor=''>Id</label>
-          <input type='text' placeholder='3글자 이상 한글도 돼요' onChange={onChangeId}/>
+          <label htmlFor="">Id</label>
+          <div>
+            <input
+              type="text"
+              placeholder="아이디를 입력해주세요"
+              onChange={onChangeId}
+            />
+            <VioletRoundTextBtn onClick={idDoubleCheck} disabled ={!customerId && 'disabled'}>중복 확인</VioletRoundTextBtn>
+          </div>
+          <Description>{idError}</Description>
         </section>
         <section>
-          <label htmlFor=''>Password</label>
-          <input type='password' placeholder='6글자 이상 적어주셔야 해요' onChange={onChangePassword}/>
-          <input type='password' placeholder='다시 한번 입력해주세요' onChange={onChangeConfirmPassword}/>
+          <label htmlFor="">Password</label>
+          <input
+            type="password"
+            placeholder="특수 문자 포함, 6글자 이상 적어주셔야 해요"
+            onChange={onChangePw}
+          />
+          <input
+            type="password"
+            placeholder="다시 한번 입력해주세요"
+            onChange={onChangeConfirmPw}
+          />
+          <Description>{pwError}</Description>
         </section>
       </InputBox>
-      <BlackButton onClick={buttonAction}>다 음</BlackButton>
+      <BlackButton
+        onClick={buttonAction}
+        disabled={(!idCheck || !pwCheck) && "disabled"}
+      >
+        다 음
+      </BlackButton>
     </div>
   );
 };
@@ -82,13 +128,13 @@ const InfoMessage = styled.section`
   text-align: center;
   padding-top: 20px;
   .message {
-    font-family: 'AppleSDGothicNeoL';
+    font-family: "AppleSDGothicNeoL";
     line-height: 150%;
     font-size: 28px;
     padding-bottom: 12px;
   }
   .subMessage {
-    font-family: 'AppleSDGothicNeoL';
+    font-family: "AppleSDGothicNeoL";
     font-size: 16px;
     line-height: 150%;
     color: var(--DEFAULT);
@@ -100,36 +146,57 @@ const InputBox = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 28px;
+    width: 100%;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
     label {
-      font-family: 'Niramit';
+      font-family: "Niramit";
       font-style: normal;
       font-weight: 700;
       font-size: 14px;
       line-height: 22px;
       color: #666;
       padding-bottom: 8px;
-      padding-left:14px;
+      padding-left: 14px;
     }
     input {
-      height:48px;
-      font-family: 'AppleSDGothicNeoL';
+      height: 48px;
+      min-width: 210px;
+      font-family: "AppleSDGothicNeoL";
       font-size: 14px;
       line-height: 22px;
       padding: 0 20px;
       background: var(--WHITE);
       border: 2px solid var(--LIGHTEST);
       border-radius: 50px;
-      margin-bottom: 10px;
       outline: none;
-      ::placeholder{
+      ::placeholder {
         color: var(--DEFAULT);
         font-size: 12px;
       }
-      :focus{
-        border:2px solid var(--LIGHTER);
+      :focus {
+        border: 2px solid var(--LIGHTER);
+      }
+      &:last-of-type {
+        margin-top: 10px;
+      }
+      &:first-of-type {
+        margin-top: 0px;
       }
     }
   }
 `;
 
+const Description = styled.span`
+  font-family: "AppleSDGothicNeoM";
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--ERROR);
+  padding-left: 14px;
+  margin-top: 6px;
+`;
 export default Essential;

@@ -13,11 +13,11 @@ import kakaoIcon from "../img/kakaoIcon.png";
 //
 import instance from "../shared/axios";
 import { loginCheck } from "../redux/modules/userSlice";
-
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [userId, setUserId] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
 
@@ -31,17 +31,26 @@ const Login = () => {
   const loginAction = async () => {
     try {
       const response = await instance.post("/api/users/login", {
-        customerId:userId,
-        password:userPassword,
+        customerId: userId,
+        password: userPassword,
       });
-      window.localStorage.setItem('token', response.data.token)
-      dispatch(loginCheck(true))
-      navigate('/')      
+      window.localStorage.setItem("token", response.data.token);
+      dispatch(loginCheck(true));
+      navigate("/");
     } catch (e) {
       console.log(e);
     }
   };
-
+  //소셜 로그인 후 받은 토큰 저장
+  const userToken = window.location.href.split('=')[1]
+  const tokenSave = () => {    
+    localStorage.setItem('token',userToken)
+  } 
+  useEffect(()=>{
+    if(userToken){
+      tokenSave()
+    }    
+  },[userToken])
 
   return (
     <LoginContainer>
@@ -65,16 +74,20 @@ const Login = () => {
       </section>
       <section className="snsLogin">
         <div>
-          <img src={googleIcon} alt="" />
-          <p>
-            <span>구글메일</span>로 로그인
-          </p>
+          <a href='http://realprojectapiserver.com/api/auth/google' alt="구글 로그인">
+            <img src={googleIcon} alt="" />
+            <p>
+              <span>구글메일</span>로 로그인
+            </p>
+          </a>
         </div>
         <div>
-          <img src={kakaoIcon} alt="" />
-          <p>
-            <span>카카오톡</span>으로 로그인
-          </p>
+        <a href='http://realprojectapiserver.com/api/auth/kakao' alt="카카오 로그인">
+            <img src={kakaoIcon} alt="" />
+            <p>
+              <span>카카오톡</span>으로 로그인
+            </p>
+          </a>
         </div>
       </section>
       <section className="copyright">© 2022 WEat. All rights reserved.</section>
@@ -84,7 +97,7 @@ const Login = () => {
 
 const LoginContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -140,23 +153,27 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: space-between;
     div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding-top: 64px;
-      img {
-        width: 60px;
-      }
+      a {
+        display: block;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img {
+          width: 60px;
+        }
 
-      p {
-        font-family: "AppleSDGothicNeoT";
-        font-style: normal;
-        font-size: 14px;
-        line-height: 22px;
-        color: var(--WHITE);
-        padding-top: 16px;
-        span {
-          font-family: "AppleSDGothicNeoUL";
+        p {
+          font-family: "AppleSDGothicNeoT";
+          font-style: normal;
+          font-size: 14px;
+          line-height: 22px;
+          color: var(--WHITE);
+          padding-top: 16px;
+          span {
+            font-family: "AppleSDGothicNeoUL";
+          }
         }
       }
     }

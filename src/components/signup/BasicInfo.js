@@ -2,66 +2,82 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { BlackButton } from "../../css/Style";
 import { useNavigate } from "react-router-dom";
-import {useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import instance from "../../shared/axios";
-import {addDasicInfo} from '../../redux/modules/signupSlice'
+import { addDasicInfo } from "../../redux/modules/signupSlice";
+import { VioletRoundTextBtn } from "../../css/Style";
 
-const BasicInfo = () => { 
+const BasicInfo = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const [email, setEmail] = useState(null);
   const [authNum, setAuthNum] = useState(null);
+  const [authNumError, setAuthNumError] = useState("");
   const [userNum, setUserNum] = useState(0);
   const [name, setName] = useState(null);
-  const [birthDay, setBirthDay] = useState(null);  
-  const [authBtnDisable, setauthBtnDisable] = useState(false);
+  const [birthDay, setBirthDay] = useState(null);
+  const [authBtnDisable, setauthBtnDisable] = useState("disabled");
   const [authInputDisable, setAuthInputDisable] = useState(false);
-  const [style, setStyle] = useState({display:'flex'})
-  const [scrollY, setScrollY] = useState(0)
+  const [style, setStyle] = useState({ display: "flex" });
+  const [scrollY, setScrollY] = useState(0);
   const [min, setMin] = useState(3);
   const [sec, setSec] = useState(0);
-
   const time = useRef(180);
   const timerId = useRef(null);
 
-  const onChangeEmail = useCallback((e)=>{
-    setEmail(e.target.value)
-  },[])
+  const onChangeEmail = useCallback((e) => {
+    setEmail(e.target.value);
+    setauthBtnDisable("");
+    setAuthInputDisable("");
+    setMin(3);
+    setSec(0);
+    time.current = 180;
+    timerId.current = null;
+    setUserNum(0);
+  }, []);
 
-  const onChangeUserNum = useCallback((e)=>{
-    setUserNum(e.target.value)
-  },[])
+  const authCheck = () => {
+    if (authNum !== userNum) {
+      setAuthNumError("*인증번호가 맞지 않습니다");
+    } else if (authNum === userNum) {
+      setAuthNumError("");
+    }
+  };
+  const onChangeUserNum = useCallback(
+    (e) => {
+      setUserNum(e.target.value);
+    },
+    [email]
+  );
 
-  const onChangeName = useCallback((e)=>{
-    setName(e.target.value)
-  },[])
+  const onChangeName = useCallback((e) => {
+    setName(e.target.value);
+  }, []);
 
-  const onChangeDate = useCallback((e)=>{
-    setBirthDay(e.target.value.split('-').join(""))
-  },[])
+  const onChangeDate = useCallback((e) => {
+    setBirthDay(e.target.value.split("-").join(""));
+  }, []);
 
-
-  
   //이메일 중복확인 후 인증메일 전송
   const emailCheck = async () => {
-    const reg_email =  /^[0-9a-zA-Z]+@+[0-9a-zA-Z]+.+[a-zA-Z]$/;    
-    if(!reg_email.test(email) || !email){
-      return alert('이메일을 확인해주세요!')
-    }     
-    try{
-      const response = await instance.post('/api/users/mail',{email})
-      console.log(response)
-      setAuthNum(response.data.authNum)
-    }catch(e){
-      return alert(e.response.data.errorMessage)
+    const reg_email = /^[0-9a-zA-Z]+@+[0-9a-zA-Z]+.+[a-zA-Z]$/;
+    if (!reg_email.test(email) || !email) {
+      return alert("이메일을 확인해주세요!");
     }
-    auth()
-  }
+    try {
+      const response = await instance.post("/api/users/mail", { email });
+      console.log(response);
+      setAuthNum(response.data.authNum);
+    } catch (e) {
+      return alert(e.response.data.errorMessage);
+    }
+    auth();
+  };
 
-  //인증번호 만료시간 타이머  
+  //인증번호 만료시간 타이머
   const auth = useCallback(() => {
-    setauthBtnDisable(true);
+    setauthBtnDisable("disabled");
     timerId.current = setInterval(() => {
       setMin(parseInt(time.current / 60));
       setSec(time.current % 60);
@@ -71,9 +87,16 @@ const BasicInfo = () => {
   }, []);
 
   useEffect(() => {
-    if (authNum == userNum) {
-      clearInterval(timerId.current);
-      setAuthInputDisable(true);
+    if (authNum && userNum) {
+      if (authNum == userNum) {
+        clearInterval(timerId.current);
+        setAuthInputDisable(true);
+        alert('인증완료')
+        setAuthNumError("");
+      } else {
+        setAuthInputDisable(false);
+        setAuthNumError("*인증번호가 맞지 않습니다");
+      }
     }
   }, [userNum, authNum]);
 
@@ -88,45 +111,38 @@ const BasicInfo = () => {
       setauthBtnDisable(false);
     }
   }, [sec]);
-
+  
   //데이터 저장 후 이동
-  const userInfo = {name, birthDay, email}
-  const submit = useCallback(()=>{
-    if(!authInputDisable){
-      return alert('이메일 인증은 받았니?')
+  const userInfo = { name, birthDay, email };
+  const submit = useCallback(() => {
+    if (!authInputDisable) {
+      return alert("이메일 인증하세요");
     }
-    if(!name || !birthDay){
-      return alert('빈칸 있음')
+    if (!name || !birthDay) {
+      return alert("빈칸 있음");
     }
-
     dispatch(addDasicInfo(userInfo));
-    navigate('/signup/faceCustom')
-    
-
-  },[authInputDisable,name,birthDay])
-
+    navigate("/signup/faceCustom");
+  }, [authInputDisable, name, birthDay]);
 
   //스크롤시 디스크립션 사라짐
-  const scrollEvent = () =>{
-    setScrollY(window.scrollY)
-    if(scrollY > 10){
-      style.display = 'none'
-    }else{
-      style.display = 'flex'
+  const scrollEvent = () => {
+    setScrollY(window.scrollY);
+    if (scrollY > 10) {
+      style.display = "none";
+    } else {
+      style.display = "flex";
     }
-  }
-  useEffect(()=>{
-    function scrollListener(){
-      window.addEventListener("scroll",scrollEvent)
+  };
+  useEffect(() => {
+    function scrollListener() {
+      window.addEventListener("scroll", scrollEvent);
     }
-    scrollListener()
+    scrollListener();
     return () => {
-      window.removeEventListener("scroll", scrollEvent)
-    }
-  })
-
-  
-  
+      window.removeEventListener("scroll", scrollEvent);
+    };
+  });
 
   return (
     <div>
@@ -141,7 +157,11 @@ const BasicInfo = () => {
       <InputBox>
         <section>
           <label htmlFor="">Email</label>
-          <input type="text" placeholder="이메일" onChange={onChangeEmail}/>
+          <input
+            type="text"
+            placeholder="이메일 주소"
+            onChange={onChangeEmail}
+          />
           <div className="authNum">
             <div>
               <input
@@ -149,25 +169,28 @@ const BasicInfo = () => {
                 onChange={onChangeUserNum}
                 disabled={authInputDisable}
               />
-              <span>
+              <Time authInputDisable={authInputDisable}>
                 {min}분{sec}초
-              </span>
+              </Time>
             </div>
-            <button onClick={emailCheck} disabled={authBtnDisable}>
+            <VioletRoundTextBtn onClick={emailCheck} disabled={authBtnDisable}>
               인 증
-            </button>
+            </VioletRoundTextBtn>
           </div>
+          <AuthDescription>{authNumError}</AuthDescription>
         </section>
         <section>
           <label htmlFor="">Name</label>
-          <input type="text" placeholder="김한나" onChange={onChangeName}/>
+          <input type="text" placeholder="김한나" onChange={onChangeName} />
         </section>
         <section>
           <label htmlFor="">Birth date</label>
-          <input type="date" onChange={onChangeDate}/>
+          <input type="date" onChange={onChangeDate} />
         </section>
       </InputBox>
-      <Description style={style}>정보는 비공개입니다. 언제든 수정도 가능해요!</Description>
+      <Description style={style}>
+        정보는 비공개입니다. 언제든 수정도 가능해요!
+      </Description>
 
       <BlackButton onClick={submit}>마지막 한 단계!</BlackButton>
     </div>
@@ -219,6 +242,9 @@ const InputBox = styled.div`
       border-radius: 50px;
       margin-bottom: 10px;
       outline: none;
+      :focus {
+        border: 2px solid var(--LIGHTER);
+      }
       ::placeholder {
         font-size: 12px;
         color: var(--DEFAULT);
@@ -235,29 +261,8 @@ const InputBox = styled.div`
           width: 206px;
           margin-bottom: 0;
           :disabled {
-            background-color: #eee;
+            background-color: #f2f2f2;
           }
-        }
-        span {
-          position: absolute;
-          right: 18px;
-          color: var(--ERROR);
-          font-size: 12px;
-          font-family: "AppleSDGothicNeoM";
-          line-height: 22px;
-        }
-      }
-
-      button {
-        width: 110px;
-        height: 48px;
-        background: var(--INFO);
-        border-radius: 50px;
-        border: none;
-        font-family: "AppleSDGothicNeoM";
-        color: var(--WHITE);
-        :disabled {
-          opacity: 0.3;
         }
       }
     }
@@ -265,6 +270,23 @@ const InputBox = styled.div`
       height: 48px;
     }
   }
+`;
+const Time = styled.span`
+  position: absolute;
+  right: 18px;
+  color: var(--ERROR);
+  font-size: 12px;
+  font-family: "AppleSDGothicNeoM";
+  line-height: 22px;
+  display: ${(props) => (!props.authInputDisable ? "block" : "none")};
+`;
+const AuthDescription = styled.span`
+  font-family: "AppleSDGothicNeoM";
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--ERROR);
+  padding-left: 14px;
+  margin-top: 6px;
 `;
 
 const Description = styled.div`
@@ -281,7 +303,7 @@ const Description = styled.div`
   height: 100px;
   background: linear-gradient(to bottom, #00000000, #fff);
   width: 100%;
-  color: #818286;
+  color: var(--BLACK);
   padding-bottom: 16px;
 `;
 

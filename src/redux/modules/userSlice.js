@@ -1,13 +1,16 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import instance from '../../shared/axios'
 
-export const loggedInDB = () => {
-  return async function (dispatch) {
-    const response = await instance.get("/api/users/me");
-    console.log(response.data.user);
-    dispatch(loginUserCheck(response.data.user));
-  };
-};
+
+export const loggedInDB = createAsyncThunk(
+  'user/isLoggedIn',
+  async () => {
+    return instance
+    .get('/api/users/me')
+    .then(res => {return res.data.user})
+    .catch(error => console.log(error))
+  }
+)
 
 const userCheckSlice = createSlice({
     name: "loggedIn",
@@ -32,6 +35,18 @@ const userCheckSlice = createSlice({
         state.isLogin = action.payload
       }
     },
+    extraReducers:{
+      [loggedInDB.pending]: (state, action) => {
+        console.log("로그인된 사용자정보 대기 중");
+      },
+      [loggedInDB.fulfilled]: (state, action) => {
+        console.log(action.payload)
+        state.userInfo = action.payload;
+      },
+      [loggedInDB.rejected]: (state, action) => {
+        console.log("로그인된 사용자정보 불러오기 실패");
+      },
+    }
   });
 
 
