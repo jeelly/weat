@@ -87,6 +87,7 @@ const FaceCustom = () => {
             placeholder="매콤한 오소리"
             value={nickname}
             onChange={nicknameSetting}
+            maxLength="6"
           />
           <button onClick={cleanUp}></button>
         </div>

@@ -54,6 +54,7 @@ const RoomCustom = () => {
               cols="2"
               placeholder="제목을 지어주세요"
               onChange={naming}
+              maxLength="8"
             />
             <p>
               <img src={resetBtn} alt="" />
