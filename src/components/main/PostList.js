@@ -23,11 +23,9 @@ const PostList = ({rooms}) => {
     const [guestColor, setGuestColor] = useState('#FF7337')
     const [ownerColor, setOwnerColor] = useState("#23C7C7")
 
-    // useEffect(() => {
-    //     setItems(rooms)
-    // }, [rooms]);
-     
-    // console.log(contents_obj)
+    useEffect(() => {
+        setItems(rooms)
+    }, [rooms]);
 
     useEffect(() => {
         if(!itemAnimation) {
