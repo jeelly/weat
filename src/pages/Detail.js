@@ -1,22 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {Container} from '../css/Style'
+import { loadRoomDetailDB, detailId } from "../redux/modules/postSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 import house from '../img/house.svg';
 
 import Members from '../components/detail/Members'
 import RestaurantList from '../components/detail/RestaurantList'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Title from '../components/detail/Title';
+import { VioletRoundButton } from '../css/Style'
+
 const Detail = () => {
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const {detail, users, storeList} = useSelector(state => state.post.detail);
+    const aa = useSelector(state => state.post.detail);
+    
+    const [isloaded, setIsloaded] = useState(false);
+    useEffect(() => {
+    }, []);
+
+    useEffect(() => {
+        const detail_load = async () => {
+            await dispatch(loadRoomDetailDB(id));
+            setIsloaded(true)
+        }
+        detail_load();
+
+      }, []);
+
     return (
-        <NewContainer>
-            <Title>
-                <div>🤡</div>
-                <h2>회사근처맛집<hr/>
-                </h2>
-            </Title>
-            <Members/>
-            <RestaurantList/>
+        <NewContainer status={detail?.status}>
+            {isloaded && <Title detail={detail} id={id}/>}
+            {isloaded && <Members users={users} />}
+            {isloaded && <RestaurantList storeList={storeList} id={id} />}
             <RestaurantAdd to="/post"><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
         </NewContainer>
     );
@@ -26,53 +45,12 @@ export default Detail;
 
 const NewContainer = styled(Container)`
     font-family: "AppleSDGothicNeoM00", sans-serif;
-    background-color:#FF7337 ;
-    /* overflow: hidden; */
-    /* height:100vh; */
-    /* width:360px; */
+    background-color:${({status}) => status==='publicOwner'?'#FF7337': status==='publicGuest'? '#23C7C7' : '#FFBB55'} ;
+    //status==='publicOwner'?'#FF7337': status==='publicGuest'? '#23C7C7' : '#FFBB55'
     padding:0;
 `
-const Title = styled.div`
-    display:flex;
-    padding:0 16px;
-    align-items:flex-end;
-    margin-left:22px;
-    div {
-        font-size:36px;
-    }
-    h2 {
-        text-align:left;
-        display:block;
-        width:100%;
-        margin-left:24px;
-        font-weight:300;
-        font-size:26px;
-        line-height:31px;
-    }
-    hr{
-        border: 1px solid #2D2D2D;
-        margin-top:6px;
-    }
-`
 
-const RestaurantAdd = styled(Link)`
-    width: 133px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    padding: 10px 24px;
-    gap: 8px;
-    background:#7F5FFF;
-    border-radius: 50px;
 
-    text-decoration:none;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
-    color:var(--LIGHTEST);
-    position:fixed;
-    left: 50%;
-    transform: translate(-50%, 0);
-    bottom:31px;
+const RestaurantAdd = styled(VioletRoundButton)`
+    padding:14px 27px 14px 24px;
 `

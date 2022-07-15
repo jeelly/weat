@@ -1,57 +1,38 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
-import plus from '../../img/detail_plus.svg';
+import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
+import plus from '../../img/detail_plus.svg'
 
-const Members = () => {
+const Members = ({users}) => {
+    const { memberCount, guestInfo, owner } = users;
     let navigate = useNavigate();
+    console.log(users)
     return (
             <Container>
                 <MumbersTotal>
                     <b>Members</b>
-                    <p><span>8</span>/20</p>
+                    <p><span>{memberCount}</span>/20</p>
                 </MumbersTotal>
                 <MembersIcon>
                     <Shared>
-                        <SharedBtn plus={plus} onClick={()=>{navigate("/");}}>공유하기 버튼</SharedBtn>
+                        <SharedBtn plus={plus} onClick={()=>{navigate("/");}}>멤버초대 버튼</SharedBtn>
                         <p>멤버초대</p>
                     </Shared>
                     <MembersInfoWrap>
                         <MembersInfo>
-                            <li>
-                                <NewCharacterface fill='#23C7C7'/>
-                                <p>나</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FF7337'/>
-                                <p>회오리감자</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#7F5FFF'/>
-                                <p>나도줘닭발</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FFBB55'/>
-                                <p>오늘도놀고먹고</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#23C7C7'/>
-                                <p>나</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FF7337'/>
-                                <p>회오리감자</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#7F5FFF'/>
-                                <p>나도줘닭발</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FFBB55'/>
-                                <p>오늘도놀고먹고</p>
-                            </li>
+                            <Owner>
+                                <NewFlag fill="red"/>
+                                <NewCharacterface fill={owner.faceColor}/>
+                                <p>{owner.nickname}</p>
+                            </Owner>
+                            {guestInfo.map((user,idx)=> (
+                                <li key={user.userId}>
+                                    <NewCharacterface fill={user.faceColor}/>
+                                    <p>{user.nickname}</p>
+                                </li>
+                            ))}
                         </MembersInfo>
                     </MembersInfoWrap>
                 </MembersIcon>
@@ -119,6 +100,7 @@ const SharedBtn = styled.button`
     background-repeat:no-repeat;
     background-position:center;
     margin-bottom:12px;
+    cursor:pointer;
 `
 
 const MembersIcon = styled.div`
@@ -132,12 +114,12 @@ const MembersInfoWrap = styled.div`
     /* width:247px; */
     position:absolute;
     top:0;
-    left:97px;
+    left:77px;
 `
 const MembersInfo = styled.ul`
-  height:86px;
-  overflow: scroll;
-  overflow: auto;
+  /* height:87px; */
+  /* overflow: auto; */
+  /* align-items: center; */
   white-space: nowrap;
   display:flex;
   &::-webkit-scrollbar {
@@ -174,4 +156,13 @@ const NewCharacterface = styled(Characterface)`
     border-radius:50%;
     border: 2px solid var(--WHITE);
     background-color:var(--WHITE);
+`
+const NewFlag = styled(Flag)`
+    position:absolute;
+    top:-17.33px;
+    left:50%;
+    transform: translateX(-50%);
+`
+const Owner = styled.li`
+    position:relative;
 `
