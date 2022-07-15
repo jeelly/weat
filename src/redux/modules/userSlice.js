@@ -4,11 +4,14 @@ import instance from '../../shared/axios'
 
 export const loggedInDB = createAsyncThunk(
   'user/isLoggedIn',
-  async () => {
+  async (navigate) => {
     return instance
     .get('/api/users/me')
     .then(res => {return res.data.user})
-    .catch(error => console.log(error))
+    .catch(error => {
+      navigate('/login')
+      console.log(error)
+    })
   }
 )
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 //component
@@ -30,6 +30,7 @@ import Edit from "../pages/Edit";
 import "../css/fonts/fontFace.css";
 
 function App() {
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.loggedIn.isLogin)
   const [isloaded, setIsloaded] = useState(false);
@@ -39,10 +40,9 @@ function App() {
        await dispatch(loadRoomDB(0));
        setIsloaded(true);
     }
-    dispatch(loggedInDB())
+    dispatch(loggedInDB(navigate))
     load()
   }, [isLogin]);
-
 
   return (
     <AppLayout>
