@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { ReactPortal } from '../..';
-import { editModal, memberdel } from '../../redux/modules/postSlice';
+import { editModal, memberdel, roomDeleteDB, roomUserDelDB } from '../../redux/modules/postSlice';
 
 
-const Modal = () => {
+const Modal = ({id}) => {
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const edit = useSelector(state => state.post.editModal);
     const [delEdit, setDelEdit] = useState(false)
@@ -20,11 +22,21 @@ const Modal = () => {
         dispatch(editModal({defult:false}))
     }
 
-    const okBtn = async () => {
+    // console.log(edit.userId)
+    const memberDelete = async () => {
+        const data = {
+            'id' : edit.userId,
+            "del" : true
+        }
         if(key === 'Member') {
-            await dispatch(memberdel(true))
+            await dispatch(roomUserDelDB(id, {guestId:edit.userId}))
+            await dispatch(memberdel(data))
             dispatch(editModal({defult:false}))
         }
+    }
+    const roomDelete = async () => {
+        await dispatch(roomDeleteDB(id))
+        navigate("/")
     }
 
     console.log(key)
@@ -33,12 +45,12 @@ const Modal = () => {
                     <DelModalWrap delModal={delEdit}>
                         <DelModal>
                             {key === 'Member' ?
-                            <h3>정말로 OOO님을 <br/>강퇴시키겠어요? :(</h3>
+                            <h3>정말로 {edit.nickname}님을 <br/>강퇴시키겠어요? :(</h3>
                             : <h3>정말로 삭제하시겠어요?<br/>그동안 모아뒀던 맛집들이 사라져요;( </h3>
                             }
                             <div>
                                 <button onClick={noBtn}>NO</button>
-                                <button onClick={okBtn}>OK</button>
+                                <button onClick={key === 'Member' ? memberDelete : roomDelete}>OK</button>
                             </div>
                         </DelModal>
                     </DelModalWrap>

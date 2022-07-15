@@ -7,21 +7,21 @@ import styled from 'styled-components';
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import plus from '../../img/detail_plus.svg';
 import diagonal from '../../img/diagonal.svg';
-import { editModal } from '../../redux/modules/postSlice';
+import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 
-const Members = () => {
+import { editModal } from '../../redux/modules/postSlice';
+import Member from './Member';
+
+const Members = ({users}) => {
     let navigate = useNavigate();
-    const dispatch = useDispatch();
-    const memberdel = useSelector(state => state.post.memberdel);
-    console.log(memberdel)
-    const delBtn = () => {
-        dispatch(editModal({Member:true}))
-    }
+    const { memberCount, guestInfo, owner } = users;
+
+    console.log(guestInfo)
     return (
             <Container>
                 <MumbersTotal>
                     <b>Members</b>
-                    <p><span>8</span>/20</p>
+                    <p><span>{memberCount}</span>/20</p>
                 </MumbersTotal>
                 <MembersIcon>
                     <Shared>
@@ -30,39 +30,17 @@ const Members = () => {
                     </Shared>
                     <MembersInfoWrap>
                         <MembersInfo>
-                            <li>
-                                <NewCharacterface fill='#23C7C7'/>
-                                <p>나</p>
-                            </li>
-                            <li onClick={delBtn}>
-                                <NewCharacterface fill='#FF7337' memberdel={memberdel}/>
-                                <DelImg memberdel={memberdel}></DelImg>
-                                <p>회오리감자</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#7F5FFF'/>
-                                <p>나도줘닭발</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FFBB55'/>
-                                <p>오늘도놀고먹고</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#23C7C7'/>
-                                <p>나</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FF7337'/>
-                                <p>회오리감자</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#7F5FFF'/>
-                                <p>나도줘닭발</p>
-                            </li>
-                            <li>
-                                <NewCharacterface fill='#FFBB55'/>
-                                <p>오늘도놀고먹고</p>
-                            </li>
+                            <Owner>
+                                <NewFlag fill="red"/>
+                                <NewCharacterface fill={owner.faceColor}/>
+                                <p>{owner.nickname}</p>
+                            </Owner>
+                            {guestInfo.map((user,idx)=> (
+                                <li key={user.userId}>
+                                    <Member nickname={user.nickname} faceColor={user.faceColor} userId={user.userId}/>
+                                </li>
+                            ))}
+
                         </MembersInfo>
                     </MembersInfoWrap>
                 </MembersIcon>
@@ -143,7 +121,7 @@ const MembersInfoWrap = styled.div`
     /* width:247px; */
     position:absolute;
     top:0;
-    left:97px;
+    left:77px;
 `
 const MembersInfo = styled.ul`
   height:86px;
@@ -169,7 +147,6 @@ const MembersInfo = styled.ul`
   li {
     position:relative;
     margin-right:24px;
-    cursor:pointer;
   }
   li > p {
     font-weight: 400;
@@ -205,4 +182,13 @@ const DelImg = styled.div`
         top:0;
         left:50%;
         transform:translate(-50%,0);
+`
+const NewFlag = styled(Flag)`
+    position:absolute;
+    top:-17.33px;
+    left:50%;
+    transform: translateX(-50%);
+`
+const Owner = styled.li`
+    position:relative;
 `

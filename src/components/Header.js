@@ -5,49 +5,89 @@ import goBack from "../img/icon/goBack.png";
 import notice from "../img/fixed/notice.svg";
 import NoticeModal from "./NoticeModal";
 import { useDispatch } from 'react-redux'
-import { editModal } from "../redux/modules/postSlice";
+import { editModal, detailId } from "../redux/modules/postSlice";
+import { createBrowserHistory } from "history";
 
-const Header = () => {
+const Header = ({id, status, roomName}) => {
+  const history = createBrowserHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const [color, setColor] = useState();
+
   const goback = () => {
     navigate(-1);
   }
-  const headerColor = () => {
-    if(location.pathname === "/detail" || location.pathname === "/listpage") {
-      return setColor("#FF7337")
-    }else {
-      return setColor('')
-    }
-  }
 
   useEffect(() => {
-    headerColor();
-  }, [location]);
+    if(location.pathname === `/detail/${id}` || location.pathname === `/listpage/${id}`) {
+      return setColor(status==='publicOwner'?'#FF7337': status==='publicGuest'? '#23C7C7' : '#FFBB55')
+    } else {
+      return setColor('')
+    }
+  }, [status]);
+
+  // useEffect(() => {
+  //   if(location.pathname === "/") {
+  //     setColor('')
+  //   }
+  // }, [location.pathname]);
+
+  // useEffect(() => {
+  //   if(navigate('/')) {
+  //     setColor('')
+  //   }
+  // }, [navigate]);
+  
+  // useEffect(() => {
+  //   const listenBackEvent = () => {
+  //     // 뒤로가기 할 때 수행할 동작을 적는다
+  //   };
+
+  //   const unlistenHistoryEvent = history.listen(({ action }) => {
+  //     if (action === "POP") {
+  //       listenBackEvent();
+  //     }
+  //   });
+  //   return unlistenHistoryEvent;
+  // }, []);
+
 
   const delBtn = async () => {
       dispatch(editModal({Room:true}))
   }
+
+  const delDetailId = async () => {
+    dispatch(detailId([]))
+  }
+  
   return (
     <>
       <NoticeModal modal={modal} setModal={setModal}/>
       <HeaderContainer color={color}>
         {location.pathname === "/" && <><span/><button onClick={()=> {setModal(true)}}><img src={notice} alt="알림창"></img></button></>}
-        {location.pathname === "/signup" && <p onClick={goback}>회원가입</p>}
-        {location.pathname === "/detail" && <> <p onClick={goback}/> <LinkStyle to="/edit">편집하기</LinkStyle> </>}
-        {location.pathname === "/edit" && <> <p onClick={goback}/> <DelBtn onClick={delBtn}>방없애기</DelBtn> </>}
-        {location.pathname === "/listpage" && <> <p onClick={goback}>회사근처밥집</p> <LinkStyle to="/">공유하기</LinkStyle> </>}
-        {location.pathname === "/editlistpage" && <> <p onClick={goback}></p> <LinkStyle to="/">공유하기</LinkStyle> </>}
+        {location.pathname.indexOf("signup") > 0  && <p  className="basicHeader" onClick={goback}>회원가입</p>}
+        {location.pathname === `/detail/${id}` && <> <p onClick={async ()=> {
+          await delDetailId();
+          goback();
+        }}>{roomName}</p> 
+          <div>
+            <LinkStyle to={`/edit/${id}`}>공유하기</LinkStyle>
+            {status === 'publicOwner' || status === 'private' ? <LinkStyle to={`/edit/${id}`}>편집하기</LinkStyle> : null}
+          </div>
+        </>}
+
+        {location.pathname === `/edit/${id}` && <> <p onClick={goback}/> <DelBtn onClick={delBtn}>방없애기</DelBtn> </>}
+        {location.pathname === `/editlistpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to="/">공유하기</LinkStyle> </>}
+
+        {location.pathname === `/listpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to="/">공유하기</LinkStyle> </>}
         {location.pathname === "/makeroom" && (<p className="basicHeader" onClick={goback} />)}
       </HeaderContainer>
     </>
   );
 };
 
-// display:${({modal}) => !modal ?'none':'block'};
 
 const HeaderContainer = styled.div`
     width: 100%;
@@ -82,6 +122,7 @@ const LinkStyle = styled(Link)`
     line-height: 160%;
     text-decoration:none;
     color:var(--BLACK);
+    margin-left:12px;
 `
 
 const DelBtn = styled.button`

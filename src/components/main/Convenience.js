@@ -5,7 +5,11 @@ import useLongPress from "../../hook/useLongPress";
 import { itemAnimation } from "../../redux/modules/postSlice"
 import { useDispatch } from "react-redux";
 
-const Convenience = ({longPressBackspaceCallback}) => {
+import convenPrivate from '../../img/fixed/convenPrivate.svg';
+import convenOwner from '../../img/fixed/convenOwner.svg';
+import convenGuest from '../../img/fixed/convenGuest.svg';
+
+const Convenience = ({roomsLength, longPressBackspaceCallback}) => {
     const dispatch = useDispatch();
     const [toggle, setToggle] = useState(true)
     const onLongPress = async () => {
@@ -17,8 +21,15 @@ const Convenience = ({longPressBackspaceCallback}) => {
     
     return (
         <Container>
-            <Total>Total <strong>6</strong></Total>
-            <MoveIcon {...backspaceLongPress}  image={positionShift}>길게 눌러 위치이동</MoveIcon>
+            <div>
+                <Total>Total <strong>{roomsLength}</strong></Total>
+                <MoveIcon {...backspaceLongPress}  image={positionShift}>길게 눌러 위치이동</MoveIcon>
+            </div>
+            <IconImgWrap>
+                <button><IconImg src={convenPrivate} alt='비밀방'/></button>
+                <button><IconImg src={convenOwner} alt='공유한방'/></button>
+                <button><IconImg src={convenGuest} alt='공유된방'/></button>
+            </IconImgWrap>
         </Container>
     );
 };
@@ -27,8 +38,9 @@ export default Convenience;
 
 // 편의
 const Container = styled.article`
-    width:360px;
+    width:328px;
     display:flex;
+    align-items:center;
     justify-content:space-between;
     margin:0 auto;
 `
@@ -41,6 +53,7 @@ const Total = styled.p`
 `
 
 const MoveIcon = styled.button`
+    font-family: 'Niramit';
     border:none;
     background-color:transparent;
     font-size:12px;
@@ -59,4 +72,17 @@ const MoveIcon = styled.button`
         background-position:center;
         margin-left:7px;
     }
+`
+
+const IconImgWrap = styled.div`
+    display:flex;
+    align-items:center;
+    button {
+        background-color:transparent;
+        border:none;
+        cursor: pointer;
+    }
+`
+const IconImg = styled.img`
+    margin-left:8px;
 `

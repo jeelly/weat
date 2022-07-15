@@ -54,7 +54,7 @@ const Modal = styled.article`
     height:100vh;
     background-color:var(--LIGHTEST);
     box-shadow:var(--SHADOW3);
-    position:absolute;
+    position:fixed;
     top:0;
     right:0;
     z-index:101;

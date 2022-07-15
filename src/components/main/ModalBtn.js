@@ -5,20 +5,32 @@ import plus from '../../img/plus.svg';
 import close from '../../img/main_modal_close.svg';
 import { useNavigate } from 'react-router-dom';
 import { ModalBtnAnimationOne, ModalBtnAnimationTwo, ModalBtnAnimationThree  } from '../../css/animation/ModalBtnAnimation'
+import { useDispatch } from 'react-redux';
+import { itemAnimation } from '../../redux/modules/postSlice';
+
 const ModalBtn = () => {
+    const dispatch = useDispatch();
+    const [toggle, setToggle] = useState(true)
+
     let navigate = useNavigate();
     const [modal, setModal] = useState(false);
+
+    const onLongPress = async () => {
+        await setToggle(toggle? false : true)
+        await setModal(false)
+        dispatch(itemAnimation(toggle))
+    };
 
     return (
         <Container>
             <CreateModal modal={modal}>
                 <Btn onClick={()=>{navigate("/detail");}}>공유<br/>코드</Btn>
-                <Btn onClick={()=>{navigate("/signup/agreement");}}>맛방<br/>편집</Btn>
+                <Btn onClick={onLongPress}>맛방<br/>편집</Btn>
                 <Btn onClick={()=>{navigate("/login");}}>맛방<br/>만들기</Btn>
             </CreateModal>
             <CreateBtn plus={plus} close={close} modal={modal} onClick={()=> {
                 modal?setModal(false):setModal(true)
-            }}>plus</CreateBtn>      
+            }}>plus</CreateBtn>
         </Container>
     );
 };
@@ -51,7 +63,7 @@ const CreateModal = styled.div`
     width:100%;
     height:100vh;
     background-color:var(--WHITE);
-    position:absolute;
+    position:fixed;
     top:0;
     right:0;
     button:nth-child(2) {

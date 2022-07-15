@@ -4,159 +4,36 @@ import styled from 'styled-components';
 
 import del from '../../img/EditDel.svg';
 
-const RestaurantList = ({listPage}) => {
+const RestaurantList = ({storeList, id, listPage}) => {
     return (
         <Container>
                     <RestaurantInfo>
                         <header>
-                            <Total>Total <span>62</span></Total>
-                            <ListLink to="/editlistpage" >All</ListLink>
+                            <Total>Total <span>{storeList.length}</span></Total>
+                            <ListLink to={`/editlistpage/${id}`} >All</ListLink>
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
-                            <RestaurantItem>
-                                <li>
-                                <ImgWrap>
-                                    <RestaurantImg src="http://d20aeo683mqd6t.cloudfront.net/ko/articles/title_images/000/039/143/medium/IMG_5649%E3%81%AE%E3%82%B3%E3%83%92%E3%82%9A%E3%83%BC.jpg?2019" alt="음식사진"/>
-                                </ImgWrap>
-                                    <ul>
-                                        <HashTagWrap>
-                                            <HashTag>사내할인</HashTag>
-                                            <HashTag>한식</HashTag>
-                                        </HashTagWrap>
-                                        <li><RestaurantName>우리네 손두부</RestaurantName></li>
-                                        <li><RestaurantContent>8000원으로 점심식사해결</RestaurantContent></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
-                                </li>
-                            </RestaurantItem>
+                        {storeList.map((store, idx)=> (
+                                <RestaurantItem key={id}>
+                                    <li>
+                                    <ImgWrap>
+                                        <RestaurantImg src={store.imgURL[0]} alt="음식사진"/>
+                                    </ImgWrap>
+                                        <ul>
+                                            <HashTagWrap>
+                                                {store.tag.map((tag, i) => (
+                                                    <HashTag key={i}>{tag}</HashTag>
+                                                ))}
+                                            </HashTagWrap>
+                                            <li><RestaurantName>{store.storeName}</RestaurantName></li>
+                                            <li><RestaurantContent>{store.comment}</RestaurantContent></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
+                                    </li>
+                                </RestaurantItem>
+                            ))}
                         </RestaurantItemWrap>
                     </RestaurantInfo>
                 </Container>
