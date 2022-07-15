@@ -1,54 +1,75 @@
-import React, {useState} from "react";
+import React, { useState, useEffect, useRef } from "react";
+
 import styled from "styled-components";
-import {useSelector, useDispatch} from 'react-redux'
-import {keypad} from '../../redux/modules/emojiSlice'
+
+import { useSelector, useDispatch } from "react-redux";
+// import { keypad, addName } from "../../redux/modules/emojiSlice";
+import {
+  addName,
+  emojiKeyboardActivation,
+} from "../../redux/modules/roomMakingSlice";
 
 //이미지
 import resetBtn from "../../img/icon/reset.svg";
-import secretIcon from "../../img/icon/secretRoom.svg";
-import shareIcon from "../../img/icon/shareRoom.svg";
 import defaultImg from "../../img/emojiDefault.png";
-import { useEffect } from "react";
-import { useRef } from "react";
 
 const RoomCustom = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const emojiArea = useRef();
-  const userEmoji = useSelector(state=>state.userEmoji.emoji)
+  const { tasteRoom } = useSelector(state => state.roomMaking);
 
   //이모지 출력부분과 이모지 키보드 부분을 뺀 나머지 영역을 클릭할경우 키패드 사라짐
   const setTarget = (e) => {
-    let emojiKeypad = document.querySelector('.emoji-picker-react')
-    if(emojiArea.current.contains(e.target) || (emojiKeypad ? emojiKeypad.contains(e.target) : null)){
-      return null
-    }else{
-      dispatch(keypad(false))
+    const emojiKeypad = document.querySelector(".emoji-picker-react");
+    if (
+      emojiArea.current.contains(e.target) ||
+      (emojiKeypad ? emojiKeypad.contains(e.target) : null)
+    ) {
+      return null;
+    } else {
+      dispatch(emojiKeyboardActivation(false));
     }
-  }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", setTarget);
+  }, []);
 
   //emoji+이미지 누르면 키보드 활성화
   const keypadOn = () => {
-    dispatch(keypad(true))
-  }
+    dispatch(emojiKeyboardActivation(true));
+  };
 
-  useEffect(()=>{
-    document.addEventListener('mousedown',setTarget)
-  },[])
+  //룸이름 저장
+  const naming = (e) => {
+    dispatch(addName(e.target.value));
+  };
+
   return (
     <div>
       <RoomWrap>
         <RoomBox>
           <InputWrap>
-            <textarea cols="2" placeholder="제목을 지어주세요"></textarea>
+            <textarea
+              cols="2"
+              placeholder="제목을 지어주세요"
+              onChange={naming}
+            />
             <p>
               <img src={resetBtn} alt="" />
             </p>
           </InputWrap>
-          <EmojiWrap >            
-            <div onClick={keypadOn} ref={emojiArea}>{userEmoji ? userEmoji : <img src={defaultImg} alt="" />}</div>
+          <EmojiWrap>
+            <div onClick={keypadOn} ref={emojiArea}>
+              {tasteRoom.emoji ? (
+                tasteRoom.emoji
+              ) : (
+                <img src={defaultImg} alt="" />
+              )}
+            </div>
             <p>대표할 이모지를 선택해주세요</p>
           </EmojiWrap>
-        </RoomBox>        
+        </RoomBox>
       </RoomWrap>
     </div>
   );
@@ -58,7 +79,7 @@ const RoomWrap = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top:10px;
+  margin-top: 10px;
 `;
 const RoomBox = styled.div`
   width: 272px;
@@ -90,7 +111,7 @@ const InputWrap = styled.div`
     text-align: center;
     white-space: pre-wrap;
     resize: none;
-    
+
     ::placeholder {
       color: #fff;
       opacity: 0.5;
@@ -121,6 +142,9 @@ const EmojiWrap = styled.div`
   }
   div {
     width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     img {
       width: 100%;
     }
