@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactPortal } from '..';
-
+import {useSelector} from 'react-redux'
 import {Container} from '../css/Style'
 
 import MainModal from '../components/main/MainModal';
@@ -12,15 +12,17 @@ import styled from 'styled-components';
 import Convenience from '../components/main/Convenience';
 
 const Main = () => {
+    const rooms = useSelector(state => state.post?.rooms);
+    const user = useSelector(state => state.loggedIn);
+
     return (
         <NewContainer>
-            <UserInfo/>
-            <Convenience/>
+            <UserInfo user={user.userInfo}/>
+            <Convenience roomsLength={rooms.length}/>
             <ReactPortal>
-                <MainModal/>
+                {rooms ? null : <MainModal/>}
             </ReactPortal>
-            <PostList/>
-            {/* <MainDefault/> */}
+            {rooms?<PostList rooms={rooms}/>:<MainDefault/>}
             <ModalBtn/>
         </NewContainer>
     );
