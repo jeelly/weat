@@ -4,7 +4,7 @@ const GlobalStyles = createGlobalStyle`
     :root{
       --BLACK: #000;
       --DARKEST: #333;
-      --DARKER: #5A5A5A;
+      --DARKER: #666;
       --DEFAULT: #999;
       --LIGHTER: #ccc;
       --LIGHTEST: #eee;
@@ -38,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
       /* max-width: 100vw;
       overflow: hidden; */
     }
-    body {}
+    /* body {overflow-x: hidden;} */
     p,h1,h2,h3,h4{padding:0; margin:0;}
     ul,li,ol {
       list-style:none;

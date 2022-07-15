@@ -19,6 +19,10 @@ export const BlackButton = styled.button`
   font-size: 20px;
   line-height: 26px;
   font-family: 'Niramit', sans-serif;
+  z-index: 2;
+  :disabled {
+    background-color: var(--DEFAULT);
+  }
 `;
 
 export const VioletButton = styled.button`
@@ -37,4 +41,39 @@ export const VioletButton = styled.button`
   font-size: 20px;
   line-height: 26px;
   font-family: 'Niramit', sans-serif;
+  z-index: 2;
 `;
+
+export const VioletRoundButton = styled.button`
+    display: flex;
+    align-items: center;
+    border:none;
+    background:#7F5FFF;
+    border-radius: 50px;
+    font-family: "AppleSDGothicNeoM";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    gap: 8px;
+    color:var(--LIGHTEST);
+    position:fixed;
+    left: 50%;
+    bottom:31px;
+    transform: translate(-50%, 0);
+    cursor:pointer;
+`
+
+export const VioletRoundTextBtn = styled.button`
+    width: 110px;
+    height: 48px;
+    background: var(--INFO);
+    border-radius: 50px;
+    border: none;
+    font-family: "AppleSDGothicNeoM";
+    color: var(--WHITE);
+    :disabled {
+    background-color: var(--LIGHTER);
+  }
+
+`
