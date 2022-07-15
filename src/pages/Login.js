@@ -97,7 +97,7 @@ const Login = () => {
 
 const LoginContainer = styled.div`
   width: 100vw;
-  height: 100%;
+  min-height: 100%;
   position: absolute;
   top: 0;
   left: 0;
