@@ -26,7 +26,7 @@ const ModalBtn = () => {
             <CreateModal modal={modal}>
                 <Btn onClick={()=>{navigate("/detail");}}>공유<br/>코드</Btn>
                 <Btn onClick={onLongPress}>맛방<br/>편집</Btn>
-                <Btn onClick={()=>{navigate("/login");}}>맛방<br/>만들기</Btn>
+                <Btn onClick={()=>{navigate("/makeroom");}}>맛방<br/>만들기</Btn>
             </CreateModal>
             <CreateBtn plus={plus} close={close} modal={modal} onClick={()=> {
                 modal?setModal(false):setModal(true)
