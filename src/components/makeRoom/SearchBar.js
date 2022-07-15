@@ -17,7 +17,7 @@ const SearchBar = (props) => {
   const { searchResults } = useSelector((state) => state.roomMaking);
   const [searchInput, setSearchInput] = useState("");
   const [checkedInputs, setCheckedInputs] = useState([]);
-
+console.log(checkedInputs)
   //검색 키워드
   const onChangeInputValue = (e) => {
     setSearchInput(e.target.value);
@@ -49,6 +49,7 @@ const SearchBar = (props) => {
   };
   const Inviting = () => {
     dispatch(addFriends(checkedInputs));
+    props.setSerchBar(false);
   };
 
   const checked = (userId) => {
@@ -76,32 +77,37 @@ const SearchBar = (props) => {
         </SerchBar>
         <UserListWrap>
           <ul>
-            {searchResults.map((u, idx) => {
-              return (
-                <li key={u.userId}>
-                  <UserFace eyes={userEye(u.eyes)}>
-                    <UserFaceItem fill={u.faceColor} />
-                  </UserFace>
-                  <section>
-                    <div>
-                      <p>{u.name}</p>
-                      <p>{u.nickname}</p>
-                    </div>
-                    <input
-                      value={[
-                        u.userId,
-                        userEye(u.eyes),
-                        u.faceColor,
-                        u.nickname,
-                      ]}
-                      type="checkBox"
-                      onChange={userSelector}
-                      checked={checked(u.userId)}
-                    />
-                  </section>
-                </li>
-              );
-            })}
+            {
+              searchResults ? 
+              searchResults.map((u, idx) => {
+                return (
+                  <li key={u.userId}>
+                    <UserFace eyes={userEye(u.eyes)}>
+                      <UserFaceItem fill={u.faceColor} />
+                    </UserFace>
+                    <section>
+                      <div>
+                        <p>{u.name}</p>
+                        <p>{u.nickname}</p>
+                      </div>
+                      <input
+                        value={[
+                          u.userId,
+                          userEye(u.eyes),
+                          u.faceColor,
+                          u.nickname,
+                        ]}
+                        type="checkBox"
+                        onChange={userSelector}
+                        checked={checked(u.userId)}
+                      />
+                    </section>
+                  </li>
+                );
+              })
+              : null
+            }
+            
           </ul>
         </UserListWrap>
       </section>
