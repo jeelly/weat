@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 
 //슬라이스
-import { loadpostDB } from "../redux/modules/postSlice";
+import { loadRoomDB } from "../redux/modules/postSlice";
 import {loggedInDB} from "../redux/modules/userSlice";
 
 //Sub
@@ -35,9 +35,12 @@ function App() {
   const [isloaded, setIsloaded] = useState(false);
 
   useEffect(() => {
-    setIsloaded(true);
-    // dispatch(loadpostDB(0));
+    const load = async () => {
+       await dispatch(loadRoomDB(0));
+       setIsloaded(true);
+    }
     dispatch(loggedInDB())
+    load()
   }, [isLogin]);
 
 
@@ -47,14 +50,14 @@ function App() {
         <Route path="/" element={isloaded && <Main />} />
         <Route path="/post" element={<Post />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/detail" element={isloaded && <Detail />} />
-        <Route path="/detail:id" element={isloaded && <Detail />} />
-        <Route path="/listpage" element={isloaded && <ListPage />} />
-        <Route path="/listpage:id" element={isloaded && <ListPage />} />
+        <Route path="/detail" element={<Detail/>} />
+        <Route path="/detail/:id" element={<Detail/>} />
+        <Route path="/listpage" element={<ListPage/>} />
+        <Route path="/listpage/:id" element={<ListPage />} />
         <Route path="/edit" element={<Edit />} />
         <Route path="/edit/:id" element={<Edit />} />
-        <Route path="/editlistpage" element={isloaded && <EditListPage />} />
-        <Route path="/editlistpage:id" element={isloaded && <EditListPage />} />
+        <Route path="/editlistpage" element={<EditListPage />} />
+        <Route path="/editlistpage/:id" element={<EditListPage />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/signup" element={<Singup />}>
           <Route path="agreement" element={<Agreement />} />
