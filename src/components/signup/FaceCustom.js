@@ -102,10 +102,6 @@ const FaceCustom = () => {
         <div className="color">
           <span>Color</span>
           <FaceColor colorChange={colorChange} />
-          {/* <FaceColor
-            brightnessChange={brightnessChange}
-            saturationChange={saturationChange}
-          /> */}
         </div>
         <div className="eyes">
           <p>Eyes</p>
@@ -167,10 +163,10 @@ const MakeFace = styled.div`
       height: 124px;
       img {
         position: absolute;
-        top: 38px;
-        left: 50%;
-        transform: translate(-50%, 0);
-        width: 75%;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
       }
     }
   }
