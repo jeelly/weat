@@ -34,15 +34,16 @@ function App() {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.loggedIn.isLogin)
   const [isloaded, setIsloaded] = useState(false);
+  const _rooms = useSelector(state => state.post?._rooms);
 
   useEffect(() => {
     const load = async () => {
-       await dispatch(loadRoomDB(0));
+       await dispatch(loggedInDB(navigate))
+       dispatch(loadRoomDB(0));
        setIsloaded(true);
     }
-    dispatch(loggedInDB(navigate))
     load()
-  }, [isLogin]);
+  }, [isLogin, _rooms]);
 
   return (
     <AppLayout>

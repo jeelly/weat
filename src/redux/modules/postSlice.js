@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { act } from "react-dom/test-utils";
-import instance from "../../shared/axios";
+import {instance, getAuthorizationHeader} from "../../shared/axios";
 
 //미들웨어
 
@@ -8,7 +8,9 @@ import instance from "../../shared/axios";
 export const loadRoomDB = () => {
   return async function (dispatch) {
     try{
-      const response = await instance.get(`/api/rooms`);
+      const response = await instance.get("/api/rooms", { 
+        headers: { Authorization: getAuthorizationHeader() }
+      });
       const rooms = response.data.myRooms;
       const roms_total = response.data.total;
       dispatch(loadRoom({rooms, roms_total}));
@@ -77,8 +79,8 @@ export const roomTitlePutDB = (id, contents_obj) => {
 export const roomDeleteDB = (id) => {
   return async function (dispatch) {
     try{
-      console.log(id)
       const res = await instance.delete(`/api/rooms/${id}`);
+      console.log(res)
       dispatch(roomDelete(id));
     }catch (error) {
       console.log(error);
@@ -90,7 +92,6 @@ export const roomDeleteDB = (id) => {
 export const roomExitDB = (id) => {
   return async function (dispatch) {
     try{
-      console.log(id)
       const res = await instance.put(`/api/rooms/${id}/exit`);
       dispatch(roomExit(id));
     }catch (error) {
@@ -107,6 +108,7 @@ const userSlice = createSlice({
     editModal:{defult:false},
     detailId:[],
     rooms:[] ,
+    _rooms:[] ,
     detail:{detail:{status:""}},
   },
   reducers: {
@@ -138,36 +140,24 @@ const userSlice = createSlice({
     },
     // 메인페이지 맛방 순서 수정
     mainRoomListPut: (state, action) => {
-      // console.log(action.payload)
-      // state.rooms = [...action.payload]
+      console.log(action.payload)
+      state.rooms = [...action.payload]
     },
     // 메인페이지 맛방 삭제
     roomDelete: (state, action) => {
-      console.log('---------------------')
-      console.log(action.payload)
       state.rooms = state.rooms.filter(room => room.roomId !== action.payload);
+      state._rooms = action.payload;
     },
     // 메인페이지 맛방 나가기
     roomExit: (state, action) => {
         state.rooms = state.rooms.filter(room => room.roomId !== action.payload);
+        state._rooms = action.payload;
     },
     // 메인페이지 타이틀 수정
     roomTitlePut: (state, action) => {
-      // const contents_obj = action.payload.contents_obj
-      // const newUser = Object.assign(contents_obj, state.detail.detail);
-      // state.detail.detail = newUser
-      // const _rooms = state.rooms.filter((room)=> room.roomId === action.payload.id ? newUser : null )
-      // state.rooms = _rooms
-      // state.rooms = 
-      // const newState = state.rooms.filter((room) => {
-      //   if(room.roomId === action.payload.id) {
-      //     return room = Object.assign(newUser, room);
-      //   } else {
-      //     return room.roomId !== action.payload.id
-      //   }
-      // });
-      // console.log(newState)
-      // state.rooms = [...newState]
+      const contents_obj = action.payload.contents_obj
+      state.detail.detail = contents_obj
+      state._rooms = Math.random();
     },
   },
 });

@@ -13,19 +13,23 @@ import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
-    const rooms = useSelector(state => state.post?.rooms);
+    const _rooms = useSelector(state => state.post._rooms);
+    const rooms = useSelector(state => state.post.rooms);
+    const [room, setRoom] = useState(rooms);
     const user = useSelector(state => state.loggedIn);
 
-    console.log(user)
-    
+    useEffect(() => {
+        setRoom(rooms)
+      }, [rooms, _rooms]);
+
     return (
         <NewContainer>
-            <UserInfo user={user.userInfo ? user.userInfo : ''}/>
+            <UserInfo user={user.userInfo ?? ''}/>
             <Convenience roomsLength={rooms.length}/>
             <ReactPortal>
                 {rooms ? null : <MainModal/>}
             </ReactPortal>
-            {rooms?<PostList rooms={rooms}/>:<MainDefault/>}
+            {rooms?<PostList rooms={room}/>:<MainDefault/>}
             <ModalBtn/>
         </NewContainer>
     );
@@ -36,9 +40,3 @@ export default Main;
 const NewContainer = styled(Container)`
     overflow:hidden;
 `
-
-
-
-
-
-
