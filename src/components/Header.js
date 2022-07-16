@@ -73,21 +73,23 @@ const Header = ({id, status, roomName}) => {
           goback();
         }}>{roomName}</p> 
           <div>
-            <LinkStyle to={`/edit/${id}`}>공유하기</LinkStyle>
+            <LinkStyle to={`/detail/${id}`}>공유하기</LinkStyle>
             {status === 'publicOwner' || status === 'private' ? <LinkStyle to={`/edit/${id}`}>편집하기</LinkStyle> : null}
           </div>
         </>}
 
         {location.pathname === `/edit/${id}` && <> <p onClick={goback}/> <DelBtn onClick={delBtn}>방없애기</DelBtn> </>}
-        {location.pathname === `/editlistpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to="/">공유하기</LinkStyle> </>}
+        {location.pathname === `/editlistpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to={`/editlistpage/${id}`}>공유하기</LinkStyle> </>}
 
-        {location.pathname === `/listpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to="/">공유하기</LinkStyle> </>}
+        {location.pathname === `/listpage/${id}` && <> <p onClick={goback}></p> <LinkStyle to={`/listpage/${id}`}>공유하기</LinkStyle> </>}
         {location.pathname === "/makeroom" && (<p className="basicHeader" onClick={goback} />)}
       </HeaderContainer>
     </>
   );
 };
 
+const SharedBtn = styled.button`
+`
 
 const HeaderContainer = styled.div`
     width: 100%;

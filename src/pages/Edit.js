@@ -9,13 +9,18 @@ import { Link, useParams } from 'react-router-dom';
 import Modal from '../components/edit/Modal';
 import Title from '../components/edit/Title';
 import { detailId, loadRoomDetailDB } from '../redux/modules/postSlice';
+import Emoji from '../components/makeRoom/Emoji';
+import SearchBar from '../components/makeRoom/SearchBar';
 
 const Edit = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
-
     const {detail, users, storeList} = useSelector(state => state.post.detail);
     const [isloaded, setIsloaded] = useState(false);
+    const { emojiKey, tasteRoom } = useSelector(state => state.roomMaking);
+    const [serchBar, setSerchBar] = useState(false);
+    const inviteUser = useSelector(state => state.post.inviteUser);
+
     console.log(users)
     useEffect(() => {
         const detail_load = async () => {
@@ -28,10 +33,12 @@ const Edit = () => {
     return (
         <NewContainer>
             {isloaded && <Title detail={detail} id={id} />}
-            {isloaded && <Members users={users} />}
+            {isloaded && <Members inviteUser={inviteUser} users={users} setSerchBar={setSerchBar}/>}
             {isloaded && <RestaurantList id={id}  storeList={storeList} />}
             <RestaurantAdd to="/post"><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
             <Modal id={id}/>
+            {emojiKey ? <Emoji detail={detail} id={id}/> : null}
+            <SearchBar id={id} serchBar={serchBar} setSerchBar={setSerchBar}/>
         </NewContainer>
     );
 };
