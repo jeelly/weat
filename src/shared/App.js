@@ -42,8 +42,10 @@ function App() {
         await dispatch(loadRoomDB(0));
     }
     load()
+    if(!isLogin){
+      navigate('/login')
+    }
   }, [isLogin, _rooms]);
-
   return (
     <AppLayout>
       <Routes>
