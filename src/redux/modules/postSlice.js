@@ -139,12 +139,12 @@ const userSlice = createSlice({
     //맴버 삭제
     memberdel: (state, action) => {
       state.memberdel = action.payload;
-      state.inviteUser = state.inviteUser.filter((user) => (
-        action.payload.id !== user.userId
-      ))
-      state.detail.users.guestInfo = state.detail.users.guestInfo.filter((user) => (
-        action.payload.id !== user.userId
-      ))
+      // state.inviteUser = state.inviteUser.filter((user) => (
+      //   action.payload.id !== user.userId
+      // ))
+      // state.detail.users.guestInfo = state.detail.users.guestInfo.filter((user) => (
+      //   action.payload.id !== user.userId
+      // ))
     },
     //방 불러오기 
     loadRoom: (state, action) => {
