@@ -20,7 +20,7 @@ const Detail = () => {
     const [serchBar, setSerchBar] = useState(false);
     const [isloaded, setIsloaded] = useState(false);
     const inviteUser = useSelector(state => state.post.inviteUser);
-    
+    console.log(users)
     useEffect(() => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));
@@ -28,7 +28,7 @@ const Detail = () => {
         }
         detail_load();
       }, []);
-    
+    console.log(detail.users?.guestInfo)
     return (
         <NewContainer status={detail?.status}>
             {isloaded && <Title detail={detail} id={id}/>}

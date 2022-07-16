@@ -33,14 +33,13 @@ function App() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.loggedIn.isLogin)
-  const [isloaded, setIsloaded] = useState(false);
   const _rooms = useSelector(state => state.post?._rooms);
+  const isloaded = useSelector(state => state.post.isloaded);
 
   useEffect(() => {
     const load = async () => {
-       await dispatch(loggedInDB(navigate))
-       await dispatch(loadRoomDB(0));
-       setIsloaded(true);
+        await dispatch(loggedInDB({navigate}))
+        await dispatch(loadRoomDB(0));
     }
     load()
   }, [isLogin, _rooms]);

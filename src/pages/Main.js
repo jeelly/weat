@@ -22,6 +22,7 @@ const Main = () => {
         setRoom(rooms)
       }, [_rooms]);
       
+    console.log(room)
     return (
         <NewContainer>
             <UserInfo user={user.userInfo ?? ''}/>

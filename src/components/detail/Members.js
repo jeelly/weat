@@ -6,18 +6,11 @@ import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 import plus from '../../img/detail_plus.svg'
 import { eyeList } from "../../components/signup/FaceResource";
 
-const Members = ({users, setSerchBar, inviteUser}) => {
+const Members = ({users, setSerchBar, }) => {
     const { memberCount, guestInfo, owner } = users;
     const serchBarOpen = useCallback(() => {
         setSerchBar(true);
       }, []);
-
-    // const [newGuest, setNewGuest] = useState(guestInfo)
-    // useEffect(() => {
-    //     setNewGuest(inviteUser)
-    // }, [inviteUser]);
-    // console.log(guestInfo)
-      const _guestInfo = [...guestInfo, ...inviteUser]
 
     const userEye = (eye) => {
         return eyeList.filter((row) => row.includes(eye) && row);
@@ -41,7 +34,7 @@ const Members = ({users, setSerchBar, inviteUser}) => {
                                 <NewCharacterface fill={owner.faceColor}/>
                                 <p>{owner.nickname}</p>
                             </Owner>
-                            {_guestInfo.map((user,idx)=> (
+                            {guestInfo.map((user,idx)=> (
                                 <Guest key={user.userId} eye={userEye(user.eyes)}>
                                     <NewCharacterface fill={user.faceColor}/>
                                     <p>{user.nickname}</p>

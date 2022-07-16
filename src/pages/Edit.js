@@ -30,6 +30,8 @@ const Edit = () => {
         }
         detail_load();
       }, []);
+      console.log(users?.guestInfo)
+      console.log(inviteUser)
     return (
         <NewContainer>
             {isloaded && <Title detail={detail} id={id} />}

@@ -30,8 +30,8 @@ const Modal = ({id}) => {
         }
         if(key === 'Member') {
             await dispatch(roomUserDelDB(id, {guestId:edit.userId}))
-            await dispatch(memberdel(data))
-            dispatch(editModal({defult:false}))
+            await dispatch(memberdel(data)) 
+            dispatch(editModal({defult:false})) //모달창 끄기
         }
     }
     const roomDelete = async () => {

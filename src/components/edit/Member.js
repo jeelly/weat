@@ -11,12 +11,10 @@ const Member = ({nickname, faceColor, userId}) => {
     const memberdel = useSelector(state =>  state.post.memberdel)
     const [del, setDel] = useState(false);
 
-    console.log(memberdel)
-    console.log(userId)
-    console.log(memberdel.id)
     useEffect(()=> {
         if(userId === memberdel.id) {
             setDel(memberdel.del)
+            
         }
     },[memberdel])
     

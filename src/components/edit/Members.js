@@ -12,19 +12,12 @@ import { editModal } from '../../redux/modules/postSlice';
 import Member from './Member';
 import { eyeList } from "../../components/signup/FaceResource";
 
-const Members = ({users, setSerchBar, inviteUser}) => {
+const Members = ({users, setSerchBar}) => {
     const { memberCount, guestInfo, owner } = users;
 
     const serchBarOpen = useCallback(() => {
         setSerchBar(true);
       }, []);
-
-    // const [newGuest, setNewGuest] = useState(guestInfo)
-    // useEffect(() => {
-    //     setNewGuest(inviteUser)
-    // }, [inviteUser]);
-    const _guestInfo = [...guestInfo, ...inviteUser]
-
 
     const userEye = (eye) => {
         return eyeList.filter((row) => row.includes(eye) && row);
@@ -47,9 +40,9 @@ const Members = ({users, setSerchBar, inviteUser}) => {
                             <NewCharacterface fill={owner.faceColor}/>
                             <p>{owner.nickname}</p>
                         </Owner>
-                            {_guestInfo.map((user,idx)=> (
+                            {guestInfo.map((user,idx)=> (
                                 <Guest key={user.userId} eye={userEye(user.eyes)}>
-                                    <Member nickname={user.nickname} faceColor={user.faceColor} userId={user.userId}/>
+                                    <Member nickname={user.nickname} faceColor={user.faceColor} userId={user.userId} />
                                 </Guest>
                             ))}
 

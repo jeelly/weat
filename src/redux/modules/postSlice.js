@@ -11,6 +11,7 @@ export const loadRoomDB = () => {
       const response = await instance.get("/api/rooms", { 
         headers: { Authorization: getAuthorizationHeader() }
       });
+      console.log("미들웨어로드",response)
       const rooms = response.data.myRooms;
       const roms_total = response.data.total;
       dispatch(loadRoom({rooms, roms_total}));
@@ -119,10 +120,10 @@ const userSlice = createSlice({
     memberdel:[],
     editModal:{defult:false},
     detailId:[],
-    rooms:[] ,
+    rooms:[],
+    isloaded:false,
     _rooms:[] ,
     detail:{detail:{status:""}},
-    inviteUser:[],
   },
   reducers: {
     //아이템 애니메이션
@@ -138,10 +139,18 @@ const userSlice = createSlice({
     //맴버 삭제
     memberdel: (state, action) => {
       state.memberdel = action.payload;
+      state.inviteUser = state.inviteUser.filter((user) => (
+        action.payload.id !== user.userId
+      ))
+      state.detail.users.guestInfo = state.detail.users.guestInfo.filter((user) => (
+        action.payload.id !== user.userId
+      ))
     },
     //방 불러오기 
     loadRoom: (state, action) => {
-      state.rooms = [...action.payload.rooms]
+      console.log('리듀서',action.payload.rooms)
+      state.rooms = action.payload.rooms
+      state.isloaded = true
     },
     //방 디테일정보 불러오기 
     loadRoomDetail: (state, action) => {
@@ -182,8 +191,7 @@ const userSlice = createSlice({
                     userId:data[0]
                 }
       })
-      state.inviteUser = [ ...user_data]
-      // state._rooms = Math.random();
+      state.detail.users.guestInfo = [...state.detail.users.guestInfo, ...user_data]
     },
   },
 });
