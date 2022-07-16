@@ -100,6 +100,18 @@ export const roomExitDB = (id) => {
   };
 };
 
+// 맛방 초대
+export const roomInviteDB = (id, userId, data) => {
+  return async function (dispatch) {
+    try{
+      const res = await instance.put(`/api/rooms/${id}/invite`, userId);
+      dispatch(roomInvite(data));
+    }catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const userSlice = createSlice({
   name: "post",
   initialState: {
@@ -110,6 +122,7 @@ const userSlice = createSlice({
     rooms:[] ,
     _rooms:[] ,
     detail:{detail:{status:""}},
+    inviteUser:[],
   },
   reducers: {
     //아이템 애니메이션
@@ -159,6 +172,19 @@ const userSlice = createSlice({
       state.detail.detail = contents_obj
       state._rooms = Math.random();
     },
+    // 맛방 초대
+    roomInvite: (state, action) => {
+      const user_data = action.payload.map((data) => {
+                return {
+                    eyes:data[1],
+                    faceColor:data[2],
+                    nickname:data[3],
+                    userId:data[0]
+                }
+      })
+      state.inviteUser = [ ...user_data]
+      // state._rooms = Math.random();
+    },
   },
 });
 
@@ -172,7 +198,8 @@ export const {
   mainRoomListPut, 
   roomTitlePut, 
   roomDelete,
-  roomExit
+  roomExit,
+  roomInvite
 } = userSlice.actions;
 
 export default userSlice.reducer;

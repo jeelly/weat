@@ -20,16 +20,16 @@ const Main = () => {
 
     useEffect(() => {
         setRoom(rooms)
-      }, [rooms, _rooms]);
-
+      }, [_rooms]);
+      
     return (
         <NewContainer>
             <UserInfo user={user.userInfo ?? ''}/>
             <Convenience roomsLength={rooms.length}/>
             <ReactPortal>
-                {rooms ? null : <MainModal/>}
+                {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
-            {rooms?<PostList rooms={room}/>:<MainDefault/>}
+            {rooms.length === 0 ? <MainDefault/> : <PostList rooms={room}/>}
             <ModalBtn/>
         </NewContainer>
     );
