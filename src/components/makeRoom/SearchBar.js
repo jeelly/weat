@@ -11,6 +11,7 @@ import { friendDB, addFriends } from "../../redux/modules/roomMakingSlice";
 import { eyeList } from "../../components/signup/FaceResource";
 
 import { VioletRoundTextBtn } from "../../css/Style";
+import { roomInviteDB } from "../../redux/modules/postSlice";
 
 const SearchBar = (props) => {
   const dispatch = useDispatch();
@@ -47,8 +48,23 @@ const SearchBar = (props) => {
       return setCheckedInputs(test);
     }
   };
-  const Inviting = () => {
-    dispatch(addFriends(checkedInputs));
+  
+  const Inviting = async () => {
+    const userId = checkedInputs.map((data)=> (
+      data.split(',')[0]
+    ))
+    const user_data = checkedInputs.map((data)=> (
+      data.split(',')
+    ))
+
+    if(!props.id) {
+      await dispatch(addFriends(checkedInputs));
+      props.setSerchBar(false);
+    }
+    else {
+      await dispatch(roomInviteDB(props.id, {guestId:userId},user_data));
+      props.setSerchBar(false);
+    }
   };
 
   const checked = (userId) => {

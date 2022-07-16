@@ -11,32 +11,31 @@ import RestaurantList from '../components/detail/RestaurantList'
 import { Link, useParams } from 'react-router-dom';
 import Title from '../components/detail/Title';
 import { VioletRoundButton } from '../css/Style'
+import SearchBar from '../components/makeRoom/SearchBar';
 
 const Detail = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const {detail, users, storeList} = useSelector(state => state.post.detail);
-    const aa = useSelector(state => state.post.detail);
-    
+    const [serchBar, setSerchBar] = useState(false);
     const [isloaded, setIsloaded] = useState(false);
-    useEffect(() => {
-    }, []);
-
+    const inviteUser = useSelector(state => state.post.inviteUser);
+    
     useEffect(() => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));
             setIsloaded(true)
         }
         detail_load();
-
       }, []);
-
+    
     return (
         <NewContainer status={detail?.status}>
             {isloaded && <Title detail={detail} id={id}/>}
-            {isloaded && <Members users={users} />}
+            {isloaded && <Members inviteUser={inviteUser} users={users} setSerchBar={setSerchBar}/>}
             {isloaded && <RestaurantList storeList={storeList} id={id} />}
             <RestaurantAdd to="/post"><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
+            <SearchBar id={id} serchBar={serchBar} setSerchBar={setSerchBar}/>
         </NewContainer>
     );
 };

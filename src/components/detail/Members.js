@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 import plus from '../../img/detail_plus.svg'
+import { eyeList } from "../../components/signup/FaceResource";
 
-const Members = ({users}) => {
+const Members = ({users, setSerchBar, inviteUser}) => {
     const { memberCount, guestInfo, owner } = users;
-    let navigate = useNavigate();
-    console.log(users)
+    const serchBarOpen = useCallback(() => {
+        setSerchBar(true);
+      }, []);
+
+    // const [newGuest, setNewGuest] = useState(guestInfo)
+    // useEffect(() => {
+    //     setNewGuest(inviteUser)
+    // }, [inviteUser]);
+    // console.log(guestInfo)
+      const _guestInfo = [...guestInfo, ...inviteUser]
+
+    const userEye = (eye) => {
+        return eyeList.filter((row) => row.includes(eye) && row);
+    };
+    console.log(userEye())
     return (
             <Container>
                 <MumbersTotal>
@@ -17,21 +31,21 @@ const Members = ({users}) => {
                 </MumbersTotal>
                 <MembersIcon>
                     <Shared>
-                        <SharedBtn plus={plus} onClick={()=>{navigate("/");}}>멤버초대 버튼</SharedBtn>
+                        <SharedBtn plus={plus} onClick={serchBarOpen}>멤버초대 버튼</SharedBtn>
                         <p>멤버초대</p>
                     </Shared>
                     <MembersInfoWrap>
                         <MembersInfo>
-                            <Owner>
+                            <Owner eye={userEye(owner.eyes)}>
                                 <NewFlag fill="red"/>
                                 <NewCharacterface fill={owner.faceColor}/>
                                 <p>{owner.nickname}</p>
                             </Owner>
-                            {guestInfo.map((user,idx)=> (
-                                <li key={user.userId}>
+                            {_guestInfo.map((user,idx)=> (
+                                <Guest key={user.userId} eye={userEye(user.eyes)}>
                                     <NewCharacterface fill={user.faceColor}/>
                                     <p>{user.nickname}</p>
-                                </li>
+                                </Guest>
                             ))}
                         </MembersInfo>
                     </MembersInfoWrap>
@@ -45,6 +59,7 @@ export default Members;
 // 멤버
 const Container = styled.div`
     padding:0 16px;
+    overflow:hidden;
 `
 const MumbersTotal = styled.div`
     display:flex;
@@ -110,16 +125,18 @@ const MembersIcon = styled.div`
     text-align:center;
 `
 const MembersInfoWrap = styled.div`
-    width:75.304%;
+    width:81.097%;
     /* width:247px; */
     position:absolute;
-    top:0;
-    left:77px;
+    /* top:10; */
+    left:76px;
 `
 const MembersInfo = styled.ul`
-  /* height:87px; */
-  /* overflow: auto; */
-  /* align-items: center; */
+  height:128px;
+  display:flex;
+  align-items:center;
+  width:100%;
+  overflow: auto;
   white-space: nowrap;
   display:flex;
   &::-webkit-scrollbar {
@@ -135,8 +152,6 @@ const MembersInfo = styled.ul`
     background-color:rgba(238, 238, 238,0.2);
     transform: matrix(1, 0, 0, -1, 0, 0);
   }
-
-
   li {
     margin-right:24px;
   }
@@ -165,4 +180,37 @@ const NewFlag = styled(Flag)`
 `
 const Owner = styled.li`
     position:relative;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+    color:var(--DARKEST);
+    /* margin-left:34px; */
+    &:after {
+        content:"";
+        width:40px;
+        height:40px;
+        display:block;
+        background-image:url(${({eye}) => eye});
+        background-size:contain;
+        position:absolute;
+        top:0;
+        left:12px;
+    }
+`
+
+const Guest = styled.li`
+    position:relative;
+    &:after {
+        pointer-events :none;
+        content:"";
+        width:40px;
+        height:40px;
+        display:block;
+        background-image:url(${({eye}) => eye});
+        background-size:contain;
+        position:absolute;
+        top:0;
+        left:12px;
+    }
 `
