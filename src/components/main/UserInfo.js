@@ -2,19 +2,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
-
+import { eyeList } from "../../components/signup/FaceResource";
 const UserInfo = ({user}) => {
 
+    const userEye = (eye) => {
+        return eyeList.filter((row) => row.includes(user.eyes) && row);
+      };
+    console.log(userEye()[0])
     return (
         <article>
             <Container>
                 <li>
                     <p>아침식사 하셨나요?</p>
-                    <strong>{user.customerId}</strong><span>님</span>
+                    <strong>{user.nickname}</strong><span>님</span>
                 </li>
-                <li>
+                <CharacterWrap eye={userEye()[0]}>
                 <NewCharacterface fill={user.faceColor}/>
-                </li>
+                </CharacterWrap>
             </Container>
         </article>
     );
@@ -60,4 +64,18 @@ const NewCharacterface = styled(Characterface)`
     width:100px;
     height:100px;
     margin-left:67px;
+`
+const CharacterWrap = styled.li`
+    position: relative;
+    &:after {
+        content:"";
+        width:100px;
+        height:100px;
+        display:block;
+        background-image:url(${({eye}) => eye});
+        background-size:contain;
+        position:absolute;
+        top:0;
+        left:67px;
+    }
 `

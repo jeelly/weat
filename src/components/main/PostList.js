@@ -76,7 +76,7 @@ const PostList = ({rooms}) => {
                                                 <IconImg>{item.status === 'publicGuest' && <Guest fill="#23C7C7"/>}</IconImg>
                                             </li>
                                             <li><h3>{item.roomName}</h3></li>
-                                            <li>{item.emoji}</li>
+                                            <EmojiWrap>{item.emoji}</EmojiWrap>
                                             <li><p><span>{item.memberNum}</span>members</p></li>
                                         </PostItemInner>
                                     </PostItem>
@@ -93,7 +93,7 @@ const PostList = ({rooms}) => {
                                                         <IconImg>{item.status === 'publicGuest' && <Guest fill={guestColor}/>}</IconImg>
                                                     </li>
                                                     <li><h3>{item.roomName}</h3></li>
-                                                    <li>{item.emoji}</li>
+                                                    <EmojiWrap>{item.emoji}</EmojiWrap>
                                                     <li><p><span>{item.memberNum}</span>members</p></li>
                                                 </PostItemInner>
                                         </PostItem>
@@ -164,7 +164,7 @@ const PostItemInner = styled.ul`
         height: 44px;
         font-weight: 400;
         font-size: 18px;
-        line-height: 22px;
+        line-height:22px;
         text-align: center;
         text-transform: capitalize;
         margin:36px auto 16px auto;
@@ -185,7 +185,7 @@ const PostItemInner = styled.ul`
 `
 
 const IconImg = styled.div`
-    pointer-events : none;
+    pointer-events :none;
     width:12px;
     height:16px;
     position:absolute;
@@ -216,4 +216,12 @@ const Deletebtn = styled.button`
     top:-8px;
     right:-8px;
     z-index:100;
+`
+const EmojiWrap = styled.li`
+    /* width:36px; */
+    height:36px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:36px;
 `

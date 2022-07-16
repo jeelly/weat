@@ -6,7 +6,7 @@ const MainDefault = () => {
     return (
         <Grid>
          <PostLinkWrap>
-            <PostLink to="/post">새로운 맛방을<br/>만들어보세요</PostLink>
+            <PostLink to="/makeroom">새로운 맛방을<br/>만들어보세요</PostLink>
          </PostLinkWrap>
          </Grid>
     );

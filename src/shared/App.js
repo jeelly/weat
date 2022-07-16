@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     const load = async () => {
        await dispatch(loggedInDB(navigate))
-       dispatch(loadRoomDB(0));
+       await dispatch(loadRoomDB(0));
        setIsloaded(true);
     }
     load()
