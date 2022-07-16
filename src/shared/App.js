@@ -38,13 +38,13 @@ function App() {
 
   useEffect(() => {
     const load = async () => {
-        await dispatch(loggedInDB({navigate}))
+        await dispatch(loggedInDB(navigate))
         await dispatch(loadRoomDB(0));
     }
     load()
-    if(!isLogin){
-      navigate('/login')
-    }
+    // if(!isLogin){
+    //   navigate('/login')
+    // }
   }, [isLogin, _rooms]);
   return (
     <AppLayout>
