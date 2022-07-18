@@ -78,6 +78,9 @@ const Title = ({detail, id}) => {
     
     useEffect(() => {
         document.addEventListener("mousedown", setTarget);
+        return () => {
+          document.removeEventListener("mousedown", setTarget);
+        }
       }, []);
 
     return (

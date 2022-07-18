@@ -14,7 +14,7 @@ const MapContainer = () => {
     const map = new kakao.maps.Map(container, options);
 
     // 지도에 마커를 표시합니다
-    var marker = new kakao.maps.Marker({
+    let marker = new kakao.maps.Marker({
       map: map,
       position: new kakao.maps.LatLng(33.450701, 126.570667),
     });
@@ -27,7 +27,7 @@ const MapContainer = () => {
     // 커스텀 오버레이에 표시할 컨텐츠 입니다
     // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
     // 별도의 이벤트 메소드를 제공하지 않습니다
-    var content =
+    let content =
       '<div class="wrap">' +
       '    <div class="info">' +
       '        <div class="title">' +
@@ -49,7 +49,7 @@ const MapContainer = () => {
 
     // 마커 위에 커스텀오버레이를 표시합니다
     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-    var overlay = new kakao.maps.CustomOverlay({
+    let overlay = new kakao.maps.CustomOverlay({
       content: content,
       map: map,
       position: marker.getPosition(),

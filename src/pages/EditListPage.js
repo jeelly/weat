@@ -5,11 +5,12 @@ import RestaurantList from '../components/edit/RestaurantList';
 import { Container } from '../css/Style';
 import { useSelector, useDispatch } from "react-redux";
 import { loadRoomDetailDB } from '../redux/modules/postSlice';
+import Header from '../components/Header';
 
 const EditListPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const {storeList} = useSelector(state => state.post.detail);
+    const {storeList, detail} = useSelector(state => state.post.detail);
     const [isloaded, setIsloaded] = useState(false);
 
     useEffect(() => {
@@ -22,6 +23,7 @@ const EditListPage = () => {
 
     return (
         <NewContainer>
+            <Header id={id} status={detail.status} roomName={detail.roomName}/>
             {isloaded && <RestaurantList storeList={storeList} listPage={true}/>}
         </NewContainer>
     );

@@ -11,7 +11,7 @@ const AppLayout = ({ children }) => {
   
   return (
     <>
-      {loaded && <Header id={id} status={detail.status} roomName={detail.roomName}/>}
+      <Header id={id} status={detail.status} roomName={detail.roomName}/>
       <div>{children}</div>
       {/* <Footer /> */}
       <GlobalStyles/>

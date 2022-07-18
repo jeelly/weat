@@ -49,33 +49,37 @@ function App() {
   }, [isLogin, _rooms]);
   
   return (
-    <AppLayout>
-      {isLoading ? <Splash /> : ""}
+    <>
       <Routes>
-        <Route path="/" element={isloaded && <Main />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/detail" element={<Detail />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/listpage" element={<ListPage />} />
-        <Route path="/listpage/:id" element={<ListPage />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/edit/:id" element={<Edit />} />
-        <Route path="/editlistpage" element={<EditListPage />} />
-        <Route path="/editlistpage/:id" element={<EditListPage />} />
-        <Route path="*" element={<PageNotFound />} />
-        <Route path="/signup" element={<Singup />}>
-          <Route path="agreement" element={<Agreement />} />
-          <Route path="essential" element={<Essential />} />
-          <Route path="basicInfo" element={<BasicInfo />} />
-          <Route path="faceCustom" element={<FaceCustom />} />
-          <Route path="completion" element={<Completion />} />
-        </Route>
-        <Route path="/finduser" element={<FindUser />} />
-        <Route path="/makeroom" element={<MakeRoom />} />
-        <Route path="/map" element={<MapPage />} />
+          <Route path="/detail" element={<Detail />} />
+          <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/listpage" element={<ListPage />} />
+          <Route path="/listpage/:id" element={<ListPage />} />
+          <Route path="/edit" element={<Edit />} />
+          <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/editlistpage" element={<EditListPage />} />
+          <Route path="/editlistpage/:id" element={<EditListPage />} />
       </Routes>
-    </AppLayout>
+      <AppLayout>
+        {isLoading ? <Splash /> : ""}
+        <Routes>
+          <Route path="/" element={isloaded && <Main />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<PageNotFound />} />
+          <Route path="/signup" element={<Singup />}>
+            <Route path="agreement" element={<Agreement />} />
+            <Route path="essential" element={<Essential />} />
+            <Route path="basicInfo" element={<BasicInfo />} />
+            <Route path="faceCustom" element={<FaceCustom />} />
+            <Route path="completion" element={<Completion />} />
+          </Route>
+          <Route path="/finduser" element={<FindUser />} />
+          <Route path="/makeroom" element={<MakeRoom />} />
+          <Route path="/map" element={<MapPage />} />
+        </Routes>
+      </AppLayout>
+    </>
   );
 }
 
