@@ -13,8 +13,10 @@ import { eyeList } from "../../components/signup/FaceResource";
 import { BlackButton } from "../../css/Style";
 //액션함수
 import { addFace } from "../../redux/modules/signupSlice";
+import { loginCheck } from "../../redux/modules/userSlice";
+import { loginUserCheck } from "../../redux/modules/userSlice";
 //axios
-import instance from "../../shared/axios";
+import {instance, getAuthorizationHeader} from "../../shared/axios";
 
 const FaceCustom = () => {
   const navigate = useNavigate();
@@ -25,37 +27,62 @@ const FaceCustom = () => {
   const eye = eyeItem.split(".")[0].split("/").slice(-1).join();
 
   const userSignupData = useSelector((state) => state.userSignup);
-  console.log(userSignupData)
+  const snsUserData = useSelector((state) => state.loggedIn.userInfo);
+
   const userInfo = {
     nickname: nickname,
     eyes: eye,
     faceColor: hex,
   };
+  console.log(snsUserData)
 
   const buttonAction = useCallback(async () => {
-    const reg_nickname = /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,10}$/;    
+    const reg_nickname = /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,10}$/;
     if (!reg_nickname.test(nickname)) {
       console.log(nickname);
       return alert("닉네임 한글/영문 3~10자리!");
     }
     dispatch(addFace(userInfo));
-    try {
-      const response = await instance.post("/api/users/signup", {
-        birthDay: userSignupData.birthDay,
-        customerId: userSignupData.customerId,
-        email: userSignupData.email,
-        eyes: eye,
+    if (!snsUserData) {
+      try {
+        const response = await instance.post("/api/users/signup", {
+          birthDay: userSignupData.birthDay,
+          customerId: userSignupData.customerId,
+          email: userSignupData.email,
+          eyes: eye,
+          faceColor: hex,
+          name: userSignupData.name,
+          nickname: nickname,
+          password: userSignupData.password,
+        });
+        return navigate("/signup/completion");
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    if (snsUserData) {
+      const snsLoginUserData = {
+        email: snsUserData.email,
+        name: snsUserData.name,
+        provider: snsUserData.provider,
+        userId: snsUserData.userId,
+        nickname:nickname,
         faceColor: hex,
-        name: userSignupData.name,
-        nickname: nickname,
-        password: userSignupData.password,
-      });
-      navigate("/signup/completion");
-      console.log(response);
-    } catch (e) {
-      console.log(e);
-    }    
-  }, [nickname, eyeItem, hex]);
+        eyes: eye,
+      }
+      try {
+        const response = await instance.put("/api/users/edit", snsLoginUserData ,{ 
+          headers: { Authorization: getAuthorizationHeader() }
+        });
+        console.log(response)
+        dispatch(loginCheck(true));
+        dispatch(loginUserCheck(snsLoginUserData));        
+        navigate("/");
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [nickname, eyeItem, hex,snsUserData]);
 
   //닉네임 셋팅
   const nicknameSetting = useCallback((e) => {
