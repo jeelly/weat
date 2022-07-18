@@ -5,6 +5,7 @@ import { Container } from '../css/Style';
 import { useSelector, useDispatch } from "react-redux";
 import { detailId, loadRoomDetailDB } from '../redux/modules/postSlice';
 import { useParams } from 'react-router-dom';
+import Header from '../components/Header';
 
 const ListPage = () => {
     const { id } = useParams();
@@ -30,6 +31,7 @@ const ListPage = () => {
 
     return (
         <NewContainer status={detail.status}>
+            <Header id={id} status={detail.status} roomName={detail.roomName}/>
             {isloaded && <RestaurantList storeList={storeList} listPage={true}/>}
         </NewContainer>
     );

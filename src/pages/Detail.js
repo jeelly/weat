@@ -12,6 +12,7 @@ import { Link, useParams } from 'react-router-dom';
 import Title from '../components/detail/Title';
 import { VioletRoundButton } from '../css/Style'
 import SearchBar from '../components/makeRoom/SearchBar';
+import Header from '../components/Header';
 
 const Detail = () => {
     const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Detail = () => {
     console.log(detail.users?.guestInfo)
     return (
         <NewContainer status={detail?.status}>
+            <Header id={id} status={detail.status} roomName={detail.roomName}/>
             {isloaded && <Title detail={detail} id={id}/>}
             {isloaded && <Members inviteUser={inviteUser} users={users} setSerchBar={setSerchBar}/>}
             {isloaded && <RestaurantList storeList={storeList} id={id} />}

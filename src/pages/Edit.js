@@ -11,6 +11,7 @@ import Title from '../components/edit/Title';
 import { detailId, loadRoomDetailDB } from '../redux/modules/postSlice';
 import Emoji from '../components/makeRoom/Emoji';
 import SearchBar from '../components/makeRoom/SearchBar';
+import Header from '../components/Header';
 
 const Edit = () => {
     const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const Edit = () => {
       console.log(inviteUser)
     return (
         <NewContainer>
+            <Header id={id} status={detail.status} roomName={detail.roomName}/>
             {isloaded && <Title detail={detail} id={id} />}
             {isloaded && <Members inviteUser={inviteUser} users={users} setSerchBar={setSerchBar}/>}
             {isloaded && <RestaurantList id={id}  storeList={storeList} />}
