@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import instance from "../../shared/axios";
+import {instance,getAuthorizationHeader} from "../../shared/axios";
 
 const initialState = {
   tasteRoom: {
@@ -15,7 +15,7 @@ export const friendDB = createAsyncThunk(
   "users/searchUser",
   async (searchInput) => {
     return instance
-      .post("/api/rooms/findUser", { value: searchInput })
+      .post("/api/rooms/findUser", { value: searchInput },{headers: { Authorization: getAuthorizationHeader() }})
       .then((res) => {
         return res.data.result;
       })
