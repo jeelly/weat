@@ -9,7 +9,8 @@ const Title = ({detail, id}) => {
         dispatch(detailId({
             'id':id,
             'status':detail.status,
-            'roomName':detail.roomName
+            'roomName':detail.roomName,
+            'loaded':true
         }));
     }, []);
 

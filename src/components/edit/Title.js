@@ -14,7 +14,12 @@ const Title = ({detail, id}) => {
     const [inputValue, setInputValue] = useState(detail.roomName)
 
     useEffect(() => {
-        dispatch(detailId({'id':id}));
+        dispatch(detailId({
+            'id':id,
+            'status':detail.status,
+            'roomName':detail.roomName,
+            'loaded':true
+        }));
     }, []);
 
     // const onChange = useCallback(e=> {
