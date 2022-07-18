@@ -23,7 +23,6 @@ export default instance ;
 instance.interceptors.request.use(
   (config) => {
     config.headers["Authorization"] = getAuthorizationHeader();
-    console.log(config);
     return config;
   }
   ,(err) => {

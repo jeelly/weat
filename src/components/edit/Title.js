@@ -39,11 +39,10 @@ const Title = ({detail, id}) => {
         }
         const contents = {
             roomName:inputValue,
-            emoji:tasteRoom.emoji,
+            emoji:tasteRoom.emoji ? tasteRoom.emoji  : detail.emoji,
         };
         return contents;
     }
-
 
     //upLoad시 리듀서에 보냄
     const upLoad = (e) => {
@@ -84,7 +83,7 @@ const Title = ({detail, id}) => {
     return (
         <Container onKeyPress={onCheckEnter}>
             <EmojiEdit onClick={keypadOn} ref={emojiArea}>
-              {tasteRoom.emoji ? (
+              {tasteRoom.emoji ? ( 
                 tasteRoom.emoji
               ) : (
                 <>
@@ -94,15 +93,15 @@ const Title = ({detail, id}) => {
                 </>
               )}
             </EmojiEdit>
-                <span>
-                {/* <input type="text" style={{display:'none'}} /> */}
-                    <TitleEdit type="text" placeholder={detail.roomName} value={inputValue} onChange={onChange} />
-                    <button editdel={editdel} onClick={(e)=> {
-                        e.preventDefault();
-                        setInputValue('')
-                    }}></button>
-                    <hr/>
-                </span>
+            <span>
+            {/* <input type="text" style={{display:'none'}} /> */}
+                <TitleEdit type="text" placeholder={detail.roomName} value={inputValue} onChange={onChange} />
+                <button editdel={editdel} onClick={(e)=> {
+                    e.preventDefault();
+                    setInputValue('')
+                }}></button>
+                <hr/>
+            </span>
         </Container>
     );
 };
