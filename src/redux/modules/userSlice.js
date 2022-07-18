@@ -2,27 +2,21 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {instance, getAuthorizationHeader} from '../../shared/axios'
 
 
-// export const loggedInDB = createAsyncThunk(
-//   'user/isLoggedIn',
-//   async (navigate) => {
-//     return instance
-//     .get('/api/users/me')
-//     .then(res => {return res.data.user})
-//     .catch(error => {
-//       navigate('/login')
-//       console.log(error)
-//     })
-//   }
-// )
-
 export const loggedInDB = createAsyncThunk(
   'user/isLoggedIn',  
-  async (navigate) => {
+  async ({navigate, dispatch}) => {
+    const userToken = window.location.href.split('=')[1]
+    if(userToken){
+      localStorage.setItem('token',userToken)
+    }
   try {
     const response = await instance.get("/api/users/me", { 
       headers: { Authorization: getAuthorizationHeader() }
-    });    
-    console.log(response.data.user)
+    }); 
+    console.log(response)   
+    await  dispatch(loginCheck(true))
+    
+
     return response.data.user;
   } catch (error) {
     navigate('/login')
@@ -30,18 +24,6 @@ export const loggedInDB = createAsyncThunk(
   }
 });
 
-
-// 게시글 불러오기
-// export const loggedInDB = () => {
-//   return async function (dispatch) {
-//     try{
-//       const response = await instance.get(`/api/users/me`);
-//       dispatch(adduser(response.data.user));
-//     }catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
 
 
 const userCheckSlice = createSlice({
@@ -65,10 +47,6 @@ const userCheckSlice = createSlice({
       },
       loginCheck(state, action){
         state.isLogin = action.payload
-      },
-      adduser(state,action){
-        console.log(action.payload)
-        state.userInfo = action.payload
       }
     },
     extraReducers:{
@@ -86,5 +64,5 @@ const userCheckSlice = createSlice({
   });
 
 
-  export const {loginUserCheck, loginCheck, adduser} = userCheckSlice.actions;
+  export const {loginUserCheck, loginCheck} = userCheckSlice.actions;
   export default userCheckSlice.reducer

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import close from "../../img/close.svg";
 import search from "../../img/search.svg";
+import check from "../../img/icon/check.png";
 import { ReactComponent as Face } from "../../img/characterface.svg";
 
 import { friendDB, addFriends } from "../../redux/modules/roomMakingSlice";
@@ -15,9 +16,10 @@ import { VioletRoundTextBtn } from "../../css/Style";
 const SearchBar = (props) => {
   const dispatch = useDispatch();
   const { searchResults } = useSelector((state) => state.roomMaking);
+  const me = useSelector((state) => state.loggedIn.userInfo);
   const [searchInput, setSearchInput] = useState("");
   const [checkedInputs, setCheckedInputs] = useState([]);
-console.log(checkedInputs)
+
   //검색 키워드
   const onChangeInputValue = (e) => {
     setSearchInput(e.target.value);
@@ -40,25 +42,29 @@ console.log(checkedInputs)
 
   //초대 대상 선택
   const userSelector = (e) => {
+    if (e.target.value.split(",")[0] === me.userId) {
+      e.target.checked = false;
+      return alert("나 자신은 초대할 수 없어요 :(");
+    }
     if (e.target.checked) {
       return setCheckedInputs([...checkedInputs, e.target.value]);
     } else {
-      const test = checkedInputs.filter((el) => el !== e.target.value);
-      return setCheckedInputs(test);
+      const userSelect = checkedInputs.filter((el) => el !== e.target.value);
+      return setCheckedInputs(userSelect);
     }
   };
   const Inviting = async () => {
-        const userId = checkedInputs.map((data)=> (data.split(',')[0]))
-        const user_data = checkedInputs.map((data)=> (data.split(',')))
+    const userId = checkedInputs.map((data) => data.split(",")[0]);
+    const user_data = checkedInputs.map((data) => data.split(","));
 
-        if(!props.id) {
-            await dispatch(addFriends(checkedInputs));
-            props.setSerchBar(false);
-        } else {
-            await dispatch(roomInviteDB(props.id, {guestId:userId},user_data));
-            props.setSerchBar(false);
-        }
-    }   
+    if (!props.id) {
+      await dispatch(addFriends(checkedInputs));
+      props.setSerchBar(false);
+    } else {
+      await dispatch(roomInviteDB(props.id, { guestId: userId }, user_data));
+      props.setSerchBar(false);
+    }
+  };
 
   const checked = (userId) => {
     checkedInputs.map((a) => {
@@ -85,43 +91,43 @@ console.log(checkedInputs)
         </SerchBar>
         <UserListWrap>
           <ul>
-            {
-              searchResults ? 
-              searchResults.map((u, idx) => {
-                return (
-                  <li key={u.userId}>
-                    <UserFace eyes={userEye(u.eyes)}>
-                      <UserFaceItem fill={u.faceColor} />
-                    </UserFace>
-                    <section>
-                      <div>
-                        <p>{u.name}</p>
-                        <p>{u.nickname}</p>
-                      </div>
-                      <input
-                        value={[
-                          u.userId,
-                          userEye(u.eyes),
-                          u.faceColor,
-                          u.nickname,
-                        ]}
-                        type="checkBox"
-                        onChange={userSelector}
-                        checked={checked(u.userId)}
-                      />
-                    </section>
-                  </li>
-                );
-              })
-              : null
-            }
-            
+            {searchResults
+              ? searchResults.map((u, idx) => {
+                  return (
+                    <li key={u.userId}>
+                      <UserFace eyes={userEye(u.eyes)}>
+                        <UserFaceItem fill={u.faceColor} />
+                      </UserFace>
+                      <label htmlFor={u.userId}>
+                        <div>
+                          <p>{u.name}</p>
+                          <p>{u.nickname}</p>
+                        </div>
+                        <CheckBox
+                          value={[
+                            u.userId,
+                            userEye(u.eyes),
+                            u.faceColor,
+                            u.nickname,
+                          ]}
+                          type="checkBox"
+                          onChange={userSelector}
+                          checked={checked(u.userId)}
+                          check={check}
+                          id={u.userId}
+                        />
+                      </label>
+                    </li>
+                  );
+                })
+              : null}
           </ul>
         </UserListWrap>
       </section>
       <WhiteShadow>
         <InvitationButton onClick={Inviting}>
-          선택 멤버 초대하기 <span>
+          선택 멤버 초대하기{" "}
+          <span>
             {checkedInputs.length}
             <span>/20</span>
           </span>
@@ -213,7 +219,6 @@ const UserListWrap = styled.div`
         font-size: 14px;
         line-height: 160%;
         color: var(--DARKEST);
-        padding-top:2px;
       }
       :last-child {
         font-family: "AppleSDGothicNeoT";
@@ -233,9 +238,10 @@ const UserListWrap = styled.div`
     :first-child {
       padding-top: 0;
     }
-    section {
+    label {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 0 10px;
     }
   }
@@ -283,19 +289,40 @@ const WhiteShadow = styled.div`
 
 const InvitationButton = styled(VioletRoundTextBtn)`
   position: absolute;
-  right:45px;
-  bottom:30px;
+  right: 45px;
+  bottom: 30px;
   z-index: 3;
   padding: 0 24px;
   box-sizing: content-box;
   width: auto;
   span {
-    padding-left:8px;
-    span{
+    padding-left: 8px;
+    span {
       opacity: 0.4;
       padding-left: 2px;
-    
     }
   }
+`;
+
+const CheckBox = styled.input`
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  background-color: var(--LIGHTER);
+  border-radius: 50%;
+  position: relative;
+  ::after {
+    content: url(${(props) => props.check});
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    
+
+  }
+  :checked{
+    background-color:var(--BLACK);
+    }
 `;
 export default SearchBar;

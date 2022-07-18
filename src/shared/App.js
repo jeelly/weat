@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 //component
 import AppLayout from "../components/AppLayout";
+import "../css/fonts/fontFace.css";
+import Splash from "../components/Splash";
 
 //슬라이스
 import { loadRoomDB } from "../redux/modules/postSlice";
@@ -27,29 +29,27 @@ import Completion from "../components/signup/Completion";
 import EditListPage from "../pages/EditListPage";
 import Edit from "../pages/Edit";
 
-import "../css/fonts/fontFace.css";
-
-import MapPage from "../pages/MapPage";
-
 function App() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.loggedIn.isLogin);
+  const { isLogin, userInfo } = useSelector((state) => state.loggedIn);
   const _rooms = useSelector((state) => state.post?._rooms);
   const isloaded = useSelector((state) => state.post.isloaded);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      await dispatch(loggedInDB(navigate));
+      await setIsLoading(true);
+      await dispatch(loggedInDB({navigate, dispatch}));
       await dispatch(loadRoomDB(0));
+      await setIsLoading(false);
     };
     load();
-    // if(!isLogin){
-    //   navigate('/login')
-    // }
   }, [isLogin, _rooms]);
+  
   return (
     <AppLayout>
+      {isLoading ? <Splash /> : ""}
       <Routes>
         <Route path="/" element={isloaded && <Main />} />
         <Route path="/post" element={<Post />} />
@@ -72,7 +72,6 @@ function App() {
         </Route>
         <Route path="/finduser" element={<FindUser />} />
         <Route path="/makeroom" element={<MakeRoom />} />
-        <Route path="/map" element={<MapPage />} />
       </Routes>
     </AppLayout>
   );
