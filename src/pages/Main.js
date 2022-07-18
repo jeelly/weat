@@ -13,16 +13,33 @@ import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
+    const navigate = useNavigate()
     const _rooms = useSelector(state => state.post._rooms);
     const rooms = useSelector(state => state.post.rooms);
     const [room, setRoom] = useState(rooms);
     const user = useSelector(state => state.loggedIn);
+    console.log(user)
+
+    const snsUserCheck = () => {
+        if(user.userInfo.provider && !user.userInfo.faceColor){
+            console.log('프로바이더는 있고 페이스컬러는 없어')
+            return navigate('/signup/faceCustom')
+        }else if(user.userInfo.provider && user.userInfo.faceColor){
+            return navigate('/')
+        }
+    }
+    useEffect(()=>{
+        snsUserCheck()
+      },[user])
 
     useEffect(() => {
         setRoom(rooms)
       }, [_rooms]);
       
-    console.log(room)
+
+
+      
+      
     return (
         <NewContainer>
             <UserInfo user={user.userInfo ?? ''}/>

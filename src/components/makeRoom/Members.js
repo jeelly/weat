@@ -7,9 +7,8 @@ import flagIcon from "../../img/icon/flag.svg";
 import { eyeList } from "../../components/signup/FaceResource";
 
 const Members = (props) => {
-  const me = useSelector(state => state.loggedIn.userInfo);
-  console.log(me)
-  const { tasteRoom } = useSelector(state => state.roomMaking);
+  const me = useSelector((state) => state.loggedIn.userInfo);
+  const { tasteRoom } = useSelector((state) => state.roomMaking);
   const serchBarOpen = useCallback(() => {
     props.setSerchBar(true);
   }, []);
@@ -21,11 +20,12 @@ const Members = (props) => {
       <MemberCount>
         <span>Members</span>
         <span>
-          <span className="count">{tasteRoom.invitedFriends.length + 1}</span>/20
+          <span className="count">{tasteRoom.invitedFriends.length + 1}</span>
+          /20
         </span>
       </MemberCount>
       <InviteWrap>
-        <Invite>
+        <Invite flagIcon={flagIcon}>
           <li className="addMember">
             <div onClick={serchBarOpen}>
               <img src={inviteBtn} alt="" />
@@ -34,15 +34,19 @@ const Members = (props) => {
           </li>
           <li className="memberList">
             <ul>
-              <Member eye={userEye(me.eyes)}>
-                <UserFace fill={me.faceColor} />
+              <Member className="me">
+                <UserFace eye={userEye(me.eyes)}>
+                  <Face fill={me.faceColor} />
+                </UserFace>
                 <p>나</p>
               </Member>
               {tasteRoom.invitedFriends.map((f, idx) => {
                 const friend = f.split(",");
                 return (
-                  <Member eye={userEye(friend[1])} key={friend[0]}>
-                    <UserFace fill={friend[2]} />
+                  <Member key={friend[0]}>
+                    <UserFace eye={userEye(friend[1])}>
+                      <Face fill={friend[2]} />
+                    </UserFace>
                     <p>{friend[3]}</p>
                   </Member>
                 );
@@ -89,12 +93,20 @@ const Invite = styled.ul`
   font-size: 12px;
   line-height: 17px;
   p {
-    margin-top: 12px;
+    margin-top: 10px;
+    width: 65px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .addMember {
     padding: 2px 0 0 14px;
     border-right: 1px solid var(--LIGHTER);
+    height: 86px;
+    display: flex;
+    align-items: flex-end;
     div {
       width: 42px;
       display: flex;
@@ -111,10 +123,30 @@ const Invite = styled.ul`
     ul {
       display: flex;
       li {
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
         align-items: center;
         margin-left: 16px;
+        display: flex;
+        justify-content: flex-end;
+        height: 86px;
+        width: 50px;
+      }
+      .me {
+        position: relative;
+        ::after {
+          content: "";
+          background-image: url(${(props) => props.flagIcon});
+          background-repeat: no-repeat;
+          background-size: cover;
+          position: absolute;
+          width: 12px;
+          height: 13px;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, 0);
+          z-index: 1;
+        }
       }
       /* li:last-child {
         margin-right: 16px;
@@ -122,24 +154,23 @@ const Invite = styled.ul`
     }
   }
 `;
-const UserFace = styled(Face)`
+const UserFace = styled.div`
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  box-shadow: var(--SHADOW1);
   position: relative;
-`;
 
-const Member = styled.li`
-  position: relative;
-  text-align: center;
-  max-width: 60px;
+  svg {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: var(--SHADOW1);
+  }
   ::before {
-    content: '';
+    content: "";
     background-image: url(${(props) => props.eye});
     background-repeat: no-repeat;
-    background-size: 100% auto ;
+    background-size: 100% auto;
     position: absolute;
     width: 44px;
     height: 44px;
@@ -148,5 +179,11 @@ const Member = styled.li`
     transform: translate(-50%, 0);
     z-index: 1;
   }
+`;
+
+const Member = styled.li`
+  position: relative;
+  text-align: center;
+  max-width: 60px;
 `;
 export default Members;

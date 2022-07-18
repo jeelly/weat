@@ -14,12 +14,14 @@ import kakaoIcon from "../img/kakaoIcon.png";
 import instance from "../shared/axios";
 import { loginCheck } from "../redux/modules/userSlice";
 import { useEffect } from "react";
+import {BlackButton} from '../css/Style'
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userId, setUserId] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
+  const [error, setError] = useState("")
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -28,6 +30,7 @@ const Login = () => {
     setUserPassword(e.target.value);
   };
 
+//엔터키 누르면 로그인
   const loginAction = async () => {
     try {
       const response = await instance.post("/api/users/login", {
@@ -38,9 +41,17 @@ const Login = () => {
       dispatch(loginCheck(true));
       navigate("/");
     } catch (e) {
-      console.log(e);
+      setError(e.response.data.errorMessage)
     }
   };
+
+  const handleKeyDown = e => {
+    if(e.key === 'Enter') {
+      loginAction();
+    }
+  }
+
+
   //소셜 로그인 후 받은 토큰 저장
   const userToken = window.location.href.split('=')[1]
   const tokenSave = () => {    
@@ -58,13 +69,14 @@ const Login = () => {
         <img src={logo} alt="" />
       </section>
       <section className="loginInputBox">
-        <p onClick={loginAction}>로그인</p>
+        <p>로그인</p>
         <div>
           <input type="text" placeholder="Id" onChange={onChangeId} />
           <input
-            type="text"
+            type="Password"
             placeholder="Password"
             onChange={onChangePassword}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </section>
@@ -90,7 +102,8 @@ const Login = () => {
           </a>
         </div>
       </section>
-      <section className="copyright">© 2022 WEat. All rights reserved.</section>
+      <section className="message">{error}</section>
+      <BlackButton onClick={loginAction}>로그인</BlackButton>
     </LoginContainer>
   );
 };
@@ -116,7 +129,7 @@ const LoginContainer = styled.div`
       font-size: 32px;
       line-height: 150%;
       color: var(--WHITE);
-      padding: 28px 0 40px;
+      padding: 28px 0 24px;
     }
     input {
       width: 100%;
@@ -153,7 +166,7 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: space-between;
     div {
-      padding-top: 64px;
+      padding-top: 40px;
       a {
         display: block;
         text-decoration: none;
@@ -178,10 +191,10 @@ const LoginContainer = styled.div`
       }
     }
   }
-  .copyright {
+  .message {
     width: 100%;
     text-align: center;
-    margin-top: 52px;
+    margin-top: 24px;
     font-family: "Niramit";
     font-weight: 400;
     font-size: 12px;
