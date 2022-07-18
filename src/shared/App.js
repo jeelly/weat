@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 //component
@@ -31,23 +31,53 @@ import Edit from "../pages/Edit";
 import MapPage from "../pages/MapPage";
 
 function App() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { isLogin, userInfo } = useSelector((state) => state.loggedIn);
   const _rooms = useSelector((state) => state.post?._rooms);
   const isloaded = useSelector((state) => state.post.isloaded);
   const [isLoading, setIsLoading] = useState(false);
 
+  //소셜 로그인
+  const userToken = window.location.href.split("=")[1];
+  const snsUserTokenSave = async () => {
+    await localStorage.setItem("token", userToken);
+    await dispatch(loggedInDB({ navigate, dispatch }));
+    await dispatch(loadRoomDB(0));
+  };
+  useEffect(() => {
+    if (userToken) {
+      snsUserTokenSave();
+    }
+  }, [userToken]);
+  
+
+  //일반로그인
+  const generalLogin = async () => {
+    if (!userToken) {
+      if (window.localStorage.getItem("token")) {
+        await dispatch(loggedInDB({ navigate, dispatch }));
+        await dispatch(loadRoomDB(0));
+      }
+      if (!window.localStorage.getItem("token")
+      && !location.pathname.includes('signup')      
+      ) {
+        navigate("/login");
+      }
+    }
+  };
+
+  //데이터 불러오기
   useEffect(() => {
     const load = async () => {
       await setIsLoading(true);
-      await dispatch(loggedInDB({navigate, dispatch}));
-      await dispatch(loadRoomDB(0));
+      await generalLogin();
       await setIsLoading(false);
     };
     load();
   }, [isLogin, _rooms]);
-  
+
   return (
     <>
       <Routes>

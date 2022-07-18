@@ -33,6 +33,9 @@ const RoomCustom = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", setTarget);
+    return () => {
+      document.removeEventListener("mousedown", setTarget);
+    }
   }, []);
 
   //emoji+이미지 누르면 키보드 활성화

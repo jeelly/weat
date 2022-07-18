@@ -53,15 +53,15 @@ const Login = () => {
 
 
   //소셜 로그인 후 받은 토큰 저장
-  const userToken = window.location.href.split('=')[1]
-  const tokenSave = () => {    
-    localStorage.setItem('token',userToken)
-  } 
-  useEffect(()=>{
-    if(userToken){
-      tokenSave()
-    }    
-  },[userToken])
+  // const userToken = window.location.href.split('=')[1]
+  // const tokenSave = () => {    
+  //   localStorage.setItem('token',userToken)
+  // } 
+  // useEffect(()=>{
+  //   if(userToken){
+  //     tokenSave()
+  //   }    
+  // },[userToken])
 
   return (
     <LoginContainer>

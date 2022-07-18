@@ -27,14 +27,15 @@ const FaceCustom = () => {
   const eye = eyeItem.split(".")[0].split("/").slice(-1).join();
 
   const userSignupData = useSelector((state) => state.userSignup);
-  const snsUserData = useSelector((state) => state.loggedIn.userInfo.faceColor);
+  const snsUserData = useSelector((state) => state.loggedIn.userInfo);
+  const userToken = window.localStorage.getItem('token')
+  console.log(snsUserData)
 
   const userInfo = {
     nickname: nickname,
     eyes: eye,
     faceColor: hex,
   };
-  console.log(snsUserData)
 
   const buttonAction = useCallback(async () => {
     const reg_nickname = /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,10}$/;
@@ -43,7 +44,7 @@ const FaceCustom = () => {
       return alert("닉네임 한글/영문 3~10자리!");
     }
     dispatch(addFace(userInfo));
-    if (!snsUserData) {
+    if (!userToken) {
       try {
         const response = await instance.post("/api/users/signup", {
           birthDay: userSignupData.birthDay,
@@ -60,7 +61,7 @@ const FaceCustom = () => {
         console.log(e);
       }
     }
-    if (snsUserData) {
+    if (userToken) {
       const snsLoginUserData = {
         email: snsUserData.email,
         name: snsUserData.name,
