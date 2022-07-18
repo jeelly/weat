@@ -27,7 +27,7 @@ const FaceCustom = () => {
   const eye = eyeItem.split(".")[0].split("/").slice(-1).join();
 
   const userSignupData = useSelector((state) => state.userSignup);
-  const snsUserData = useSelector((state) => state.loggedIn.userInfo);
+  const snsUserData = useSelector((state) => state.loggedIn.userInfo.faceColor);
 
   const userInfo = {
     nickname: nickname,
