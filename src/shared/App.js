@@ -7,7 +7,7 @@ import AppLayout from "../components/AppLayout";
 
 //슬라이스
 import { loadRoomDB } from "../redux/modules/postSlice";
-import {loggedInDB} from "../redux/modules/userSlice";
+import { loggedInDB } from "../redux/modules/userSlice";
 
 //Sub
 import Singup from "../pages/Singup";
@@ -29,19 +29,21 @@ import Edit from "../pages/Edit";
 
 import "../css/fonts/fontFace.css";
 
+import MapPage from "../pages/MapPage";
+
 function App() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLogin = useSelector(state => state.loggedIn.isLogin)
-  const _rooms = useSelector(state => state.post?._rooms);
-  const isloaded = useSelector(state => state.post.isloaded);
+  const isLogin = useSelector((state) => state.loggedIn.isLogin);
+  const _rooms = useSelector((state) => state.post?._rooms);
+  const isloaded = useSelector((state) => state.post.isloaded);
 
   useEffect(() => {
     const load = async () => {
-        await dispatch(loggedInDB(navigate))
-        await dispatch(loadRoomDB(0));
-    }
-    load()
+      await dispatch(loggedInDB(navigate));
+      await dispatch(loadRoomDB(0));
+    };
+    load();
     // if(!isLogin){
     //   navigate('/login')
     // }
@@ -52,9 +54,9 @@ function App() {
         <Route path="/" element={isloaded && <Main />} />
         <Route path="/post" element={<Post />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/detail" element={<Detail/>} />
-        <Route path="/detail/:id" element={<Detail/>} />
-        <Route path="/listpage" element={<ListPage/>} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/listpage" element={<ListPage />} />
         <Route path="/listpage/:id" element={<ListPage />} />
         <Route path="/edit" element={<Edit />} />
         <Route path="/edit/:id" element={<Edit />} />
@@ -70,6 +72,7 @@ function App() {
         </Route>
         <Route path="/finduser" element={<FindUser />} />
         <Route path="/makeroom" element={<MakeRoom />} />
+        <Route path="/map" element={<MapPage />} />
       </Routes>
     </AppLayout>
   );
