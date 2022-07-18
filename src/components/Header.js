@@ -9,6 +9,7 @@ import { editModal, detailId } from "../redux/modules/postSlice";
 import { createBrowserHistory } from "history";
 
 const Header = ({id, status, roomName}) => {
+
   const history = createBrowserHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const Header = ({id, status, roomName}) => {
     } else {
       return setColor('')
     }
-  }, [status]);
+  }, [status, location]);
 
   // useEffect(() => {
   //   if(location.pathname === "/") {

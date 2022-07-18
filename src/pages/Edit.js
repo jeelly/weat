@@ -16,7 +16,7 @@ const Edit = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const {detail, users, storeList} = useSelector(state => state.post.detail);
-    const [isloaded, setIsloaded] = useState(false);
+    const isloaded = useSelector(state => state.post.detail_isloaded);
     const { emojiKey, tasteRoom } = useSelector(state => state.roomMaking);
     const [serchBar, setSerchBar] = useState(false);
     const inviteUser = useSelector(state => state.post.inviteUser);
@@ -25,8 +25,7 @@ const Edit = () => {
     useEffect(() => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));
-            dispatch(detailId(id));
-            setIsloaded(true)
+            // dispatch(detailId(id));
         }
         detail_load();
       }, []);

@@ -8,9 +8,7 @@ import {instance, getAuthorizationHeader} from "../../shared/axios";
 export const loadRoomDB = () => {
   return async function (dispatch) {
     try{
-      const response = await instance.get("/api/rooms", { 
-        headers: { Authorization: getAuthorizationHeader() }
-      });
+      const response = await instance.get("/api/rooms");
       console.log("미들웨어로드",response)
       const rooms = response.data.myRooms;
       const roms_total = response.data.total;
@@ -122,6 +120,7 @@ const userSlice = createSlice({
     detailId:[],
     rooms:[],
     isloaded:false,
+    detail_isloaded:false,
     _rooms:[] ,
     detail:{detail:{status:""}},
   },
@@ -155,6 +154,7 @@ const userSlice = createSlice({
     //방 디테일정보 불러오기 
     loadRoomDetail: (state, action) => {
       state.detail = action.payload
+      state.detail_isloaded = true
     },
     //디테일 아이디값 
     detailId: (state, action) => {

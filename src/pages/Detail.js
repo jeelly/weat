@@ -18,13 +18,13 @@ const Detail = () => {
     const { id } = useParams();
     const {detail, users, storeList} = useSelector(state => state.post.detail);
     const [serchBar, setSerchBar] = useState(false);
-    const [isloaded, setIsloaded] = useState(false);
+    const isloaded = useSelector(state => state.post.detail_isloaded);
     const inviteUser = useSelector(state => state.post.inviteUser);
     console.log(users)
     useEffect(() => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));
-            setIsloaded(true)
+            // dispatch(detailId(id));
         }
         detail_load();
       }, []);

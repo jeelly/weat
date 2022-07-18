@@ -28,6 +28,7 @@ import BasicInfo from "../components/signup/BasicInfo";
 import Completion from "../components/signup/Completion";
 import EditListPage from "../pages/EditListPage";
 import Edit from "../pages/Edit";
+import MapPage from "../pages/MapPage";
 
 function App() {
   let navigate = useNavigate();
@@ -72,6 +73,7 @@ function App() {
         </Route>
         <Route path="/finduser" element={<FindUser />} />
         <Route path="/makeroom" element={<MakeRoom />} />
+        <Route path="/map" element={<MapPage />} />
       </Routes>
     </AppLayout>
   );

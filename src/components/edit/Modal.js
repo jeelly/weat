@@ -39,7 +39,6 @@ const Modal = ({id}) => {
         navigate("/")
     }
 
-    console.log(key)
     return (
         <ReactPortal>
                     <DelModalWrap delModal={delEdit}>

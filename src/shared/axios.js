@@ -14,12 +14,19 @@ export const instance = axios.create({
 });
 
 //토큰값
-
-// instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
+const token = localStorage.getItem("token")
+instance.defaults.headers.common["Authorization"] =`Bearer ${token}`
 
 export default instance ;
 
-// export const login_instance = axios.create({
-//   baseURL: "http://localhost:5001",
-//   headers: { "Content-Type": "application/json" },
-// });
+//요청 가로채기
+instance.interceptors.request.use(
+  (config) => {
+    config.headers["Authorization"] = getAuthorizationHeader();
+    console.log(config);
+    return config;
+  }
+  ,(err) => {
+    return Promise.reject(err);
+  }
+);
