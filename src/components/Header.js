@@ -53,13 +53,15 @@ const Header = ({id, status, roomName}) => {
   }
   // 헤더 예외처리
   const noneHeader = () => {
-    if(url.indexOf('noentry') > 0 && url.indexOf('map') > 0){
+    if(url.indexOf('noentry') > 0){
       return 'none'      
-    }else{
+    }else if(url.indexOf('map') > 0) {
+        return 'none'
+    } else{
       return 'flex'
     }
   }
- 
+  
   return (
     <>
       <NoticeModal modal={modal} setModal={setModal}/>
