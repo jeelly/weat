@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux/es/exports";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import goBack from "../img/icon/goBack.png";
+import goBack from "../img/icon/goBack.svg";
 import notice from "../img/fixed/notice.svg";
 import NoticeModal from "./NoticeModal";
 import { useDispatch } from 'react-redux'
 import { editModal, detailId } from "../redux/modules/postSlice";
 import { createBrowserHistory } from "history";
+import KakaoShare from "./KakaoShare";
+import instance from "../shared/axios";
 
 const Header = ({id, status, roomName}) => {
-
   const history = createBrowserHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const {detail, users} = useSelector(state => state.post.detail);
   const [modal, setModal] = useState(false);
   const [color, setColor] = useState();
 
@@ -29,31 +32,6 @@ const Header = ({id, status, roomName}) => {
     }
   }, [status, location]);
 
-  // useEffect(() => {
-  //   if(location.pathname === "/") {
-  //     setColor('')
-  //   }
-  // }, [location.pathname]);
-
-  // useEffect(() => {
-  //   if(navigate('/')) {
-  //     setColor('')
-  //   }
-  // }, [navigate]);
-  
-  // useEffect(() => {
-  //   const listenBackEvent = () => {
-  //     // 뒤로가기 할 때 수행할 동작을 적는다
-  //   };
-
-  //   const unlistenHistoryEvent = history.listen(({ action }) => {
-  //     if (action === "POP") {
-  //       listenBackEvent();
-  //     }
-  //   });
-  //   return unlistenHistoryEvent;
-  // }, []);
-
 
   const delBtn = async () => {
       dispatch(editModal({Room:true}))
@@ -62,19 +40,41 @@ const Header = ({id, status, roomName}) => {
   const delDetailId = async () => {
     dispatch(detailId([]))
   }
-  
+
+
+//기본 헤더 설정
+  const url = location.pathname
+  const basicHeader = (a) => {
+    if(url.indexOf(a) > 0){
+      return true
+    }else{
+      return false
+    }    
+  }
+  // 헤더 예외처리
+  const noneHeader = () => {
+    if(url.indexOf('noentry') > 0 && url.indexOf('map') > 0){
+      return 'none'      
+    }else{
+      return 'flex'
+    }
+  }
+ 
   return (
     <>
       <NoticeModal modal={modal} setModal={setModal}/>
-      <HeaderContainer color={color}>
+      <HeaderContainer color={color} style={{display:noneHeader()}}>
         {location.pathname === "/" && <><span/><button onClick={()=> {setModal(true)}}><img src={notice} alt="알림창"></img></button></>}
-        {location.pathname.indexOf("signup") > 0  && <p  className="basicHeader" onClick={goback}>회원가입</p>}
+        {basicHeader("signup") && <p className="basicHeader" onClick={goback}>회원가입</p>}
+        {basicHeader("finduser") && <p className="basicHeader" onClick={goback}>아이디/비밀번호 찾기</p>}
+        {basicHeader("roomshare") && <p className="basicHeader" onClick={goback}></p>}
         {location.pathname === `/detail/${id}` && <> <p onClick={async ()=> {
           await delDetailId();
           goback();
         }}>{roomName}</p> 
           <div>
-            <LinkStyle to={`/detail/${id}`}>공유하기</LinkStyle>
+            {/* <LinkStyle to={`/detail/${id}`}>공유하기</LinkStyle> */}
+            <LinkStyle to={`/detail/${id}`}><KakaoShare roomName={detail&&detail.roomName} ownerNickname={users&&users.owner.nickname}/></LinkStyle>
             {status === 'publicOwner' || status === 'private' ? <LinkStyle to={`/edit/${id}`}>편집하기</LinkStyle> : null}
           </div>
         </>}
