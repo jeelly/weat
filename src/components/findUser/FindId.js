@@ -1,11 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { BlackButton } from "../../css/Style";
+import instance from "../../shared/axios";
+import { VioletRoundTextBtn } from "../../css/Style";
 
 const FindId = () => {
-  const authNum = 5421;
+  const navigate = useNavigate();
+  const [authNum, setAuthNum] = useState("");
   const [userNum, setUserNum] = useState(null);
   const [authBtnDisable, setauthBtnDisable] = useState(false);
   const [authInputDisable, setAuthInputDisable] = useState(false);
+  const [authCheck, setAuthCheck] = useState(true);
+  const [email, setEmail] = useState("");
 
   //타이머
   const [min, setMin] = useState(3);
@@ -14,26 +21,28 @@ const FindId = () => {
   const timerId = useRef(null);
 
   const auth = useCallback(() => {
-    setauthBtnDisable(true);
     timerId.current = setInterval(() => {
       setMin(parseInt(time.current / 60));
       setSec(time.current % 60);
       time.current -= 1;
     }, 1000);
-
-    // return () => clearInterval(timerId.current)
   }, []);
 
-  useEffect(() => {
+  const authNunCheck = useCallback(() => {
     if (authNum == userNum) {
+      setauthBtnDisable(true);
       clearInterval(timerId.current);
       setAuthInputDisable(true);
+      setAuthCheck(true);
+      findID()
+    } else {
+      setAuthCheck(false);
     }
   }, [userNum]);
 
   useEffect(() => {
     if (time.current <= -1) {
-      console.log('타임 아웃');
+      console.log("타임 아웃");
       clearInterval(timerId.current);
       setMin(3);
       setSec(0);
@@ -43,32 +52,74 @@ const FindId = () => {
     }
   }, [sec]);
 
+  //메일 발송
+  const send = async () => {
+    try {
+      const res = await instance.post("api/users/sendmail", {email});
+      await auth();
+      await setAuthNum(res.data.authNum);
+      console.log(res);
+    } catch (e) {
+      alert('이메일을 확인해 주세요.')
+      console.log(e);
+    }
+  };
+
+  //아아디찾기
+  const findID = async() => {
+      try{
+        const res = await instance.post('/api/users/findUserId',{email})
+        await navigate('/finduser/findiddescription',{
+          state: res.data
+        })
+      }catch(e){
+        alert('이메일을 확인해 주세요.')
+        console.log(e)
+      }
+    }
+
   return (
-    <div>      
+    <div>
       <InputBox>
         <section>
-          <label htmlFor=''>Certification</label>
-          <input type='text' placeholder='전화번호' />
-          <div className='authNum'>
+          <label htmlFor="">Certification</label>
+          <input
+            type="text"
+            placeholder="이메일 주소"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <div className="authNum">
             <div>
               <input
-                type='text'
+                type="text"
                 onChange={(e) => {
                   setUserNum(e.target.value);
                 }}
                 disabled={authInputDisable}
               />
-              <span>
-                {min}분{sec}초
-              </span>
+              {authInputDisable ? (
+                ""
+              ) : (
+                <span>
+                  {min}분{sec}초
+                </span>
+              )}
             </div>
-            <button onClick={auth} disabled={authBtnDisable}>
+            <VioletRoundTextBtn
+              onClick={authNunCheck}
+              disabled={authBtnDisable}
+            >
               인 증
-            </button>
-          </div>          
+            </VioletRoundTextBtn>
+          </div>
+          {authCheck ? (
+            ""
+          ) : (
+            <AuthDescription>*인증번호가 맞지 않습니다.</AuthDescription>
+          )}
         </section>
+        <BlackButton onClick={send}>발 송</BlackButton>
       </InputBox>
-      
     </div>
   );
 };
@@ -79,7 +130,7 @@ const InputBox = styled.div`
     display: flex;
     flex-direction: column;
     label {
-      font-family: 'Niramit';
+      font-family: "Niramit";
       font-style: normal;
       font-weight: 700;
       font-size: 14px;
@@ -89,19 +140,19 @@ const InputBox = styled.div`
       padding-left: 14px;
     }
     input {
-      font-family: 'AppleSDGothicNeoL';
+      font-family: "AppleSDGothicNeoL";
       font-size: 12px;
       line-height: 22px;
-      padding: 13px 20px;
+      padding: 12px 20px;
       background: var(--WHITE);
       border: 2px solid #eeeeee;
       border-radius: 50px;
-      margin-bottom: 10px;      
+      margin-bottom: 10px;
       outline: none;
       ::placeholder {
         color: var(--DEFAULT);
       }
-      :focus{
+      :focus {
         border: 2px solid var(--LIGHTER);
       }
     }
@@ -109,43 +160,38 @@ const InputBox = styled.div`
       display: flex;
       justify-content: space-between;
       div {
-        position:relative;
+        position: relative;
         display: flex;
         align-items: center;
         input {
           width: 206px;
-          margin-bottom:0;
+          margin-bottom: 0;
           :disabled {
-            background-color: #eee;
+            background-color: #f2f2f2;
           }
         }
         span {
           position: absolute;
-          right:18px;
+          right: 18px;
           color: var(--ERROR);
           font-size: 12px;
-          font-family: 'AppleSDGothicNeoM';
-          line-height:22px;
-        }
-      }
-
-      button {
-        width: 110px;
-        height: 48px;
-        background: var(--INFO);
-        border-radius: 50px;
-        border: none;
-        font-family: 'AppleSDGothicNeoM';
-        color: var(--WHITE);
-        :disabled {
-          opacity: 0.3;
+          font-family: "AppleSDGothicNeoM";
+          line-height: 22px;
         }
       }
     }
     input {
-    height: 48px;
-  }
+      height: 48px;
+    }
   }
 `;
 
+const AuthDescription = styled.span`
+  font-family: "AppleSDGothicNeoM";
+  font-size: 12px;
+  line-height: 22px;
+  color: var(--ERROR);
+  padding-left: 14px;
+  margin-top: 6px;
+`;
 export default FindId;

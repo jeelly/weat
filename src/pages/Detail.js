@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {Container} from '../css/Style'
-import { loadRoomDetailDB, detailId } from "../redux/modules/postSlice";
+import { loadRoomDetailDB, detailId, findRoomCode } from "../redux/modules/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import house from '../img/house.svg';
@@ -26,6 +26,7 @@ const Detail = () => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));
             // dispatch(detailId(id));
+            await dispatch(findRoomCode(id))
         }
         detail_load();
       }, []);

@@ -12,15 +12,13 @@ export const loggedInDB = createAsyncThunk(
   try {
     const response = await instance.get("/api/users/me", { 
       headers: { Authorization: getAuthorizationHeader() }
-    }); 
-    console.log(response)   
+    });   
     await  dispatch(loginCheck(true))
     
 
     return response.data.user;
   } catch (error) {
     navigate('/login')
-    console.log(error)
   }
 });
 
@@ -50,16 +48,9 @@ const userCheckSlice = createSlice({
       }
     },
     extraReducers:{
-      [loggedInDB.pending]: (state, action) => {
-        console.log("로그인된 사용자정보 대기 중");
-      },
       [loggedInDB.fulfilled]: (state, action) => {
-        console.log(action.payload)
         state.userInfo = action.payload;
-      },
-      [loggedInDB.rejected]: (state, action) => {
-        console.log("로그인된 사용자정보 불러오기 실패");
-      },
+      }
     }
   });
 

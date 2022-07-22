@@ -25,7 +25,7 @@ const BasicInfo = () => {
   const [sec, setSec] = useState(0);
   const time = useRef(180);
   const timerId = useRef(null);
-
+console.log(authNum)
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
     setauthBtnDisable("");
@@ -37,13 +37,7 @@ const BasicInfo = () => {
     setUserNum(0);
   }, []);
 
-  const authCheck = () => {
-    if (authNum !== userNum) {
-      setAuthNumError("*인증번호가 맞지 않습니다");
-    } else if (authNum === userNum) {
-      setAuthNumError("");
-    }
-  };
+ 
   const onChangeUserNum = useCallback(
     (e) => {
       setUserNum(e.target.value);
@@ -67,8 +61,8 @@ const BasicInfo = () => {
     }
     try {
       const response = await instance.post("/api/users/mail", { email });
-      console.log(response);
-      setAuthNum(response.data.authNum);
+      await setAuthNum(response.data.authNum);
+      await alert(`${email}로 인증번호가 발송되었어요!`)
     } catch (e) {
       return alert(e.response.data.errorMessage);
     }
