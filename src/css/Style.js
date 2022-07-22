@@ -29,7 +29,7 @@ export const VioletButton = styled.button`
   border: none;
   background-color: var(--INFO);
   width: 100%;
-  height: 72px;
+  height: 80px;
   position: fixed;
   bottom: 0;
   left: 0;
