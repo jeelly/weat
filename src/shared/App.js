@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,12 +29,21 @@ import Completion from "../components/signup/Completion";
 import EditListPage from "../pages/EditListPage";
 import Edit from "../pages/Edit";
 import MapPage from "../pages/MapPage";
+import GlobalStyles from "../css/GlobalStyles";
+import Header from "../components/Header";
+import FindPwDescription from "../components/findUser/FindPwDescription";
+import FindIdDescription from "../components/findUser/FindIdDescription";
+import RoomShare from "../pages/RoomShare";
+import CodeSearch from "../components/roomShare/CodeSearch";
+import NoEntry from "../components/roomShare/NoEntry";
+
+
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const { isLogin, userInfo } = useSelector((state) => state.loggedIn);
+  const { isLogin } = useSelector((state) => state.loggedIn);
   const _rooms = useSelector((state) => state.post?._rooms);
   const isloaded = useSelector((state) => state.post.isloaded);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,8 +69,10 @@ function App() {
         await dispatch(loggedInDB({ navigate, dispatch }));
         await dispatch(loadRoomDB(0));
       }
-      if (!window.localStorage.getItem("token")
-      && !location.pathname.includes('signup')      
+      if (
+        !window.localStorage.getItem("token") && 
+        !location.pathname.includes('signup') &&
+        !location.pathname.includes("roomshare") 
       ) {
         navigate("/login");
       }
@@ -80,35 +91,41 @@ function App() {
 
   return (
     <>
-      <Routes>
-          <Route path="/detail" element={<Detail />} />
-          <Route path="/detail/:id" element={<Detail />} />
-          <Route path="/listpage" element={<ListPage />} />
-          <Route path="/listpage/:id" element={<ListPage />} />
-          <Route path="/edit" element={<Edit />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/editlistpage" element={<EditListPage />} />
-          <Route path="/editlistpage/:id" element={<EditListPage />} />
-      </Routes>
-      <AppLayout>
-        {isLoading ? <Splash /> : ""}
-        <Routes>
-          <Route path="/" element={isloaded && <Main />} />
-          <Route path="/post" element={<Post />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<PageNotFound />} />
-          <Route path="/signup" element={<Singup />}>
-            <Route path="agreement" element={<Agreement />} />
-            <Route path="essential" element={<Essential />} />
-            <Route path="basicInfo" element={<BasicInfo />} />
-            <Route path="faceCustom" element={<FaceCustom />} />
-            <Route path="completion" element={<Completion />} />
-          </Route>
-          <Route path="/finduser" element={<FindUser />} />
-          <Route path="/makeroom" element={<MakeRoom />} />
-          <Route path="/map" element={<MapPage />} />
-        </Routes>
-      </AppLayout>
+        <AppLayout>
+          {isLoading ? <Splash /> : ""}
+          <Routes>
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/detail/:id/:code" element={<Detail />} />
+            <Route path="/listpage" element={<ListPage />} />
+            <Route path="/listpage/:id" element={<ListPage />} />
+            <Route path="/edit" element={<Edit />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/editlistpage" element={<EditListPage />} />
+            <Route path="/editlistpage/:id" element={<EditListPage />} />
+
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="/" element={isloaded && <Main />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Singup />}>
+              <Route path="agreement" element={<Agreement />} />
+              <Route path="essential" element={<Essential />} />
+              <Route path="basicInfo" element={<BasicInfo />} />
+              <Route path="faceCustom" element={<FaceCustom />} />
+              <Route path="completion" element={<Completion />} />
+            </Route>
+            <Route path="/finduser" element={<FindUser />} />
+            <Route path="/finduser/findpwdescription" element={<FindPwDescription />}/>
+            <Route path="/finduser/findiddescription" element={<FindIdDescription />} />
+            <Route path="/makeroom" element={<MakeRoom />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/roomshare" element={<RoomShare />}>
+              <Route path="codesearch/:code" element={<CodeSearch />} />
+              <Route path="noentry" element={<NoEntry />} />
+            </Route>
+          </Routes>
+        </AppLayout>
     </>
   );
 }

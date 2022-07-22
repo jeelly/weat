@@ -6,14 +6,11 @@ import notice from "../img/fixed/notice.svg";
 import NoticeModal from "./NoticeModal";
 import { useDispatch } from 'react-redux'
 import { editModal, detailId } from "../redux/modules/postSlice";
-import { createBrowserHistory } from "history";
 
 const Header = ({id, status, roomName}) => {
-
-  const history = createBrowserHistory();
+  let navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  let navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const [color, setColor] = useState();
 
@@ -28,32 +25,6 @@ const Header = ({id, status, roomName}) => {
       return setColor('')
     }
   }, [status, location]);
-
-  // useEffect(() => {
-  //   if(location.pathname === "/") {
-  //     setColor('')
-  //   }
-  // }, [location.pathname]);
-
-  // useEffect(() => {
-  //   if(navigate('/')) {
-  //     setColor('')
-  //   }
-  // }, [navigate]);
-  
-  // useEffect(() => {
-  //   const listenBackEvent = () => {
-  //     // 뒤로가기 할 때 수행할 동작을 적는다
-  //   };
-
-  //   const unlistenHistoryEvent = history.listen(({ action }) => {
-  //     if (action === "POP") {
-  //       listenBackEvent();
-  //     }
-  //   });
-  //   return unlistenHistoryEvent;
-  // }, []);
-
 
   const delBtn = async () => {
       dispatch(editModal({Room:true}))

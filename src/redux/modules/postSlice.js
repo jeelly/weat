@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
-import {instance, getAuthorizationHeader} from "../../shared/axios";
+import { instance } from "../../shared/axios";
 
 //미들웨어
 
@@ -9,7 +8,6 @@ export const loadRoomDB = () => {
   return async function (dispatch) {
     try{
       const response = await instance.get("/api/rooms");
-      console.log("미들웨어로드",response)
       const rooms = response.data.myRooms;
       const roms_total = response.data.total;
       dispatch(loadRoom({rooms, roms_total}));
@@ -40,7 +38,7 @@ export const loadRoomDetailDB = (id) => {
 export const mainRoomListPutDB = (contents_obj, items) => {
   return async function (dispatch) {
     try{
-      const res = await instance.put(`/api/rooms/roomset`, contents_obj);
+      await instance.put(`/api/rooms/roomset`, contents_obj);
       console.log(items)
       dispatch(mainRoomListPut(items));
     }catch (error) {
@@ -53,7 +51,7 @@ export const mainRoomListPutDB = (contents_obj, items) => {
 export const roomUserDelDB = (id, contents_obj) => {
   return async function (dispatch) {
     try{
-      const res = await instance.put(`/api/rooms/${id}/kickUser`, contents_obj);
+      await instance.put(`/api/rooms/${id}/kickUser`, contents_obj);
     }catch (error) {
       console.log(error);
     }
@@ -64,8 +62,7 @@ export const roomUserDelDB = (id, contents_obj) => {
 export const roomTitlePutDB = (id, contents_obj) => {
   return async function (dispatch) {
     try{
-      console.log(contents_obj)
-      const res = await instance.put(`/api/rooms/${id}`, contents_obj);
+      await instance.put(`/api/rooms/${id}`, contents_obj);
       dispatch(roomTitlePut({id, contents_obj}));
     }catch (error) {
       window.alert(error.response.data.errorMessage);
@@ -78,8 +75,7 @@ export const roomTitlePutDB = (id, contents_obj) => {
 export const roomDeleteDB = (id) => {
   return async function (dispatch) {
     try{
-      const res = await instance.delete(`/api/rooms/${id}`);
-      console.log(res)
+      await instance.delete(`/api/rooms/${id}`);
       dispatch(roomDelete(id));
     }catch (error) {
       console.log(error);
@@ -91,7 +87,7 @@ export const roomDeleteDB = (id) => {
 export const roomExitDB = (id) => {
   return async function (dispatch) {
     try{
-      const res = await instance.put(`/api/rooms/${id}/exit`);
+      await instance.put(`/api/rooms/${id}/exit`);
       dispatch(roomExit(id));
     }catch (error) {
       console.log(error);
@@ -103,7 +99,7 @@ export const roomExitDB = (id) => {
 export const roomInviteDB = (id, userId, data) => {
   return async function (dispatch) {
     try{
-      const res = await instance.put(`/api/rooms/${id}/invite`, userId);
+      await instance.put(`/api/rooms/${id}/invite`, userId);
       dispatch(roomInvite(data));
     }catch (error) {
       console.log(error);
@@ -111,18 +107,33 @@ export const roomInviteDB = (id, userId, data) => {
   };
 };
 
-const userSlice = createSlice({
+//룸 코드 찾기
+export const findRoomCode = (id) => {     
+  return async function (dispatch) {
+    try{
+      const res = await instance.post(`api/rooms/${id}/roomCode`);
+      dispatch(addRoomCode(res.data.roomCode))
+      // console.log(res.data.roomCode)
+    }catch(e){
+      console.log(e)  
+    } 
+  };
+}
+  
+const postSlice = createSlice({
   name: "post",
   initialState: {
     itemAnimation:false,
     memberdel:[],
     editModal:{defult:false},
     detailId:[],
+    detailId_load:false,
     rooms:[],
     isloaded:false,
     detail_isloaded:false,
     _rooms:[] ,
     detail:{detail:{status:""}},
+    roomCode:''
   },
   reducers: {
     //아이템 애니메이션
@@ -147,7 +158,6 @@ const userSlice = createSlice({
     },
     //방 불러오기 
     loadRoom: (state, action) => {
-      console.log('리듀서',action.payload.rooms)
       state.rooms = action.payload.rooms
       state.isloaded = true
     },
@@ -159,6 +169,7 @@ const userSlice = createSlice({
     //디테일 아이디값 
     detailId: (state, action) => {
       state.detailId = action.payload
+      state.detailId_load = true
     },
     // 메인페이지 맛방 순서 수정
     mainRoomListPut: (state, action) => {
@@ -193,6 +204,9 @@ const userSlice = createSlice({
       })
       state.detail.users.guestInfo = [...state.detail.users.guestInfo, ...user_data]
     },
+    addRoomCode: (state, action) => {
+      state.roomCode = action.payload
+    },
   },
 });
 
@@ -207,7 +221,8 @@ export const {
   roomTitlePut, 
   roomDelete,
   roomExit,
-  roomInvite
-} = userSlice.actions;
+  roomInvite,
+  addRoomCode
+} = postSlice.actions;
 
-export default userSlice.reducer;
+export default postSlice.reducer;
