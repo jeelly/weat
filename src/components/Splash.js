@@ -24,11 +24,10 @@ const SplashWrap = styled.div`
   width: 100%;
   height: 100vh;
   min-height: 100%;
-  z-index: 101;
+  z-index: 200;
   background-image:url(${props => props.signatureFace});
   background-repeat: no-repeat;
   background-position: 100% 70%;
-  /* background-size: contain; */
   div {
     margin-top: 90px;
     img {
