@@ -116,6 +116,9 @@ const PostList = () => {
 
 export default PostList;
 
+const SortableItemStyle = styled(SortableItem)`
+    z-index:300;
+`
 const Container = styled(SortableList)`
     width:328px;
     display:grid;
@@ -210,6 +213,7 @@ const EmojiImg = styled.img`
 
 const Inner = styled.div`
     position:relative;
+    z-index:11;
 `
 
 const Deletebtn = styled.button`
