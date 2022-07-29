@@ -54,7 +54,7 @@ const MapPage = () => {
     <>
     <Container>
       <StyleLink house={house} to='/'/>
-      <AlertModal alert={alert} to='/'/>
+      {/* <AlertModal alert={alert} to='/'/> */}
       <Outlet/>
         <MapModal/>
         <SearchModal store_query={store_all_query.data}/>

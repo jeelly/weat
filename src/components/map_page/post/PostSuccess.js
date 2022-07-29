@@ -23,7 +23,7 @@ const PostSuccess = () => {
     return (
         <>
             <Header xBtn={black_x_button}>
-                    <button onClick={()=> {navigate('/map')}}>나가기</button>
+                    <button onClick={()=> {navigate('/')}}>나가기</button>
             </Header>
             <Container>
                 <Content>
@@ -35,7 +35,7 @@ const PostSuccess = () => {
                     {!id ? <p><span>{postData.storeName}</span>의 첫 발견자는 <br/> <b>{user.nickname}</b> 님이에요 :)</p> 
                     : <p><span>{postData.storeName}</span>에 <br/> <b>{user.nickname}</b> 님의 <br/> 소중한 리뷰가 추가되었어요:)</p> }
                 </Content>
-                <NewFooterBtn onClick={()=> {navigate('/map')}}>
+                <NewFooterBtn onClick={()=> {navigate('/')}}>
                     <p>확 인</p>
                 </NewFooterBtn>
             </Container>

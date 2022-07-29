@@ -68,14 +68,15 @@ const DelModalWrap = styled.article`
     top:0;
     right:0;
     display:flex;
+    align-items:center;
     justify-content:center;
-    display:${({delModal})=>delModal?'flex':'none'}
+    display:${({delModal})=>delModal?'flex':'none'};
+    z-index:100;
 `
 const DelModal = styled.div`
     width:269px;
     height:140px;
     background-color:var(--BLACK);
-    margin-top:31.25%;
     padding:32px 48px 0px 48px;
     h3 {
         font-family:'AppleSDGothicNeoM';

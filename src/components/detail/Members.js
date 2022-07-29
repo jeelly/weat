@@ -5,6 +5,7 @@ import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 import plus from '../../img/detail_plus.svg'
 import { eyeList } from "../../components/signup/FaceResource";
+import { device } from '../../css/GlobalStyles';
 
 const Members = ({users, setSerchBar}) => {
     const { memberCount, guestInfo, owner } = users;
@@ -138,19 +139,17 @@ const MembersInfo = styled.ul`
   align-items:center;
   width:100%;
   overflow: auto;
+  overflow-x:overlay;
   white-space: nowrap;
   display:flex;
   &::-webkit-scrollbar {
-    height:3px;
-    position:absolute;
-    top:0;
-    left:0;
+    height:100px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color:var(--LIGHTEST);
+    background-color:transparent;
   }
   &::-webkit-scrollbar-track {
-    background-color:rgba(238, 238, 238,0.2);
+    background-color:transparent;
     transform: matrix(1, 0, 0, -1, 0, 0);
   }
   li {

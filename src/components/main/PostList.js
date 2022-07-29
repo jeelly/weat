@@ -20,12 +20,14 @@ const PostList = () => {
     const rooms = useSelector(state => state.post.rooms);
     const itemAnimation = useSelector(state => state.post.itemAnimation);
     const [items, setItems] = React.useState(rooms)
+    const [arrChange, setArrChange] = useState(false);
     const [privateColor, setPrivateColor] = useState("#FFBB55")
     const [guestColor, setGuestColor] = useState('#FF7337')
     const [ownerColor, setOwnerColor] = useState("#23C7C7")
     const [modal, setModal] = useState(false)
     const [id, setId] = useState()
     const [status, setStatus] = useState()
+
     useEffect(() => {
         setItems(rooms)
     }, [rooms]);
@@ -42,11 +44,12 @@ const PostList = () => {
         }
         console.log(contents_obj)
             dispatch(mainRoomListPutDB(contents_obj, items))
-    }, [items]);
+    }, [arrChange]);
 
     
     const onSortEnd = (oldIndex, newIndex) => {
         setItems((array) => arrayMove(array, oldIndex, newIndex));
+        setArrChange(arrChange?false:true)
       };
 
     const exitBtn = async (id, status) => {

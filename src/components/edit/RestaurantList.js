@@ -1,14 +1,21 @@
 import React from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import del from '../../img/EditDel.svg';
 import no_image from '../../img/fixed/no_image.svg'
 import arrow from '../../img/Detail_Item_arrow.svg';
 import location from '../../img/fixed/location_icon.svg';
+import { RoomDelStoreDB } from '../../redux/modules/postSlice';
 
 const RestaurantList = ({ id, listPage}) => {
+    const dispatch = useDispatch();
     const { storeList } = useSelector(state => state.post.detail);
+    const a = useSelector(state => state.post.detail);
+    console.log(a)
+    const delStore = (storeId) => {
+        dispatch(RoomDelStoreDB(storeId, id))
+    }
     return (
         <Container>
                     <RestaurantInfo>
@@ -30,7 +37,7 @@ const RestaurantList = ({ id, listPage}) => {
                                         </TextWrap>
                                     </li>
                                     <li>
-                                        <DelBtn><img src={del} alt="삭제아이콘"/></DelBtn>
+                                        <DelBtn onClick={()=> delStore(store.storeId)}><img src={del} alt="삭제아이콘"/></DelBtn>
                                     </li>
                                 </RestaurantItem>
                             ))}

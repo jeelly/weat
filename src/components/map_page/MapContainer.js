@@ -108,32 +108,48 @@ const Keyword = ({detail_data}) => {
     //방목록에서 좌표찍기
     useEffect(()=>{
         if (!map) return
-            // LatLngBounds 객체에 좌표를 추가합니다
-            const bounds = new kakao.maps.LatLngBounds()
-            let markers = []
-            console.log(detail_data)
-            detail_data.map((data) => {
-              markers.push({
-                position: {
-                  lat: data.lat,
-                  lng: data.lon
-                },
-                userInfo: {
-                  eyes: data.eyes,
-                  faceColor: data.faceColor,
-                  nickname: data.nickname
-                },
-                storeId:data.storeId,
-                storeName: data.storeName,
-                address_name:data.address,
-                comment:data.comment,
-                starAvg:data.starAvg,
-                tag:data.tag
-              })
-              bounds.extend(new kakao.maps.LatLng(data.lat,data.lon))
+        console.log(detail_data)
+        if (detail_data.length === 0) {
+          setState(myLocation)
+          const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
+          bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))
+          map.setBounds(bounds)
+          let markers = []
+            markers.push({
+              position: {
+                lat: myLocation.center.lat,
+                lng: myLocation.center.lng,
+              }
             })
-            setMarkers(markers)
-            map.setBounds(bounds)
+          setMyMarkers(markers)
+        }else {
+          // LatLngBounds 객체에 좌표를 추가합니다
+          const bounds = new kakao.maps.LatLngBounds()
+          let markers = []
+          console.log(detail_data)
+          detail_data.map((data) => {
+            markers.push({
+              position: {
+                lat: data.lat,
+                lng: data.lon
+              },
+              userInfo: {
+                eyes: data.eyes,
+                faceColor: data.faceColor,
+                nickname: data.nickname
+              },
+              storeId:data.storeId,
+              storeName: data.storeName,
+              address_name:data.address,
+              comment:data.comment,
+              starAvg:data.starAvg,
+              tag:data.tag
+            })
+            bounds.extend(new kakao.maps.LatLng(data.lat,data.lon))
+          })
+          setMarkers(markers)
+          map.setBounds(bounds)
+        }
       },[detail_data])
 
 
@@ -227,11 +243,11 @@ const Keyword = ({detail_data}) => {
         const modalRef = useRef(null);
         useClickOutside(modalRef, () => {
           props.onClose();
-          navigate(`/review/${info.storeId}`)
+          navigate(`/review/${searchMarkersInfo.storeId}`)
         });
         if (searchStore.length===0) return;
         return (
-          <SpeechBubble speech_bubble={speech_bubble} ref={modalRef} onClick={()=>navigate(`/map/review/${info.storeId}`)}>
+          <SpeechBubble speech_bubble={speech_bubble} ref={modalRef} onClick={()=>navigate(`/review/${searchMarkersInfo.storeId}`)}>
             <li>
               <PlaceName>{searchStore[0].place_name}</PlaceName>
               <AddressName>{searchStore[0].address}</AddressName>
@@ -329,15 +345,15 @@ const Keyword = ({detail_data}) => {
               key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
             >
               <CustomOverlayMap position={marker.position}>
-                <SearchLocationicon eye={SearchUserEye()[0]} black_flag={black_flag} onClick={() => {setInfo(marker);}}>
+                <SearchLocationicon eye={SearchUserEye()[0]} black_flag={black_flag} onClick={() => {setSearchMarkersInfo(marker);}}>
                   <CharacterfaceIcon fill={marker.userData.faceColor}/>
                 </SearchLocationicon>
               </CustomOverlayMap>
 
-              {info && info.content === marker.content && (
+              {searchMarkersInfo && searchMarkersInfo.content === marker.content && (
                 <SearchModal
                   onClose={() => {
-                    setInfo();
+                    setSearchMarkersInfo();
                     setSearchMarkers({ position: [...markers.position] });
                   }}
                 />

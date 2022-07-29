@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadRoomDetailDB } from '../../redux/modules/postSlice';
 import styled from 'styled-components';
 import Rooms from './Rooms';
+import { device } from '../../css/GlobalStyles';
 const RoomData = () => {
     
     const rooms = useSelector(state => state.map.loadStoreRoom);
@@ -27,19 +28,19 @@ const RoomWrap = styled.div`
     position:absolute;
     bottom:74px;
     left:4.444%;
-    overflow: auto;
     white-space: nowrap;
-
+    overflow-x:overlay;
+    @media ${device.pc} {
+        width:57vw;
+    }
     &::-webkit-scrollbar {
-    height:0px;
-    position:absolute;
-    top:0;
-    left:0;
+        height:140px;
     }
     &::-webkit-scrollbar-thumb {
-        background:transparent;
+        background-color:transparent;
     }
     &::-webkit-scrollbar-track {
-        background:transparent;
+        background-color:transparent;
+        transform: matrix(1, 0, 0, -1, 0, 0);
     }
 `

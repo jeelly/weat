@@ -11,10 +11,12 @@ import Menu from '../components/review/Menu';
 import Header from '../components/review/Header';
 import square from '../img/fixed/square.svg'
 import pen from '../img/fixed/pen.svg'
+import { useSelector } from 'react-redux';
 
 const ReviewPage = () => {
     const { id } = useParams();
     let navigator = useNavigate();
+    const userId = useSelector((state)=> state.loggedIn.userInfo.nickname)
     //말풍선 조회
     const getBubbleList = () => {
         return instance.get(`/api/store/${id}`);
@@ -57,14 +59,14 @@ const ReviewPage = () => {
     });
     const MenuList = useQuery(["Menu"], getMenuList , {
         refetchOnWindowFocus: false,
-            retry: 0,
+            retry: 10,
             onSuccess: (data) => {
             console.log(data.data);
           }
     });
     const Tag_query = useQuery(["tag"], getTagList , {
         refetchOnWindowFocus: false,
-            retry: 0,
+            retry: 10,
             onSuccess: (data) => {
             console.log(data.data);
         }
@@ -82,6 +84,15 @@ const ReviewPage = () => {
     console.log(Review_query)
     console.log(MenuList)
     console.log(Tag_query)
+
+
+    const ReviewCheck = () => {
+        if(Review_query.status === 'success') {
+            const check = Review_query.data.data.result.filter((l)=> l.nickname === userId)
+            return check[0]?.nickname;
+        }
+    }
+    console.log(ReviewCheck())
     // console.log(Room_query.data.data.total)
     // console.log(Room_query.data.data.myRooms)
 
@@ -110,7 +121,7 @@ const ReviewPage = () => {
             {MenuList.status === 'success' && <Menu data={MenuList.data.data.result}/>}
             <FooterBtn>
                  <Link to={`/storepost/RoomRegistration/${id}`}><img src={square} alt="맛방에 저장"/>맛방에 저장</Link>
-                 <Link to={`/storepost/PostReview/${id}`}><img src={pen} alt="리뷰 남기기"/>리뷰 남기기</Link>
+                 {ReviewCheck() !==  userId ? <Link to={`/storepost/PostReview/${id}`}><img src={pen} alt="리뷰 남기기"/>리뷰 남기기</Link> : <Link to={`/review/${id}`}><span><img src={pen} alt="리뷰 남기기"/>리뷰 완료</span></Link>}
             </FooterBtn>
         </Container>
     );
@@ -158,6 +169,12 @@ const FooterBtn = styled.div`
         transform:translate(-50%,-50%);
     }
     a > img {
+        margin-right:8px;
+    }
+    a > span {
+        opacity:0.6;
+    }
+    a > span > img {
         margin-right:8px;
     }
 `

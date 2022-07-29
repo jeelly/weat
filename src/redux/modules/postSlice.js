@@ -112,6 +112,21 @@ export const roomInviteDB = (id, userId, data) => {
   };
 };
 
+//룸에서 스토어 찾아 지우기
+export const RoomDelStoreDB = (storeId, roomId) => {     
+  console.log(storeId, roomId)
+  return async function (dispatch) {
+    try{
+      const res = await instance.delete(`api/rooms/${roomId}/removal/${storeId}`);
+      const detail_storeList = await instance.get(`/api/rooms/${roomId}/storeList`);
+      const detail = detail_storeList.data.theStoreList
+      dispatch(RoomDelStore({storeId, detail}))
+    }catch(e){
+      console.log(e)  
+    } 
+  };
+}
+
 //룸 코드 찾기
 export const findRoomCode = (id) => {     
   return async function (dispatch) {
@@ -226,6 +241,10 @@ const postSlice = createSlice({
     tagData: (state, action) => {
       state.postData.tag = action.payload
     },
+    //룸에서 스토어 찾아서 지우기
+    RoomDelStore: (state, action) => {
+      state.detail.storeList = action.payload.detail
+    },
   },
 });
 
@@ -244,7 +263,8 @@ export const {
   addRoomCode,
   RegistrationData,
   FirstRestaruantData,
-  tagData
+  tagData,
+  RoomDelStore
 } = postSlice.actions;
 
 export default postSlice.reducer;

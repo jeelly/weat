@@ -5,27 +5,31 @@ import flag from '../../img/fixed/white_flag.svg'
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import { eyeList } from "../../components/signup/FaceResource";
 import LikeToggleBtn from '../LikeToggleBtn';
+import { device } from '../../css/GlobalStyles';
 
 const createArray = () => [...Array(5)];
 const Review = ({data}) => {
-    const [color, setColor] = useState()
-    const [fontcolor, setFontColor] = useState()
+    const [toggleArr, setToggleArr] = useState([]);
+    // const [color, setColor] = useState()
+    // const [fontcolor, setFontColor] = useState()
     const SearchUserEye = (eyes) => {
         return eyeList.filter((row) => row.includes(eyes) && row);
     };
 
-    useEffect(()=>{
-        Likecolor();  
-    },[])
-    const Likecolor = (like) => {
-        if(!like) {
-            setColor('#8729FF')
-            setFontColor('#FFFFFF')
+    const Likecolor = (idx) => {
+        if(toggleArr.includes(idx)) {
+            setToggleArr(toggleArr.filter((l)=> l !== idx))
         }else {
-            setColor('#FFFFFF')
-            setFontColor('#000000')
+            setToggleArr(toggleArr => [...toggleArr, idx])
         }
     }
+    useEffect(()=> {
+        data.map((l, idx) => {
+            if(l.likeDone) {
+            setToggleArr(toggleArr => [...toggleArr, idx])
+            }
+        })
+    },[])
 
     return (
         <Container>
@@ -33,13 +37,13 @@ const Review = ({data}) => {
             <ReviewContainer>
                 <ReviewTagWrap>
                     {data.map((arr, idx)=>(
-                        <div>
-                        <LikeWrap onClick={()=> Likecolor(arr.likeDone)} >
+                        <div key={arr.madiId}>
+                        <LikeWrap onClick={()=>{Likecolor(idx)}}>
                         <LikeToggleBtn likeNum={arr.likeNum} madiId={arr.madiId} Review='review' likeDone={arr.likeDone}/>
                         </LikeWrap>
-                        <ReviewItem key={idx} flag={flag} likeDone={color} fontcolor={fontcolor}>
+                        <ReviewItem key={idx} flag={flag} toggleArr={toggleArr.includes(idx)}>
                             <ImgWrap>
-                                <img src={arr.imgURL[0]} alt='음식사진'/>
+                                {arr.imgURL.length===0?null:<img src={arr.imgURL[0]} alt='음식사진'/>}
                             </ImgWrap>
                             <RankWrap>
                                 {createArray().map((star, i)=> (
@@ -100,20 +104,37 @@ const ReviewTagWrap = styled.ul`
     overflow:auto;
     white-space:nowrap;
     &::-webkit-scrollbar {
-    height:0px;
+    height:2px;
+    margin:20px 0;
     position:absolute;
     top:0;
     left:0;
     }
     &::-webkit-scrollbar-thumb {
-        background:transparent;
+        background-color:rgba(255,255,255,0.6);
     }
     &::-webkit-scrollbar-track {
-        background:transparent;
+        background-color:rgba(0,0,0,0.4);
     }
     > div {
         position:relative;
         height:272px;
+    }
+    @media ${device.pc} {
+        &::-webkit-scrollbar {
+        height:8px;
+        position:absolute;
+        top:0;
+        left:0;
+        }
+        &::-webkit-scrollbar-thumb {
+            /* background:transparent; */
+            background-color:rgba(255,255,255,0.6);
+        }
+        &::-webkit-scrollbar-track {
+            background-color:rgba(0,0,0,0.4);
+            /* background:transparent; */
+        }
     }
 `
 
@@ -130,15 +151,18 @@ const ReviewItem = styled.li`
     margin:10px 6px 6px 16px;
     border-radius:20px;
     /* background-color:blue; */
-    background-color:${({likeDone})=> likeDone};
+    background-color:${({toggleArr})=> toggleArr ? '#8729FF' : '#fff'};
     /* background-size:188px 233px; */
+    &:active {
+        background-color: lightblue;
+    }
     p {
         font-family: 'AppleSDGothicNeoUL';
         font-style: normal;
         font-weight: 300;
         font-size: 14px;
         line-height: 160%;
-        color:${({fontcolor})=> fontcolor}
+        color:${({toggleArr})=> toggleArr ? '#eee' : '#000'};
     }
     &::after {
         content:'';
