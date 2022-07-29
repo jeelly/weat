@@ -187,11 +187,15 @@ const Items = styled.li`
       height: 16px;
     }
     p.comment {
-      font-family: "AppleSDGothicNeoM";
-      font-size: 14px;
-      line-height: 160%;
-      color: #000000;
-      margin-top: 8px;
+      font-family: 'AppleSDGothicNeoM';
+    font-size: 14px;
+    line-height: 160%;
+    color: rgb(0, 0, 0);
+    margin-top: 8px;
+    white-space: nowrap;
+    padding: 0 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     }
   }
 `;
