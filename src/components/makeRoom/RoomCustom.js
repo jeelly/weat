@@ -12,11 +12,13 @@ import {
 //이미지
 import resetBtn from "../../img/icon/reset.svg";
 import defaultImg from "../../img/emojiDefault.png";
+import { useCallback } from "react";
 
 const RoomCustom = () => {
   const dispatch = useDispatch();
   const emojiArea = useRef();
   const { tasteRoom } = useSelector(state => state.roomMaking);
+  const [roomName, setRoomName] = useState("")
 
   //이모지 출력부분과 이모지 키보드 부분을 뺀 나머지 영역을 클릭할경우 키패드 사라짐
   const setTarget = (e) => {
@@ -44,9 +46,15 @@ const RoomCustom = () => {
   };
 
   //룸이름 저장
-  const naming = (e) => {
+  const onChangeName = useCallback( (e) => {
+    setRoomName(e.target.value)
     dispatch(addName(e.target.value));
-  };
+  },[])
+
+  const nameReset = () =>{
+    setRoomName("")
+    dispatch(addName(""));
+  }
 
   return (
     <div>
@@ -56,10 +64,11 @@ const RoomCustom = () => {
             <textarea
               cols="2"
               placeholder="제목을 지어주세요"
-              onChange={naming}
+              onChange={onChangeName}
               maxLength="8"
+              value={roomName}
             />
-            <p>
+            <p onClick={nameReset}>
               <img src={resetBtn} alt="" />
             </p>
           </InputWrap>

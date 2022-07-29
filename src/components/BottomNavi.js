@@ -1,19 +1,28 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import {useNavigate} from 'react-router-dom'
 import { ReactComponent as Profile } from "../img/profile.svg";
 import { ReactComponent as Gps } from "../img/gps.svg";
 import { ReactComponent as Bookmark } from "../img/bookmark.svg";
 import { device } from "../css/GlobalStyles";
+import AlertModal from "../components/mypageEdit/AlertModal";
 
 const BottomNavi = () => {
     const navigate = useNavigate()
     const location = window.location.href
+    const [alertModal, setAlertModal] = useState(false)
+  const [alertModalType, setAlertModalType] = useState("")
     const colorChange = (url) =>{
         if(location.includes(url)){
             return '#7F5FFF'
         }
     }
+
+    const alertModalOpen = (boolean, type = null) =>{
+      setAlertModalType(type)
+      setAlertModal(boolean)    
+    }
+  
   return (
     <BottomNaviWrap>
       <div className="naviContent">
@@ -22,7 +31,7 @@ const BottomNavi = () => {
             <Gps fill={colorChange('map')} />
             <p style={{color: colorChange('map')}} >맛지도</p>
           </li>
-          <li>
+          <li  onClick={() => alertModalOpen(true, "none")}>
             <Bookmark fill="black" />
             <p>먹기록</p>
           </li>
@@ -32,6 +41,7 @@ const BottomNavi = () => {
           </li>
         </ul>
       </div>
+      {alertModal && <AlertModal type={alertModalType} alertModalOpen={alertModalOpen}/>}
     </BottomNaviWrap>
   );
 };
