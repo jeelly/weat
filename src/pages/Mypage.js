@@ -189,6 +189,7 @@ const ProfileSection = styled.div`
           line-height: 14px;
           color: var(--INFO);
           border-radius: 500px;
+          cursor:pointer;
         }
       }
       div.mail {
@@ -211,12 +212,14 @@ const ReviewBox = styled.div`
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  
   ul {
     display: flex;
     height: 100%;
 
     li {
-      display: flex;
+      display: flex;     
+      cursor:pointer; 
       flex-direction: column;
       justify-content: center;
       align-items: center;
@@ -225,6 +228,7 @@ const ReviewBox = styled.div`
       line-height: 160%;
       width: 50%;
       height: 100%;
+      
       :first-child {
         border-right: 1px solid #f5f5f5;
       }
@@ -239,6 +243,7 @@ const ManuWrap = styled.div`
     margin-top: 38px;
     li {
       padding: 20px 0;
+      cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
