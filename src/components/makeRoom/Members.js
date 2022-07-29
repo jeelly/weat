@@ -119,7 +119,7 @@ const Invite = styled.ul`
   }
   .memberList {
     width: calc(100% + 16px);
-    overflow: scroll;
+    overflow: auto;
     ul {
       display: flex;
       li {
