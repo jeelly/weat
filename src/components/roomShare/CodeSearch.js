@@ -67,7 +67,7 @@ const CodeSearch = () => {
   useEffect(() => {
     if(!token){
       navigate('/roomshare/noentry') 
-    }else if(token){
+    }else if(token && searchCode){
       searchRoomCode();
     }
   }, []);

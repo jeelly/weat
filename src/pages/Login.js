@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 //패키지
 import styled from "styled-components";
@@ -7,21 +7,22 @@ import { useDispatch } from "react-redux";
 
 //이미지
 import logo from "../img/logo_type2.svg";
-import googleIcon from "../img/googleIcon.png";
-import kakaoIcon from "../img/kakaoIcon.png";
+import googleIcon from "../img/googleLogin.svg";
+import kakaoIcon from "../img/kakaoLogin.svg";
 
 //
 import instance from "../shared/axios";
 import { loginCheck } from "../redux/modules/userSlice";
-import { useEffect } from "react";
-import {BlackButton} from '../css/Style'
+import { BlackButton } from "../css/Style";
+import Splash from "../components/Splash";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userId, setUserId] = useState(null);
   const [userPassword, setUserPassword] = useState(null);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -30,7 +31,7 @@ const Login = () => {
     setUserPassword(e.target.value);
   };
 
-//엔터키 누르면 로그인
+  //엔터키 누르면 로그인
   const loginAction = async () => {
     try {
       const response = await instance.post("/api/users/login", {
@@ -41,81 +42,91 @@ const Login = () => {
       dispatch(loginCheck(true));
       navigate("/");
     } catch (e) {
-      setError(e.response.data.errorMessage)
+      setError(e.response.data.errorMessage);
     }
   };
 
-  const handleKeyDown = e => {
-    if(e.key === 'Enter') {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
       loginAction();
     }
-  }
+  };
+
 
 
   //소셜 로그인 후 받은 토큰 저장
   // const userToken = window.location.href.split('=')[1]
-  // const tokenSave = () => {    
+  // const tokenSave = () => {
   //   localStorage.setItem('token',userToken)
-  // } 
+  // }
   // useEffect(()=>{
   //   if(userToken){
   //     tokenSave()
-  //   }    
+  //   }
   // },[userToken])
 
   return (
-    <LoginContainer>
-      <section className="logoSection">
-        <img src={logo} alt="" />
-      </section>
-      <section className="loginInputBox">
-        <p>로그인</p>
-        <div>
-          <input type="text" placeholder="Id" onChange={onChangeId} />
-          <input
-            type="Password"
-            placeholder="Password"
-            onChange={onChangePassword}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-      </section>
-      <section className="subMenu">
-        <p onClick={() => navigate("/finduser")}>아이디/비밀번호 찾기 &#62;</p>
-        <p onClick={() => navigate("/signup/agreement")}>회원가입</p>
-      </section>
-      <section className="snsLogin">
-        <div>
-          <a href='http://realprojectapiserver.com/api/auth/google' alt="구글 로그인">
-            <img src={googleIcon} alt="" />
-            <p>
-              <span>구글메일</span>로 로그인
-            </p>
-          </a>
-        </div>
-        <div>
-        <a href='http://realprojectapiserver.com/api/auth/kakao' alt="카카오 로그인">
-            <img src={kakaoIcon} alt="" />
-            <p>
-              <span>카카오톡</span>으로 로그인
-            </p>
-          </a>
-        </div>
-      </section>
-      <section className="message">{error}</section>
-      <BlackButton onClick={loginAction}>로그인</BlackButton>
-    </LoginContainer>
+    <>
+    {isLoading ? <Splash /> : ""}
+      <LoginContainer>
+        <section className="logoSection">
+          <img src={logo} alt="" />
+        </section>
+        <section className="loginInputBox">
+          <p>로그인</p>
+          <div>
+            <input type="text" placeholder="Id" onChange={onChangeId} />
+            <input
+              type="Password"
+              placeholder="Password"
+              onChange={onChangePassword}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+        </section>
+        <section className="subMenu">
+          <p onClick={() => navigate("/finduser")}>
+            아이디/비밀번호 찾기 &#62;
+          </p>
+          <p onClick={() => navigate("/signup/agreement")}>회원가입</p>
+        </section>
+        <section className="snsLogin">
+          <div>
+            <a
+              href="http://realprojectapiserver.com/api/auth/google"
+              alt="구글 로그인"
+            >
+              <img src={googleIcon} alt="" />
+              <p>
+                <span>구글메일</span>로 로그인
+              </p>
+            </a>
+          </div>
+          <div>
+            <a
+              href="http://realprojectapiserver.com/api/auth/kakao"
+              alt="카카오 로그인"
+            >
+              <img src={kakaoIcon} alt="" />
+              <p>
+                <span>카카오톡</span>으로 로그인
+              </p>
+            </a>
+          </div>
+        </section>
+      </LoginContainer>
+      <Button onClick={loginAction} error={error}>
+        로그인
+      </Button>
+    </>
   );
 };
 
 const LoginContainer = styled.div`
-  width: 100vw;
-  min-height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 100%;
+  min-height: 100vh;
   background-color: var(--INFO);
-  padding: 0 16px;
+  padding: 0 16px 100px;
   .logoSection {
     display: flex;
     justify-content: center;
@@ -191,7 +202,12 @@ const LoginContainer = styled.div`
       }
     }
   }
-  .message {
+`;
+const Button = styled(BlackButton)`
+  ::after {
+    content: "${(props) => props.error}";
+    position: absolute;
+    top: -61px;
     width: 100%;
     text-align: center;
     margin-top: 24px;
@@ -202,5 +218,4 @@ const LoginContainer = styled.div`
     opacity: 0.5;
   }
 `;
-
 export default Login;

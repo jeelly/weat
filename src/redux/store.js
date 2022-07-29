@@ -4,6 +4,8 @@ import signupReducer from "./modules/signupSlice";
 import userCheckReducer from "./modules/userSlice";
 import roomMakingReducer from "./modules/roomMakingSlice";
 import mapReducer from "./modules/mapSlice";
+import notiReducer from './modules/socketSlice'
+import myReviewReducer from "./modules/myReviewSlice";
 
 
 const store = configureStore({
@@ -12,7 +14,9 @@ const store = configureStore({
     userSignup: signupReducer,    
     loggedIn: userCheckReducer,
     roomMaking:roomMakingReducer,
-    map:mapReducer
+    map:mapReducer,
+    noti:notiReducer,
+    myReviewList:myReviewReducer
   },
 });
 
