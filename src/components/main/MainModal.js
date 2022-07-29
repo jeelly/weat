@@ -5,6 +5,7 @@ import close from '../../img/close.svg';
 import Lock from '../../img/Lock.svg';
 import arrow from '../../img/arrow.svg';
 import donut from '../../img/donut.svg';
+import { device } from "../../css/GlobalStyles";
 
 const MainModal = () => {
     const [modal, setModal] = useState(true)
@@ -34,6 +35,9 @@ const MainModal = () => {
 export default MainModal;
 
 const Aside = styled.aside`
+@media ${device.pc} {
+      width: 480px;
+    }
     font-family: "AppleSDGothicNeoM00", sans-serif;
     display:${({modal}) => modal ?'block':'none'};
     width:100%;
@@ -41,8 +45,9 @@ const Aside = styled.aside`
     text-align:center;
     border-radius:18px 18px 0 0;
     position:fixed;
-    bottom:0;
-    right:0;
+    bottom:67px;
+    left: 50%;
+    transform: translate(-50%, 0);
     background-color:var(--LIGHTEST);
     background-image:url(${(props) => props.close});
     background-repeat:no-repeat;
