@@ -23,7 +23,7 @@ const Convenience = ({roomsLength, longPressBackspaceCallback}) => {
         <Container>
             <div>
                 <Total>Total <strong>{roomsLength}</strong></Total>
-                <MoveIcon {...backspaceLongPress}  image={positionShift}>길게 눌러 위치이동</MoveIcon>
+                <MoveIcon {...backspaceLongPress}  image={positionShift}><span>길게 눌러 위치이동</span></MoveIcon>
             </div>
             <IconImgWrap>
                 <button><IconImg src={convenPrivate} alt='비밀방'/></button>
@@ -71,6 +71,9 @@ const MoveIcon = styled.button`
         background-size:18px 14px;
         background-position:center;
         margin-left:7px;
+    }
+    span {
+        pointer-events: none;
     }
 `
 

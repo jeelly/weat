@@ -32,7 +32,7 @@ const Container = styled.ul`
     justify-content:space-between;
     align-items:center;
     width:328px;
-    margin:24.33px auto 29px auto;
+    margin:0 auto 29px auto;
     li {
         text-align:left;
     }

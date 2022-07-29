@@ -26,7 +26,7 @@ export const loadRoomDetailDB = (id) => {
       const response_detail_storeList = await instance.get(`/api/rooms/${id}/storeList`);
       const detail = response_room_detail.data.result;
       const users = response_detail_users.data.userInfo;
-      const storeList = response_detail_storeList.data.result;
+      const storeList = response_detail_storeList.data.theStoreList;
       dispatch(loadRoomDetail({detail, users, storeList}));
     }catch (error) {
       console.log(error);
@@ -39,7 +39,6 @@ export const mainRoomListPutDB = (contents_obj, items) => {
   return async function (dispatch) {
     try{
       await instance.put(`/api/rooms/roomset`, contents_obj);
-      console.log(items)
       dispatch(mainRoomListPut(items));
     }catch (error) {
       console.log(error);
@@ -66,7 +65,7 @@ export const roomTitlePutDB = (id, contents_obj) => {
       dispatch(roomTitlePut({id, contents_obj}));
     }catch (error) {
       window.alert(error.response.data.errorMessage);
-      // console.log(error)
+      console.log(error)
     }
   };
 };
@@ -133,7 +132,12 @@ const postSlice = createSlice({
     detail_isloaded:false,
     _rooms:[] ,
     detail:{detail:{status:""}},
-    roomCode:''
+    roomCode:'',
+    postData:{
+      first:[],
+      registration:[],
+      tag:[]
+    }
   },
   reducers: {
     //아이템 애니메이션
@@ -173,7 +177,6 @@ const postSlice = createSlice({
     },
     // 메인페이지 맛방 순서 수정
     mainRoomListPut: (state, action) => {
-      console.log(action.payload)
       state.rooms = [...action.payload]
     },
     // 메인페이지 맛방 삭제
@@ -207,6 +210,15 @@ const postSlice = createSlice({
     addRoomCode: (state, action) => {
       state.roomCode = action.payload
     },
+    FirstRestaruantData: (state, action) => {
+      state.postData.first = action.payload
+    },
+    RegistrationData: (state, action) => {
+      state.postData.registration = action.payload
+    },
+    tagData: (state, action) => {
+      state.postData.tag = action.payload
+    },
   },
 });
 
@@ -222,7 +234,10 @@ export const {
   roomDelete,
   roomExit,
   roomInvite,
-  addRoomCode
+  addRoomCode,
+  RegistrationData,
+  FirstRestaruantData,
+  tagData
 } = postSlice.actions;
 
 export default postSlice.reducer;

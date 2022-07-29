@@ -1,13 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import no_image from '../../img/fixed/no_image.svg'
 import arrow from '../../img/Detail_Item_arrow.svg';
+import location from '../../img/fixed/location_icon.svg';
 
-const RestaurantList = ({id, storeList, listPage}) => {
-    console.log(storeList)
+const RestaurantList = ({id, storeList, listPage, status}) => {
+    let navigate = useNavigate();
+
+    
     return (
-        <Container>
+        <Container status={status}>
                     <RestaurantInfo>
                         <header>
                             <Total>Total <span>{storeList.length}</span></Total>
@@ -15,23 +18,19 @@ const RestaurantList = ({id, storeList, listPage}) => {
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
                             {storeList.map((store, idx)=> (
-                                <RestaurantItem key={id}>
+                                <RestaurantItem key={id} onClick={()=> navigate(`/review/${store.storeId}`)}>
                                     <li>
                                     <ImgWrap>
-                                        <RestaurantImg src={store.imgURL[0]} alt="음식사진"/>
+                                        {store.imgURL.length === 0 ? <img src={no_image} alt='임시 이미지'/> : <RestaurantImg src={store.imgURL[0]} alt="음식사진"/>}
                                     </ImgWrap>
-                                        <ul>
-                                            <HashTagWrap>
-                                                {store.tag.map((tag, i) => (
-                                                    <HashTag key={i}>{tag}</HashTag>
-                                                ))}
-                                            </HashTagWrap>
+                                        <TextWrap>
+                                            <li><RestaurantUser>{store.writer}님의 발견</RestaurantUser></li>
                                             <li><RestaurantName>{store.storeName}</RestaurantName></li>
-                                            <li><RestaurantContent>{store.comment}</RestaurantContent></li>
-                                        </ul>
+                                            <LocationWrap location={location}><RestaurantContent>{store.address}</RestaurantContent></LocationWrap>
+                                        </TextWrap>
                                     </li>
                                     <li>
-                                        <LinkBtn to="/"><img src={arrow} alt="화살표아이콘"/></LinkBtn>
+                                        <ArrowBtn><img src={arrow} alt="화살표아이콘"/></ArrowBtn>
                                     </li>
                                 </RestaurantItem>
                             ))}
@@ -47,13 +46,14 @@ const Container = styled.div`
     width:100%;
     overflow:hidden;
     padding:0 8px;
+    background-color:${({status}) => status==='publicOwner'?'#FF7337': status==='publicGuest'? '#23C7C7' : '#FFBB55'} ;
 `
 const RestaurantInfo = styled.div`
     background-color:var(--WHITE);
     box-shadow: 0px 12px 17px rgba(153, 153, 153, 0.2), 0px 5px 22px rgba(153, 153, 153, 0.2), 0px 7px 8px rgba(153, 153, 153, 0.2);
     width:100%;
     margin-top:${({listPage}) => listPage ? '10px': '34px'};
-    border-radius:18px 18px 0 0;
+    border-radius:18px;
     padding:20px 16px 0 16px;
     header {
         display:flax;
@@ -66,6 +66,9 @@ const Total = styled.div`
     font-weight: 300;
     font-size: 12px;
     line-height: 16px;
+    span {
+        font-weight:600;
+    }
 `
 const ListLink = styled(Link)`
     font-weight: 700;
@@ -87,6 +90,17 @@ const RestaurantItemWrap = styled.div`
     display: none; /* Chrome, Safari, Opera*/
     }
 `
+
+const TextWrap = styled.ul`
+    width:170px;
+    height:90px;
+    text-align:left;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+    position:relative;
+`
 const RestaurantItem = styled.ul`
     display:flex;
     justify-content:space-between;
@@ -95,6 +109,9 @@ const RestaurantItem = styled.ul`
     margin-bottom:16px;
     li:first-child {
         display:flex;
+    }
+    &:first-child {
+        margin-top:2px;
     }
 `
 
@@ -115,9 +132,11 @@ const HashTag = styled.div`
 `
 
 const ImgWrap = styled.div`
-    width:104px;
+    width:102px;
     height:90px;
-    margin-right:8px;
+    margin-right:11.5px;
+    border-radius:20px;
+    overflow:hidden;
 `
 const RestaurantImg = styled.img`
   width: 104px;
@@ -129,15 +148,43 @@ const RestaurantName = styled.h3`
     font-size: 18px;
     line-height: 22px;
     text-transform: capitalize;
-    margin:18px auto 6px auto;
+    margin:12px auto 4px auto;
+`
+const RestaurantUser = styled.p`
+font-family: 'AppleSDGothicNeoB';
+font-style: normal;
+font-size: 12px;
+display: flex;
+color:#7F5FFF;
 `
 const RestaurantContent = styled.p`
     font-weight: 300;
     font-size: 14px;
     line-height: 160%;
     color:#666;
+    width:148px;
+    overflow:hidden; 
+    text-overflow:ellipsis; 
+    white-space:nowrap;
+    position:relative;
 `
-const LinkBtn = styled(Link)`
+const LocationWrap = styled.li`
+/* width:178px;
+min-width:178px; */
+&:after {
+        content:"";
+        width:22px;
+        height:22px;
+        background-image:url(${({location})=> location});
+        background-position:center;
+        /* background-size:4px; */
+        background-repeat:no-repeat;
+        position:absolute;
+        bottom:8px;
+        right:0;
+    }
+`
+const ArrowBtn = styled.div`
     margin-right:2.564%;
     /* margin-left:10px; */
     /* margin-left: 16.59px; */

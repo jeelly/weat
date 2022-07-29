@@ -13,16 +13,19 @@ import arrayMove from "array-move";
 import { Link } from 'react-router-dom';
 import { loadRoomDB, mainRoomListPutDB, roomDeleteDB, roomExitDB } from '../../redux/modules/postSlice';
 import del from '../../img/EditDel.svg';
+import Modal from '../map_page/post/Modal';
 
-const PostList = ({rooms}) => {
+const PostList = () => {
     const dispatch = useDispatch();
+    const rooms = useSelector(state => state.post.rooms);
     const itemAnimation = useSelector(state => state.post.itemAnimation);
     const [items, setItems] = React.useState(rooms)
-
     const [privateColor, setPrivateColor] = useState("#FFBB55")
     const [guestColor, setGuestColor] = useState('#FF7337')
     const [ownerColor, setOwnerColor] = useState("#23C7C7")
-
+    const [modal, setModal] = useState(false)
+    const [id, setId] = useState()
+    const [status, setStatus] = useState()
     useEffect(() => {
         setItems(rooms)
     }, [rooms]);
@@ -46,15 +49,17 @@ const PostList = ({rooms}) => {
         setItems((array) => arrayMove(array, oldIndex, newIndex));
       };
 
-      console.log(items)
-
     const exitBtn = async (id, status) => {
-        console.log(status)
         if(status === "publicOwner" || status === "private") {
             await dispatch(roomDeleteDB(id))
         } else {
             await dispatch(roomExitDB(id))
         }
+    }
+    const modalOn = (id, status) => {
+        setId(id)
+         setStatus(status)
+        setModal(true)
     }
     return (
             <Container
@@ -62,13 +67,15 @@ const PostList = ({rooms}) => {
             className="list"
             draggedItemClassName="dragged"
             >
+            <Modal content="정말 맛방을 나가시겠어요? 그동안 모아뒀던 맛집들이 사라져요;(" modal={modal} setModal={setModal} okBtn={()=> exitBtn(id, status)} />
                     {items.map((item, index) => (
                         itemAnimation?
                         (
                             <SortableItem key={item.roomId}>
                                 <Inner>
                                     <PostItem itemAnimation={itemAnimation}>
-                                    <Deletebtn onClick={()=> exitBtn(item.roomId, item.status)}>X</Deletebtn>
+                                    {/* <Deletebtn onClick={()=> exitBtn(item.roomId, item.status)}>X</Deletebtn> */}
+                                    <Deletebtn onClick={()=> modalOn(item.roomId, item.status)}>X</Deletebtn>
                                     <PostItemInner itemAnimation={itemAnimation} color={item.status}>
                                             <li>
                                                 <IconImg>{item.status === 'private' && <Private fill="#FFBB55"/>}</IconImg>
@@ -124,7 +131,7 @@ const PostItem = styled.div`
     width:160px;
     height:180px;
     border-radius:20px;
-    box-shadow:var(--SHADOW2);
+    box-shadow:var(--SHADOW1);
     background-color:var(--WHITE);
     animation:${({itemAnimation}) => itemAnimation ? ItemRotate : 'normal'} 0.4s 1s infinite linear alternate;
     margin:0;

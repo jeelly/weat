@@ -26,11 +26,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Weat</title>
+    <link href="./index.css" rel="stylesheet" >
     <link href="https://fonts.googleapis.com/css2?family=Niramit:wght@300;400;500;700&display=swap" rel="stylesheet">    
   </head>
   <body>
+    <div class="bodyContainer"></div>
     <div id="root"></div>
     <div id="portal"></div>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SCJJPGM87W"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-SCJJPGM87W');
+    </script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_KAKAO_MAP_KEY%&libraries=services,clusterer,drawing"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!--

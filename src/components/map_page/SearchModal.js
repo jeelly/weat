@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MapSearch from './MapSearch';
 import search_icon from '../../img/search_white_icon.svg'
+import { useDispatch, useSelector } from 'react-redux';
+import { modalNum } from '../../redux/modules/mapSlice';
 
 const SearchModal = ({store_query}) => {
+    const dispatch = useDispatch();
+    const modalnums = useSelector(state => state.map.modalNum);
     const [modal, setModal] = useState(false)
+    
+    useEffect(()=>{
+        setModal(modalnums)
+    },[modalnums])
 
     const toggle = () => {
         setModal(modal?false:true)
+        dispatch(modalNum(modal?false:true))
     }
     return (
         <Container modal={modal}>
@@ -27,8 +36,8 @@ const Container = styled.div`
     position:absolute;
     width:${({modal})=> modal?'100%':'auto'};
     height:${({modal})=> modal?'100vh':'auto'};
-    bottom:${({modal})=> modal?'0':'2.797%'};
-    right:${({modal})=> modal?'0':'8.333%'};
+    bottom:${({modal})=> modal?'0':'16px'};
+    right:${({modal})=> modal?'0':'30px'};
     z-index:100;
 `
 const MapSearchWrap = styled.div`

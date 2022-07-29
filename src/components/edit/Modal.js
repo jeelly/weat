@@ -44,7 +44,7 @@ const Modal = ({id}) => {
                     <DelModalWrap delModal={delEdit}>
                         <DelModal>
                             {key === 'Member' ?
-                            <h3>정말로 {edit.nickname}님을 <br/>강퇴시키겠어요? :(</h3>
+                            <h3>정말로 {edit.nickname}님을 <br/>맛방에서 삭제하시겠습니까?</h3>
                             : <h3>정말로 삭제하시겠어요?<br/>그동안 모아뒀던 맛집들이 사라져요;( </h3>
                             }
                             <div>
