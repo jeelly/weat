@@ -8,15 +8,44 @@ import circle_guest from '../../../img/circle_guest.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import RegistrationItem from './RegistrationItem';
 import { postData, RegistrationData } from '../../../redux/modules/postSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import BottomNavi from '../../BottomNavi';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
+import instance from '../../../shared/axios';
+
+const RestaurantRoomSaveDB = (data) => {
+    return instance.post("/api/store/saverooms", data);
+}
 
 const RoomRegistration = () => {
+    const { id } = useParams();
+    const postData = useSelector((state)=> state.post.postData);
     const dispatch = useDispatch();
     let navigate = useNavigate()
-    const rooms = useSelector((state)=> state.post.rooms)
+    const QueryClient = useQueryClient();  //캐싱된 데이터 후처리 리듀서 느낌
+    // const rooms = useSelector((state)=> state.post.rooms);
     const [toggle, setToggle] = useState(false);
-    const [roomArr, setRoomArr] = useState([])
-    const [reset, setReset] = useState()
+    const [roomArr, setRoomArr] = useState([]);
+    const [reset, setReset] = useState();
+
+    useEffect(()=>{
+        if(!id && postData.first.length===0) {
+            navigate('/map')
+        }
+    },[])
+
+    const RoomSaveDB = () => {
+        return instance.get(`/api/store/getroom/${id}`);
+    }
+
+    const SaveDone_query = useQuery(["saveDone"], RoomSaveDB , {
+        refetchOnWindowFocus: false,
+        retry:10,
+        onSuccess: (data) => {
+        console.log(data);
+      }
+    });
+
     const statusIcon = (status) => {
         if(status==='private') {
             return circle_private;
@@ -41,23 +70,41 @@ const RoomRegistration = () => {
         }
     }
 
+    const RestaurantRoomSave = useMutation(RestaurantRoomSaveDB, {
+        onSuccess: () => {
+          QueryClient.invalidateQueries("room")
+        }
+    });
+    
+    const successBtn = () => {
+        RestaurantRoomSave.mutate({selectedRooms:roomArr, storeId:id});
+        navigate('/')
+    }
+
+    const rooms = SaveDone_query?.data?.data?.myRooms;
+    console.log(rooms)
+    // console.log(SaveDone_query.status)
+    // const [rooms, setRooms] = useState([])
+    // useEffect(()=> {
+    //     if(SaveDone_query.status === 'success')
+    //     setRooms(SaveDone_query.data.data.myRooms) 
+    // },[])
     return (
         <div>
             {/* <Modal content='맛방에 등록하시겠습니까?' nav='/storepost/PostReview' modal={modal} setModal={setModal} okBtn={upload}/> */}
             <ContentWrap>
-                <ul>
+                {SaveDone_query.status === 'success' && <ul>
                     <Nav>
                         <p><span>{roomArr.length}</span>/{rooms.length}</p>
                         <button onClick={resetBtn}>Reset</button>
                     </Nav>
                     {rooms.map((room, idx)=> (    
-                        <RegistrationItem key={room.roomId} room={room} statusIcon={statusIcon} roomArr={roomArr} setRoomArr={setRoomArr} reset={reset}/>
+                        <RegistrationItem key={room.roomId} saveDone={room.saveDone} room={room} statusIcon={statusIcon} roomArr={roomArr} setRoomArr={setRoomArr} reset={reset}/>
                     ))}
-                </ul>
+                </ul>}
             </ContentWrap>
-            <FooterBtn onClick={upload}>
-                <p>다 음</p>
-            </FooterBtn>
+            {!id ? <FooterBtn onClick={upload}><p>다 음</p></FooterBtn> : <PurPleBtn onClick={successBtn} >저 장</PurPleBtn>}
+            {id && <BottomNavi/>}
         </div>
     );
 };
@@ -99,4 +146,22 @@ const Nav = styled.li`
         color:var(--BLACK);
         cursor:pointer;
     }
+`
+
+const PurPleBtn = styled.button`
+    border:none;
+    background-color:var(--INFO);
+    font-family: 'AppleSDGothicNeoSB';
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.02em;
+    color:var(--WHITE);
+    padding:13px 40px;
+    border-radius:60px;
+    position:fixed;
+    bottom:88px;
+    left:50%;
+    transform: translate(-50%, 0);
+    cursor:pointer;
 `

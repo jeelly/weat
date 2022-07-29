@@ -18,7 +18,7 @@ const Edit = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const {detail, users, storeList} = useSelector(state => state.post.detail);
+    const {detail, users } = useSelector(state => state.post.detail);
     const isloaded = useSelector(state => state.post.detail_isloaded);
     const { emojiKey, tasteRoom } = useSelector(state => state.roomMaking);
     const [serchBar, setSerchBar] = useState(false);
@@ -42,7 +42,7 @@ const Edit = () => {
             <Header id={id} status={detail.status} roomName={detail.roomName}/>
             {isloaded && <Title detail={detail} id={id} />}
             {isloaded && <Members inviteUser={inviteUser} users={users} setSerchBar={setSerchBar}/>}
-            {isloaded && <RestaurantList id={id}  storeList={storeList} />}
+            {isloaded && <RestaurantList id={id} />}
             <RestaurantAdd onClick={SearchModal}><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
             <Modal id={id}/>
             {emojiKey ? <Emoji detail={detail} id={id}/> : null}

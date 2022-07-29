@@ -22,7 +22,7 @@ const Detail = (props) => {
   let navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
-  const { detail, users, storeList } = useSelector((state) => state.post.detail);
+  const { detail, users } = useSelector((state) => state.post.detail);
   const [serchBar, setSerchBar] = useState(false);
   const isloaded = useSelector((state) => state.post.detail_isloaded);
   const inviteUser = useSelector((state) => state.post.inviteUser);
@@ -81,7 +81,7 @@ const Detail = (props) => {
             setSerchBar={setSerchBar}
           />
         )}
-        {isloaded && <RestaurantList status={detail?.status} storeList={storeList} id={id} />}
+        {isloaded && <RestaurantList status={detail?.status} id={id} />}
         <RestaurantAdd onClick={SearchModal}><img src={house} alt="집아이콘"/>맛집 추가</RestaurantAdd>
         <SearchBar
           id={id}

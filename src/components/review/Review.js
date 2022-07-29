@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StarIcon from '../star_rating/StarIcon';
 import flag from '../../img/fixed/white_flag.svg'
 import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import { eyeList } from "../../components/signup/FaceResource";
+import LikeToggleBtn from '../LikeToggleBtn';
 
 const createArray = () => [...Array(5)];
 const Review = ({data}) => {
+    const [color, setColor] = useState()
+    const [fontcolor, setFontColor] = useState()
     const SearchUserEye = (eyes) => {
         return eyeList.filter((row) => row.includes(eyes) && row);
     };
 
-    console.log(data)
+    useEffect(()=>{
+        Likecolor();  
+    },[])
+    const Likecolor = (like) => {
+        if(!like) {
+            setColor('#8729FF')
+            setFontColor('#FFFFFF')
+        }else {
+            setColor('#FFFFFF')
+            setFontColor('#000000')
+        }
+    }
+
     return (
         <Container>
             <h3>맛 마디</h3>
@@ -19,13 +34,16 @@ const Review = ({data}) => {
                 <ReviewTagWrap>
                     {data.map((arr, idx)=>(
                         <div>
-                        <ReviewItem key={idx} flag={flag}>
+                        <LikeWrap onClick={()=> Likecolor(arr.likeDone)} >
+                        <LikeToggleBtn likeNum={arr.likeNum} madiId={arr.madiId} Review='review' likeDone={arr.likeDone}/>
+                        </LikeWrap>
+                        <ReviewItem key={idx} flag={flag} likeDone={color} fontcolor={fontcolor}>
                             <ImgWrap>
                                 <img src={arr.imgURL[0]} alt='음식사진'/>
                             </ImgWrap>
                             <RankWrap>
                                 {createArray().map((star, i)=> (
-                                    <StarIcon key={i} selected={arr.star > i} color={!arr.likeDone ? '#000' : '#fff'} size='16px'/>
+                                    <StarIcon key={i} selected={arr.star > i} color={!arr.likeDone ? 'black' : '#fff'} size='16px'/>
                                 ))}
                             </RankWrap>
                             <p>"{arr.comment}"</p>
@@ -46,9 +64,17 @@ const Review = ({data}) => {
 
 export default Review;
 
+const LikeWrap = styled.div`
+    position:absolute;
+    top:100px;
+    right:50%;
+    transform:translate(50%,0);
+    padding-left:10px;
+    z-index:1;
+`
 const Container = styled.article`
     margin-top:40px;
-    margin-bottom:50px;
+    /* margin-bottom:50px; */
     display:flex;
     flex-direction:column;
     /* align-items:center; */
@@ -99,11 +125,12 @@ const ReviewItem = styled.li`
     align-items:center;
     width:188px;
     min-width: 188px;
-    height:233px;
+    height:217px;
     box-shadow:var(--SHADOW1);
     margin:10px 6px 6px 16px;
     border-radius:20px;
-    /* background-image:url(${({img})=> img}); */
+    /* background-color:blue; */
+    background-color:${({likeDone})=> likeDone};
     /* background-size:188px 233px; */
     p {
         font-family: 'AppleSDGothicNeoUL';
@@ -111,7 +138,7 @@ const ReviewItem = styled.li`
         font-weight: 300;
         font-size: 14px;
         line-height: 160%;
-        color:var(--BLACK)
+        color:${({fontcolor})=> fontcolor}
     }
     &::after {
         content:'';
@@ -128,6 +155,7 @@ const ImgWrap = styled.div`
     background:var(--BLACK);
     width:188px;
     height:106px;
+    min-height: 106px;
     img {
             width:188px;
             height:106px;
@@ -147,7 +175,7 @@ const UserInfo = styled.li`
     display:flex;
     align-items:flex-end;
     position:absolute;
-    bottom:0;
+    bottom:16px;
     left:28px; 
     p {
         font-family: 'AppleSDGothicNeoB';

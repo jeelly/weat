@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { FooterBtn } from '../../../css/Style';
 import { useSelector } from 'react-redux';
 import black_x_button from '../../../img/black_x_button.svg'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {ReactComponent as Characterface} from '../../../img/characterface.svg';
 import { eyeList } from "../../../components/signup/FaceResource";
 import {ReactComponent as Flag} from '../../../img/fixed/blackFlag.svg';
 
 
 const PostSuccess = () => {
+    const { id } = useParams();
     let navigate = useNavigate();
     const postData = useSelector((state)=> state.post.postData.first);
     const user = useSelector(state => state.loggedIn.userInfo);
@@ -26,12 +27,13 @@ const PostSuccess = () => {
             </Header>
             <Container>
                 <Content>
-                    <h3>발견 완료</h3>
+                    {!id ? <h3>발견 완료</h3> : <h3>리뷰 완료</h3>}
                     <NewFlag/>
                     <CharacterWrap eye={userEye()[0]}>
                         <NewCharacterface fill={user.faceColor}/>
                     </CharacterWrap>
-                    <p><span>{postData.storeName}</span>의 첫 발견자는 <br/> <b>{user.nickname}</b> 님이에요 :)</p>
+                    {!id ? <p><span>{postData.storeName}</span>의 첫 발견자는 <br/> <b>{user.nickname}</b> 님이에요 :)</p> 
+                    : <p><span>{postData.storeName}</span>에 <br/> <b>{user.nickname}</b> 님의 <br/> 소중한 리뷰가 추가되었어요:)</p> }
                 </Content>
                 <NewFooterBtn onClick={()=> {navigate('/map')}}>
                     <p>확 인</p>

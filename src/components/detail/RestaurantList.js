@@ -4,11 +4,11 @@ import styled from 'styled-components';
 import no_image from '../../img/fixed/no_image.svg'
 import arrow from '../../img/Detail_Item_arrow.svg';
 import location from '../../img/fixed/location_icon.svg';
+import { useSelector } from "react-redux";
 
-const RestaurantList = ({id, storeList, listPage, status}) => {
+const RestaurantList = ({id, listPage, status}) => {
+    const { storeList } = useSelector((state) => state.post.detail);
     let navigate = useNavigate();
-
-    
     return (
         <Container status={status}>
                     <RestaurantInfo>
