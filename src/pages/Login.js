@@ -52,7 +52,11 @@ const Login = () => {
     }
   };
 
-
+  useEffect(()=>{
+    if(window.localStorage.getItem('token')){
+      navigate('/')
+    }
+  },[])
 
   //소셜 로그인 후 받은 토큰 저장
   // const userToken = window.location.href.split('=')[1]
