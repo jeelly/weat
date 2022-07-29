@@ -6,16 +6,24 @@ import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 import plus from '../../img/detail_plus.svg'
 import { eyeList } from "../../components/signup/FaceResource";
 
-const Members = ({users, setSerchBar, }) => {
+const Members = ({users, setSerchBar}) => {
     const { memberCount, guestInfo, owner } = users;
     const serchBarOpen = useCallback(() => {
         setSerchBar(true);
       }, []);
 
+    //중복 제거
+    const members = guestInfo.reduce(function(acc, current) {
+        if (acc.findIndex(({ userId }) => userId === current.userId) === -1) {
+            acc.push(current);
+        }
+        return acc;
+    }, []);
+
     const userEye = (eye) => {
         return eyeList.filter((row) => row.includes(eye) && row);
     };
-    console.log(userEye())
+
     return (
             <Container>
                 <MumbersTotal>
@@ -34,7 +42,7 @@ const Members = ({users, setSerchBar, }) => {
                                 <NewCharacterface fill={owner.faceColor}/>
                                 <p>{owner.nickname}</p>
                             </Owner>
-                            {guestInfo.map((user,idx)=> (
+                            {members.map((user,idx)=> (
                                 <Guest key={user.userId} eye={userEye(user.eyes)}>
                                     <NewCharacterface fill={user.faceColor}/>
                                     <p>{user.nickname}</p>
@@ -188,7 +196,8 @@ const Owner = styled.li`
         background-size:contain;
         position:absolute;
         top:0;
-        left:12px;
+        left:50%;
+        transform:translateX(-50%);
     }
 `
 
@@ -204,6 +213,7 @@ const Guest = styled.li`
         background-size:contain;
         position:absolute;
         top:0;
-        left:12px;
+        left:50%;
+        transform:translateX(-50%);
     }
 `

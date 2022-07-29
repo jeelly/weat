@@ -2,11 +2,41 @@ import { createSlice } from "@reduxjs/toolkit";
 import instance from "../../shared/axios";
 
 //검색해서 클릭한 맛집 데이터
+export const loadStoreRoomDB = () => {
+  return async function (dispatch) {
+    try{
+      const response = await instance.get(`/api/store`);
+      console.log(response.data.myRooms)
+      dispatch(loadStoreRoom(response.data.myRooms));
+    }catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+//검색해서 클릭한 맛집 데이터 or 맛집 상세 조회 말풍선
 export const loadMyStoreDB = (store) => {
   return async function (dispatch) {
     try{
       const response = await instance.get(`/api/store/${store.storeId}`);
+      console.log('aaa',response)
       dispatch(loadMyStore({store:store, response:response.data.result}));
+    }catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+// 특정 맛방의 맛집 전체 조회
+export const loadRoomTagIconDB = (id) => {
+  console.log(id)
+  return async function (dispatch) {
+    try{
+      const response_room_detail = await instance.get(`/api/store/${id}/tagicon`);
+      const detail = response_room_detail.data.result;
+      console.log("==============================")
+      console.log(detail)
+      dispatch(loadRoomTagIcon(detail));
     }catch (error) {
       console.log(error);
     }
@@ -16,11 +46,24 @@ export const loadMyStoreDB = (store) => {
 const mapSlice = createSlice({
     name: "map",
     initialState: {
+        modalNum:false,
         loadMyStore:[],
         loadFirstStore:[],
-        MyLatLng:[]
+        MyLatLng:[],
+        loadStoreRoom:[],
+        firstPost:[],
+        loadRoomTagIcon:[]
     },
     reducers: {
+      loadStoreRoom: (state, action) => {
+        console.log(action.payload)
+        state.loadStoreRoom = action.payload;
+      },
+      // 특정 맛방의 맛집 전체 조회
+      loadRoomTagIcon: (state, action) => {
+        console.log(action.payload)
+        state.loadRoomTagIcon = action.payload;
+      },
       //검색해서 클릭한 맛집 데이터
       loadMyStore: (state, action) => {
         console.log(action.payload)
@@ -35,13 +78,25 @@ const mapSlice = createSlice({
       MyLatLng: (state, action) => {
         state.MyLatLng = action.payload;
       },
+      //모달 숫자
+      modalNum: (state, action) => {
+        state.modalNum = action.payload;
+      },
+      //검색한 맛집데이터 스토어에 저장
+      firstPost: (state, action) => {
+        state.firstPost = action.payload;
+      },
     },
   });
   
-  export const { 
+  export const {
     MyLatLng, 
     loadMyStore,
-    loadFirstStore
+    loadFirstStore,
+    modalNum,
+    loadStoreRoom,
+    firstPost,
+    loadRoomTagIcon
   } = mapSlice.actions;
   
   export default mapSlice.reducer;
