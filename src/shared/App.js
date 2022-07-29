@@ -197,12 +197,12 @@ function App() {
 
   return (
     <>
-    {/* <BodyContainer BackgroundImage={BackgroundImage} BackgroundLogo={BackgroundLogo} /> */}
+    <BodyContainer BackgroundImage={BackgroundImage} BackgroundLogo={BackgroundLogo} />
       <AppContainer>
         <AppLayout socket={socket}>
           {isLoading ? <Splash /> : ""}
           <Routes>
-            {/* <Route path="/detail" element={<Detail />} />
+            <Route path="/detail" element={<Detail />} />
             <Route path="/detail/:id" element={<Detail socket={socket} />} />
             <Route path="/detail/:id/:code" element={<Detail />} />
             <Route path="/listpage" element={<ListPage />} />
@@ -210,7 +210,7 @@ function App() {
             <Route path="/edit" element={<Edit />} />
             <Route path="/edit/:id" element={<Edit />} />
             <Route path="/editlistpage" element={<EditListPage />} />
-            <Route path="/editlistpage/:id" element={<EditListPage />} /> */}
+            <Route path="/editlistpage/:id" element={<EditListPage />} />
 
             <Route path="*" element={<PageNotFound />} />
             <Route path="/" element={isloaded && <Main socket={socket} />} />
@@ -223,7 +223,7 @@ function App() {
               <Route path="faceCustom" element={<FaceCustom />} />
               <Route path="completion" element={<Completion />} />
             </Route>
-            {/* <Route path="/finduser" element={<FindUser />} />
+            <Route path="/finduser" element={<FindUser />} />
             <Route
               path="/finduser/findpwdescription"
               element={<FindPwDescription />}
@@ -268,7 +268,7 @@ function App() {
               />
               <Route path="myreview" element={<Myreview />} />
             </Route>
-            <Route path="/none" element={<None />} /> */}
+            <Route path="/none" element={<None />} />
           </Routes>
         </AppLayout>
       </AppContainer>

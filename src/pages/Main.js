@@ -46,7 +46,7 @@ const Main = ({socket}) => {
             <ReactPortal>
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
-            {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
+            {/* {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>} */}
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>
