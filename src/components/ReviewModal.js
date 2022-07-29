@@ -78,7 +78,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
               </div>
               <div className="userNameBox">
                 <p>{review.nickname}</p>
-                <p>2021.03.22</p>
+                <p>{review.createdAt}</p>
               </div>
             </section>
             <LikeToggleBtn
@@ -91,7 +91,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
             <SlickSlider reviewImg={review.imgURL} />
           </div>
           <div className="storeInfo">
-            <p className="storeName">인벤토리</p>
+            <p className="storeName">{review.storeName}</p>
             <div>
               <p className="star">
                 {startList.map((star, idx) => (
