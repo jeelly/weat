@@ -45,7 +45,7 @@ const roomMakingSlice = createSlice({
       console.log("방 정보 대기 중");
     },
     [friendDB.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.searchResults = action.payload;
     },
     [friendDB.rejected]: (state, action) => {

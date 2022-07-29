@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../img/logo_type2.svg";
 import signatureFace from '../img/signatureFace.svg'
+import {vh} from '../css/GlobalStyles'
 const Splash = () => {
   return (
     <SplashWrap signatureFace={signatureFace}>
@@ -15,9 +16,10 @@ const Splash = () => {
 };
 
 const SplashWrap = styled.div`
-  position: absolute;
+  position: fixed;
   text-align: center;
   top: 0;
+  left:0;
   background-color: var(--INFO);
   width: 100%;
   height: 100vh;

@@ -1,34 +1,36 @@
-
-
-
 /*Apple SD Gothic Neo 200*/
 @font-face {
     font-family: "AppleSDGothicNeoT";
     src: url("./AppleSDGothicNeoT.ttf");
+    font-display: block;
 }
 
 /*Apple SD Gothic Neo 300*/
 @font-face {
     font-family: "AppleSDGothicNeoUL";
     src: url("./AppleSDGothicNeoUL.ttf");
+    font-display: block;
 }
 
 /*Apple SD Gothic Neo 400*/
 @font-face {
     font-family: "AppleSDGothicNeoM";
     src: url("./AppleSDGothicNeoM.ttf");
+    font-display: block;
 }
 
 /*Apple SD Gothic Neo 500*/
 @font-face {
     font-family: "AppleSDGothicNeoSB";
     src: url("./AppleSDGothicNeoSB.ttf");
+    font-display: block;
 }
 
 /*Apple SD Gothic Neo 700*/
 @font-face {
     font-family: "AppleSDGothicNeoB";
     src: url("./AppleSDGothicNeoB.ttf");
+    font-display: block;
 }
 
 
@@ -36,13 +38,21 @@
 @font-face {
     font-family: "AppleSDGothicNeoM00";
     src: url("./AppleSDGothicNeoM00.ttf");
+    font-display: block;
 }
 
 /* AppleSDGothicNeoUL00 */
 @font-face {
     font-family: "AppleSDGothicNeoL";
     src: url("./AppleSDGothicNeoL.ttf");
+    font-display: block;
 }
 
 
 
+/* Inter */
+@font-face {
+    font-family: 'Inter';
+    src: url("./Inter-Medium.woff");
+    font-display: block;
+}

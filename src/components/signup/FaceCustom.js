@@ -29,7 +29,7 @@ const FaceCustom = () => {
   const userSignupData = useSelector((state) => state.userSignup);
   const snsUserData = useSelector((state) => state.loggedIn.userInfo);
   const userToken = window.localStorage.getItem('token')
-  console.log(snsUserData)
+  const url = window.location.href
 
   const userInfo = {
     nickname: nickname,
@@ -77,14 +77,18 @@ const FaceCustom = () => {
         });
         console.log(response)
         dispatch(loginCheck(true));
-        dispatch(loginUserCheck(snsLoginUserData));        
-        navigate("/");
+        dispatch(loginUserCheck(snsLoginUserData));  
+        if(url.includes('character_edit'))  {
+          navigate('/mypage')
+        }else{
+          navigate("/");
+        }        
       } catch (e) {
         console.log(e);
       }
     }
   }, [nickname, eyeItem, hex,snsUserData]);
-
+console.log()
   //닉네임 셋팅
   const nicknameSetting = useCallback((e) => {
     setNickname(e.target.value);
@@ -180,6 +184,7 @@ const NickNameBox = styled.div`
 `;
 
 const MakeFace = styled.div`
+padding-bottom:70px;
   .face {
     width: 100%;
     display: flex;
@@ -205,7 +210,7 @@ const MakeFace = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 26px;
     .saturation {
       display: flex;
       justify-content: center;

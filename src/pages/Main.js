@@ -11,18 +11,17 @@ import MainDefault from '../components/main/MainDefault';
 import styled from 'styled-components';
 import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
+import BottomNavi from '../components/BottomNavi';
 
-const Main = () => {
+const Main = ({socket}) => {
     const navigate = useNavigate()
     const _rooms = useSelector(state => state.post._rooms);
     const rooms = useSelector(state => state.post.rooms);
     const [room, setRoom] = useState(rooms);
     const user = useSelector(state => state.loggedIn);
-    console.log(user)
 
     const snsUserCheck = () => {
         if(user.userInfo.provider && !user.userInfo.faceColor){
-            console.log('프로바이더는 있고 페이스컬러는 없어')
             return navigate('/signup/faceCustom')
         }else if(user.userInfo.provider && user.userInfo.faceColor){
             return navigate('/')
@@ -34,7 +33,7 @@ const Main = () => {
 
     useEffect(() => {
         setRoom(rooms)
-      }, [_rooms]);
+      }, [_rooms, socket]);
       
 
 
@@ -47,8 +46,9 @@ const Main = () => {
             <ReactPortal>
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
-            {rooms.length === 0 ? <MainDefault/> : <PostList rooms={room}/>}
+            {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
             <ModalBtn/>
+            <BottomNavi />
         </NewContainer>
     );
 };
@@ -57,4 +57,5 @@ export default Main;
 
 const NewContainer = styled(Container)`
     overflow:hidden;
+    padding-top:10px;
 `

@@ -83,6 +83,7 @@ const WelcomMessage = styled.section`
 `;
 
 const AgreementSection = styled.section`
+padding-bottom: 70px;
   .title {
     font-family: "AppleSDGothicNeoB";
     font-size: 16px;

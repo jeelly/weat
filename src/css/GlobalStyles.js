@@ -25,7 +25,8 @@ const GlobalStyles = createGlobalStyle`
       --OPACITY2: 0.4;
       --OPACITY3: 0.6;
       --OPACITY4: 0.8;
-      --OPACITY5: 1;      
+      --OPACITY5: 1;  
+      
 
     }
     * {
@@ -38,7 +39,11 @@ const GlobalStyles = createGlobalStyle`
       /* max-width: 100vw;
       overflow: hidden; */
     }
-    /* body {overflow-x: hidden;} */
+    body {
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    }
     p,h1,h2,h3,h4{padding:0; margin:0;}
     ul,li,ol {
       list-style:none;
@@ -50,6 +55,9 @@ export const Container = styled.div`
   /* width: 100%; */
 `;
 
+export const device = {
+  pc: `(min-width: 735px)`,
+};
 
 
 export default GlobalStyles;

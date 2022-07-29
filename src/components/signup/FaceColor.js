@@ -7,17 +7,17 @@ const FaceColor = (props) => {
 
   const changeLocation = (e) => {
     setLocation(e.target.id);
-    props.colorChange(e.target.id)
+    props.colorChange(e.target.id);
   };
   const changeColor = (e) => {
-    props.colorChange(e.target.id)
+    props.colorChange(e.target.id);
   };
   return (
-    <TestContainer>
+    <ColorPaletteContainer>
       <div>
         <section className="mainColor">
           {colorTest.map((i, idx) => {
-            const defaultColor = (i[4] === '#23C7C7') ? "defaultChecked" : "";
+            const defaultColor = i[4] === "#23C7C7" ? "defaultChecked" : "";
             return (
               <Label htmlFor={i[4]} key={i[4]} color={i[4]}>
                 <input
@@ -109,13 +109,13 @@ const FaceColor = (props) => {
           ) : null}
         </section>
       </div>
-    </TestContainer>
+    </ColorPaletteContainer>
   );
 };
 
-const TestContainer = styled.div`
-width: 300px;
-margin: auto;
+const ColorPaletteContainer = styled.div`
+  width: 300px;
+  margin: auto;
   .mainColor {
     text-align: center;
     margin-bottom: 10px;
@@ -137,21 +137,23 @@ margin: auto;
         height: 24px;
         box-sizing: content-box;
         overflow: hidden;
-        :first-child{
-        border-radius: 500px 0px 0px 500px;
-      }
-      :last-child{
-        border-radius: 0px 500px 500px 0px;
 
-      }
-        
+        :first-child {
+          border-radius: 500px 0px 0px 500px;
+        }
+        :last-child {
+          border-radius: 0px 500px 500px 0px;
+        }
+        ::after{
+            content: 1111111;
+          }
+
         div {
           width: 100%;
           height: 100%;
           box-sizing: content-box;
         }
       }
-      
     }
   }
 `;

@@ -24,7 +24,7 @@ const ModalBtn = () => {
     return (
         <Container>
             <CreateModal modal={modal}>
-                <Btn onClick={()=>{navigate("/detail");}}>공유<br/>코드</Btn>
+                <Btn onClick={()=>{navigate("/roomshare/codesearch");}}>공유<br/>코드</Btn>
                 <Btn onClick={onLongPress}>맛방<br/>편집</Btn>
                 <Btn onClick={()=>{navigate("/makeroom");}}>맛방<br/>만들기</Btn>
             </CreateModal>
@@ -83,7 +83,7 @@ const Btn = styled.button`
     letter-spacing: -0.02em;
     border: 2px solid var(--BLACK);
     background-color:var(--WHITE);
-    position:absolute;
+    position:fixed;
     /* bottom:124px; */
     right:22px;
     cursor: pointer;

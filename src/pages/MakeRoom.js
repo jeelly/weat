@@ -12,10 +12,11 @@ import { BlackButton } from "../css/Style";
 import SearchBar from "../components/makeRoom/SearchBar";
 import { loadRoomDB } from "../redux/modules/postSlice";
 
-const MakeRoom = () => {
+const MakeRoom = ({socket}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { emojiKey, tasteRoom} = useSelector(state => state.roomMaking);
+  const { userInfo } = useSelector(state => state.loggedIn)
   const [serchBar, setSerchBar] = useState(false);
   const guestId = tasteRoom.invitedFriends.map((row) => row.split(",")[0]);
 
@@ -34,7 +35,13 @@ const MakeRoom = () => {
     }
     try{
         const res = await instance.post('/api/rooms',request,{headers: { Authorization: getAuthorizationHeader() }})
-        await dispatch(loadRoomDB())
+        await socket?.emit("inviteMember", {          
+          userId: userInfo.userId,
+          guestName: res.data.guestId,
+          roomId: res.data.roomId,
+        });        
+        console.log(userInfo.userId, res.data.guestId, res.data.roomId)
+        await dispatch(loadRoomDB(0))
         await navigate('/')
         console.log(res)
     }catch(e){

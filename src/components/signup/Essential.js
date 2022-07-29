@@ -142,6 +142,7 @@ const InfoMessage = styled.section`
 `;
 
 const InputBox = styled.div`
+padding-bottom: 70px;
   section {
     display: flex;
     flex-direction: column;
