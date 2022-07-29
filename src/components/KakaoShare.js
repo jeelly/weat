@@ -27,8 +27,8 @@ const KakaoShare = ({roomName = '', ownerNickname = ''}) => {
             description: '어떤 맛집들을 기록했는지, 같이 참여해보세요',
             imageUrl: 'https://velog.velcdn.com/images/bo-oram/post/ff869891-450e-4345-8dd3-07b38cebe279/image.png',
             link: {
-              mobileWebUrl: 'https://weat.site/' + roomCode,
-              webUrl: 'https://weat.site/' + roomCode,
+              mobileWebUrl: 'https://weat.site/roomshare/codesearch/' + roomCode,
+              webUrl: 'https://weat.site/roomshare/codesearch/' + roomCode,
             },
           },
           // social: {
@@ -40,8 +40,8 @@ const KakaoShare = ({roomName = '', ownerNickname = ''}) => {
             {
               title: '자세히 보기',
               link: {
-                mobileWebUrl: 'https://weat.site/' + roomCode,
-                webUrl: 'https://weat.site/' + roomCode,
+                mobileWebUrl: 'https://weat.site/roomshare/codesearch/' + roomCode,
+                webUrl: 'https://weat.site/roomshare/codesearch/' + roomCode,
               },
             },
             // {
