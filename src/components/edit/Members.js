@@ -145,13 +145,13 @@ const MembersInfo = styled.ul`
   white-space: nowrap;
   display:flex;
   &::-webkit-scrollbar {
-    height:100px;
+    height:36px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color:transparent;
+    background-color:rgba(0,0,0,0.1);
   }
   &::-webkit-scrollbar-track {
-    background-color:transparent;
+    background-color:rgba(0,0,0,0.2);
     transform: matrix(1, 0, 0, -1, 0, 0);
   }
 

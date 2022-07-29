@@ -71,7 +71,7 @@ const DelModalWrap = styled.article`
     align-items:center;
     justify-content:center;
     display:${({delModal})=>delModal?'flex':'none'};
-    z-index:100;
+    z-index:101;
 `
 const DelModal = styled.div`
     width:269px;
