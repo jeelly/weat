@@ -7,6 +7,8 @@ import SearchModal from "../components/map_page/SearchModal";
 import instance from "../shared/axios";
 import { useQuery } from 'react-query';
 import { Outlet } from "react-router-dom";
+import BottomNavi from "../components/BottomNavi";
+import { device } from "../css/GlobalStyles";
 
 const getStoreAllList = (MyLatLng) => {
   // console.log('====')
@@ -39,6 +41,7 @@ const MapPage = () => {
   //   getStoreList(MyLatLng)
   // },[MyLatLng])
 
+  console.log(store_all_query)
 
   const detail_data = () => {
     if(detail) {
@@ -47,17 +50,24 @@ const MapPage = () => {
   }
 
   return (
+    <>
     <Container>
       <Outlet/>
-      <MapModal/>
-      <SearchModal store_query={store_all_query.data}/>
+        <MapModal/>
+        <SearchModal store_query={store_all_query.data}/>
       <MapContainer detail_data={detail_data()}/>
+      <BottomNavi/>
     </Container>
+    </>
   );
 };
 export default MapPage;
-
 const Container = styled.div`
   position:relative;
   width:100%;
+  height:100vh;
+  overflow:hidden;
+  @media ${device.pc} {
+    overflow:hidden;
+  }
 `

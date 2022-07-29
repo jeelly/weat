@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import white_X_button from '../img/white_X_button.svg'
 import white_arrow_button from '../img/white_arrow_button.svg'
 import black_arrow_button from '../img/black_x_button.svg'
+import { device } from '../css/GlobalStyles';
 const StorePost = () => {
     let navigate = useNavigate();
     const location = useLocation();
@@ -60,4 +61,10 @@ const Header = styled.article`
             height:14.34px;
             background-image:url(${({xBtn})=> xBtn});
         }
+    @media ${device.pc} {
+        /* bottom:152px; */
+        width:480px;
+        left:50%;
+        transform:translateX(-50%);
+    }
 `

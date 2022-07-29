@@ -108,10 +108,9 @@ const PostReviewPhoto = () => {
         // for(let i=0; i<image.length;i++) {
         //     formData.append('image', image[0]);
         // }
+            // console.log(image[0])
             formData.append('image',image[0]);
             // image.forEach((item) => formData.append("image", item));
-            
-
             instance
             .post("api/upload/image", formData, config)            
             .then((response) => {
@@ -120,7 +119,11 @@ const PostReviewPhoto = () => {
                 upload_data['imgURL'] = response.data.imgUrl
                 CreateRestaurant.mutate(postData.first);
                 // const url = response.data; // 이미지 주소 넣기
-            });
+            })
+            .catch(function(error) {
+                console.log(error);
+                CreateRestaurant.mutate(postData.first);
+            })
     };
     
     const upload = async () => {

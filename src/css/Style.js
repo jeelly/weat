@@ -104,4 +104,10 @@ export const FooterBtn = styled.article`
         line-height: 24px;
         color:var(--WHITE);
     }
+    @media ${device.pc} {
+        /* bottom:152px; */
+        width:480px;
+        left:50%;
+        transform:translateX(-50%);
+    }
 `

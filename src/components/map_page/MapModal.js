@@ -6,6 +6,7 @@ import {ReactComponent as MyDesrpition} from '../../img/my_dscrpition.svg'
 import {ReactComponent as MyTag} from '../../img/my_tag.svg'
 import {ReactComponent as MyLocationIcon} from '../../img/my_location.svg'
 import { useSelector } from 'react-redux';
+import { device } from '../../css/GlobalStyles';
 
 const MapModal = () => {
     const modalNum = useSelector(state => state.map.modalNum);
@@ -80,7 +81,12 @@ const MapModal = () => {
 
 export default MapModal;
 
-const Container = styled.article``;
+const Container = styled.article`
+    @media ${device.pc} {
+        width:480px;
+        margin:0 auto;
+    }
+`;
 const ModalContainer = styled.ul`
     background-color:var(--BLACK);
     height:52px;
@@ -88,10 +94,20 @@ const ModalContainer = styled.ul`
     border-radius:100px;
     display: flex;
     align-items:center;
-    position: absolute;
-    bottom:16px;
+    position:fixed;
     left:8.333%;
-    z-index:100;
+    bottom:84px;
+    z-index:101;
+    @media ${device.pc} {
+        /* bottom:152px; */
+        left:50%;
+        transform:translateX(-100%);
+        /* width:480px; */
+        /* right:0; */
+        /* left:-22px; */
+        /* text-align:right; */
+        /* margin:0 auto; */
+    }
 `
 
 const ToggleBtn = styled.div`

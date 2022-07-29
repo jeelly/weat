@@ -295,8 +295,8 @@ const Keyword = ({detail_data}) => {
         <Map // 로드뷰를 표시할 Container
           center={state.center}
           style={{
-            width: "100%",
-            height: "100vh",
+            width:"100%",
+            height:"100%",
           }}
           level={3}
           onCreate={setMap}
@@ -473,17 +473,18 @@ const SpeechBubble =styled.div`
   z-index:100;
 
   position: absolute;
-  bottom:86px;
+  bottom:154px;
   left:8.333%;
   border-radius:20px;
   display:flex;
   justify-content:space-between;
   padding:22px 16px 0 16px;
+  
 `
 
 const RoomSpeechBubble = styled(SpeechBubble)`
-  bottom:89px;
-  bottom:163px;
+  /* bottom:89px; */
+  bottom:236px;
     /* &:hover {
       width:3000px;
       background-color:red;

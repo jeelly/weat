@@ -7,6 +7,7 @@ import editdel from '../../img/EditDel.svg';
 import flag from '../../img/fixed/save_flag.svg';
 import save_icon from '../../img/fixed/save_icon.svg';
 import location_icon from '../../img/fixed/location_icon.svg';
+import { device } from '../../css/GlobalStyles';
 
 const { kakao } = window;
 
@@ -159,7 +160,8 @@ const Container = styled.form`
   display:block;
   width:100%;
   height:100vh;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.9);
+  overflow:auto;
 `
 
 const SearchAreaWrap = styled.div`
@@ -214,8 +216,13 @@ const SearchCloseBtn = styled.button`
     background-repeat:no-repeat;
     background-position:center;
     position:fixed;
-    bottom:16px;
+    bottom:84px;
     right:30px;
+    @media ${device.pc} {
+        position:absolute;
+        margin:0 auto;
+        text-align: left;
+    }
 `
 
 const SearchDataWrap = styled.ul`
@@ -235,6 +242,7 @@ const TextWrap = styled.li`
   display:flex;
   flex-direction:column;
   justify-content:center;
+  text-align: left;
 `
 const PlaceName = styled.h3`
   font-family: 'AppleSDGothicNeoM';

@@ -25,7 +25,7 @@ const RoomWrap = styled.div`
     width:${({rooms_length})=>rooms_length===0 ? 0 : rooms_length===1 ? '33vw' : rooms_length===2 ? '66vw' : '95.556vw'};
     width:95.556vw;
     position:absolute;
-    bottom:0;
+    bottom:74px;
     left:4.444%;
     overflow: auto;
     white-space: nowrap;

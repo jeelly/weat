@@ -149,6 +149,10 @@ const RestaurantName = styled.h3`
     line-height: 22px;
     text-transform: capitalize;
     margin:12px auto 4px auto;
+    width:164px;
+    overflow:hidden; 
+    text-overflow:ellipsis; 
+    white-space:nowrap;
 `
 const RestaurantUser = styled.p`
 font-family: 'AppleSDGothicNeoB';

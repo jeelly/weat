@@ -4,7 +4,7 @@ import MapSearch from './MapSearch';
 import search_icon from '../../img/search_white_icon.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { modalNum } from '../../redux/modules/mapSlice';
-
+import { device } from'../../css/GlobalStyles.js'
 const SearchModal = ({store_query}) => {
     const dispatch = useDispatch();
     const modalnums = useSelector(state => state.map.modalNum);
@@ -33,12 +33,23 @@ const SearchModal = ({store_query}) => {
 export default SearchModal;
 
 const Container = styled.div`
-    position:absolute;
+    position:fixed;
     width:${({modal})=> modal?'100%':'auto'};
     height:${({modal})=> modal?'100vh':'auto'};
-    bottom:${({modal})=> modal?'0':'16px'};
+    bottom:${({modal})=> modal?'0':'84px'};
     right:${({modal})=> modal?'0':'30px'};
-    z-index:100;
+    z-index:101;
+    @media ${device.pc} {
+        z-index:${({modal})=> modal?'102':'100'};
+        width:480px;
+        margin:0 auto;
+        right:0;
+        left:0;
+        padding-right:30px;
+        /* margin-right:${({modal})=> modal?'0':'0'}; */
+
+        text-align:right;
+    }
 `
 const MapSearchWrap = styled.div`
     display:${({modal})=> modal?'block':'none'};

@@ -71,7 +71,7 @@ const Detail = (props) => {
     <div>
       {isLoading ? <Splash /> : ""}
       <NewContainer status={detail?.status}>
-        <button onClick={newStoreNoti}>테스트용 버튼</button>
+        {/* <button onClick={newStoreNoti}>테스트용 버튼</button> */}
         <Header id={id} status={detail.status} roomName={detail.roomName} />
         {isloaded && <Title detail={detail} id={id} />}
         {isloaded && (

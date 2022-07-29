@@ -11,14 +11,14 @@ const StoreInfo = ({data}) => {
                 <ContentBox>
                     {data.tagMenu.filter((l,i)=> i < 3).map((menu, i) => (
                         <>
-                        <p color_size={i}>{menu}</p>
+                        <p>{menu}</p>
                         </>
                     ))}
-                    {data.tagPoint.filter((l,i)=> i < 1).map((point, i) => (
-                        <p color_size={i}>{point}</p>
+                    {data.tagPoint.filter((l,i)=> i < 3).map((point, i) => (
+                        <p>{point}</p>
                     ))}
-                    {data.tagTasty.filter((l,i)=> i < 1).map((tasty, i) => (
-                        <p color_size={i}>{tasty}</p>
+                    {data.tagTasty.filter((l,i)=> i < 3).map((tasty, i) => (
+                        <p>{tasty}</p>
                     ))}
                 </ContentBox>
         </Content>

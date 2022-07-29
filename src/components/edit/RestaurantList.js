@@ -130,6 +130,8 @@ const HashTag = styled.div`
 `
 
 const ImgWrap = styled.div`
+    min-width:104px;
+    min-height:90px;
     width:104px;
     height:90px;
     margin-right:11.5px;

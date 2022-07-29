@@ -18,9 +18,9 @@ const BottomNavi = () => {
     <BottomNaviWrap>
       <div className="naviContent">
         <ul>
-          <li>
-            <Gps fill="black" />
-            <p>맛지도</p>
+          <li onClick={()=>{navigate('/map')}}>
+            <Gps fill={colorChange('map')} />
+            <p style={{color: colorChange('map')}} >맛지도</p>
           </li>
           <li>
             <Bookmark fill="black" />
@@ -35,11 +35,10 @@ const BottomNavi = () => {
     </BottomNaviWrap>
   );
 };
-
+// 96.7
 const BottomNaviWrap = styled.div`
   width: 100%;
-  height: 68px;
-  
+  height:68px;
   .naviContent {
     @media ${device.pc} {
       width: 480px;

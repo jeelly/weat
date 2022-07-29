@@ -54,7 +54,7 @@ const CreateBtn = styled.button`
     background-size:24px;
     position:fixed;
     right:16px;
-    bottom:20px;
+    bottom:88px;
 `
 
 const CreateModal = styled.div`
