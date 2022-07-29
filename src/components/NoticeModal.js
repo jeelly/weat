@@ -99,7 +99,7 @@ const NewContainer = styled(Container)`
 }`;
 const Modal = styled.article`
   @media ${device.pc} {
-    right: ${({ modal }) => (modal ? "30.5%" : "-10%")};
+    right: ${({ modal }) => (modal ? "30.2%" : "-10%")};
     transform: translate(50%,0);
     box-shadow:none;
     opacity: ${({ modal }) => (modal ? "1" : "0")};
@@ -115,7 +115,7 @@ const Modal = styled.article`
   top: 0;
   right: ${({ modal }) => (modal ? 0 : "-280px")};
   transition: right 0.5s, opacity 0.8s;
-  z-index: -1;
+  z-index: 106;
   
 `;
 const CloseBtn = styled.button`

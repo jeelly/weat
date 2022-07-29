@@ -90,6 +90,13 @@ const SearchBar = (props) => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      userSearching();
+    }
+  };
+
+
   return (
     <SearchWrap serchBarPosition={props.serchBar}>
       <section className="header">
@@ -103,8 +110,9 @@ const SearchBar = (props) => {
               type="text"
               placeholder="유저 검색 가능"
               onChange={onChangeInputValue}
+              onKeyDown={handleKeyDown}
             />
-            <button onClick={userSearching}>
+            <button onClick={userSearching} >
               <Search fill="black" />
             </button>
           </label>

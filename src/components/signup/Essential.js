@@ -49,7 +49,7 @@ const Essential = () => {
     } catch (e) {
       // alert("사용 불가능");
       setIdCheck(false);
-      setIdError('*이미 사용 중인 아이디입니다.')
+      setIdError('*사용할 수 없는 아이디입니다.')
     }
   };
 
@@ -90,7 +90,7 @@ const Essential = () => {
           <div>
             <input
               type="text"
-              placeholder="아이디를 입력해주세요"
+              placeholder="3글자 이상 입력해주세요."
               onChange={onChangeId}
             />
             <VioletRoundTextBtn onClick={idDoubleCheck} disabled ={!customerId && 'disabled'}>중복 확인</VioletRoundTextBtn>

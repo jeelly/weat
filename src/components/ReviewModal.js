@@ -16,6 +16,7 @@ import { ReactComponent as Modify } from "../img/modify.svg";
 import { ReactComponent as Trash } from "../img/trash.svg";
 import { ReactComponent as Face } from "../img/characterface.svg";
 import { ReactComponent as Flag } from "../img/icon/flagIcon.svg";
+import { device } from "../css/GlobalStyles";
 
 const ReviewModal = ({ reviewInfo, modalAction }) => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
       console.log(e);
     }
   };
-
+console.log(reviewInfo)
   const userEye = (eye) => {
     if (eye === "type1") {
       return eyeList.filter((row) => row.includes(`${eye}.`) && row);
@@ -78,7 +79,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
               </div>
               <div className="userNameBox">
                 <p>{review.nickname}</p>
-                <p>2021.03.22</p>
+                <p>{review.createdAt}</p>
               </div>
             </section>
             <LikeToggleBtn
@@ -91,7 +92,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
             <SlickSlider reviewImg={review.imgURL} />
           </div>
           <div className="storeInfo">
-            <p className="storeName">인벤토리</p>
+            <p className="storeName">{review.storeName}</p>
             <div>
               <p className="star">
                 {startList.map((star, idx) => (
@@ -116,6 +117,11 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
 };
 
 const ReviewModalWrap = styled.div`
+@media ${device.pc} {
+    width: 480px;
+    left: 50%;
+    transform: translate(-50%,0);
+  }
   position: fixed;
   top: 0;
   left: 0;

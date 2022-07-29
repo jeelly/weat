@@ -19,7 +19,7 @@ const SlickSlider = ({reviewImg})=>{
     return (
     	<Slider {...settings}>
         {
-          testImg.map((img, idx)=>(
+          reviewImg.map((img, idx)=>(
             <SlideItem key={idx}><img src={img} alt=""/></SlideItem>
           ))
         }				
