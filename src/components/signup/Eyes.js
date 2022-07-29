@@ -32,7 +32,7 @@ const EyeContainer = styled.div`
   left: -16px;
   padding: 0 0 20px 16px;
   width: calc(100% + 32px);
-  overflow: scroll;
+  overflow: auto;
   text-align: center;
 `;
 const EyeList = styled.div`

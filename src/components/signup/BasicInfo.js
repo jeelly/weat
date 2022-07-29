@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import instance from "../../shared/axios";
 import { addDasicInfo } from "../../redux/modules/signupSlice";
 import { VioletRoundTextBtn } from "../../css/Style";
+import { device } from "../../css/GlobalStyles";
 
 const BasicInfo = () => {
   const navigate = useNavigate();
@@ -60,10 +61,11 @@ const BasicInfo = () => {
     }
     try {
       const response = await instance.post("/api/users/mail", { email });
+      console.log(response)
       await setAuthNum(response.data.authNum);
       await alert(`${email}로 인증번호가 발송되었어요!`);
     } catch (e) {
-      return alert(e.response.data.errorMessage);
+      return console.log(e);
     }
     auth();
   };
@@ -309,6 +311,11 @@ const AuthDescription = styled.span`
 `;
 
 const Description = styled.div`
+@media ${device.pc} {
+    max-width: 480px;
+    left: 50%;
+    transform: translate(-50% ,0);
+  }
   align-items: flex-end;
   justify-content: center;
   position: fixed;
