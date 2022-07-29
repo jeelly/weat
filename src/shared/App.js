@@ -50,9 +50,14 @@ import PostReview from "../components/map_page/post/PostReview";
 import PostReviewPhoto from "../components/map_page/post/PostReviewPhoto";
 import ReviewPage from "../pages/ReviewPage";
 import PostSuccess from "../components/map_page/post/PostSuccess";
+import None from "../components/None";
+import BackgroundLogo from "../img/logo_type_background.svg";
+import BackgroundImage from '../img/backgroundImg.svg'
 
 import { io } from "socket.io-client";
 import { addNotiList } from "../redux/modules/socketSlice";
+import styled from "styled-components";
+import { device } from "../css/GlobalStyles";
 
 function App() {
   const navigate = useNavigate();
@@ -75,7 +80,7 @@ function App() {
     }
     return disconnectSocket();
   }, []);
-  
+
   //소켓 연결 끊기
   const disconnectSocket = () => {
     socket?.on("disconnect", () => {
@@ -108,9 +113,8 @@ function App() {
       if (noti) {
         counter();
         setNewNotification((prev) => [...prev, ...noti.findUserAlertDB]);
-        console.log(window.localStorage.getItem('token'))        
+        console.log(window.localStorage.getItem("token"));
       }
-      
     });
   };
 
@@ -128,17 +132,17 @@ function App() {
 
   //알림 목록 받기
   const [notifications, setNotifications] = useState([]);
-  const notiList = async () => {    
-    await socket?.emit("getAlert", { receiverId: userInfo.userId });    
+  const notiList = async () => {
+    await socket?.emit("getAlert", { receiverId: userInfo.userId });
     await socket?.on("getNotification", (data) => {
       // console.log(data);
       setNotifications(data.findAlertDB);
-    }); 
+    });
   };
 
   useEffect(() => {
     addStore();
-    newInvited();    
+    newInvited();
   }, [socket]);
 
   useEffect(() => {
@@ -164,7 +168,6 @@ function App() {
     }
   }, [userToken]);
 
-
   //일반로그인
   const generalLogin = async () => {
     if (!userToken) {
@@ -173,9 +176,9 @@ function App() {
         await dispatch(loadRoomDB(0));
       }
       if (
-        !window.localStorage.getItem("token") && 
-        !location.pathname.includes('signup') &&
-        !location.pathname.includes("roomshare") 
+        !window.localStorage.getItem("token") &&
+        !location.pathname.includes("signup") &&
+        !location.pathname.includes("roomshare")
       ) {
         navigate("/login");
       }
@@ -194,63 +197,117 @@ function App() {
 
   return (
     <>
-      <AppLayout socket={socket}>
-        {isLoading ? <Splash /> : ""}
-        <Routes>
-          <Route path="/detail" element={<Detail />} />
-          <Route path="/detail/:id" element={<Detail socket={socket} />} />
-          <Route path="/detail/:id/:code" element={<Detail />} />
-          <Route path="/listpage" element={<ListPage />} />
-          <Route path="/listpage/:id" element={<ListPage />} />
-          <Route path="/edit" element={<Edit />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/editlistpage" element={<EditListPage />} />
-          <Route path="/editlistpage/:id" element={<EditListPage />} />
+    <BodyContainer BackgroundImage={BackgroundImage} BackgroundLogo={BackgroundLogo} />
+      <AppContainer>
+        <AppLayout socket={socket}>
+          {isLoading ? <Splash /> : ""}
+          <Routes>
+            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:id" element={<Detail socket={socket} />} />
+            <Route path="/detail/:id/:code" element={<Detail />} />
+            <Route path="/listpage" element={<ListPage />} />
+            <Route path="/listpage/:id" element={<ListPage />} />
+            <Route path="/edit" element={<Edit />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/editlistpage" element={<EditListPage />} />
+            <Route path="/editlistpage/:id" element={<EditListPage />} />
 
-          <Route path="*" element={<PageNotFound />} />
-          <Route path="/" element={isloaded && <Main socket={socket}/>} />
-          <Route path="/post" element={<Post />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Singup />}>
-            <Route path="agreement" element={<Agreement />} />
-            <Route path="essential" element={<Essential />} />
-            <Route path="basicInfo" element={<BasicInfo />} />
-            <Route path="faceCustom" element={<FaceCustom />} />
-            <Route path="completion" element={<Completion />} />
-          </Route>
-          <Route path="/finduser" element={<FindUser />} />
-          <Route path="/finduser/findpwdescription" element={<FindPwDescription />}/>
-            <Route path="/finduser/findiddescription" element={<FindIdDescription />} />
-          <Route path="/makeroom" element={<MakeRoom socket={socket} />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="review" element={<ReviewPage />} />
-            <Route path="review/:id" element={<ReviewPage />} />
-            <Route path="/storepost" element={<StorePost />} >
-              <Route path="restaurantregistration" element={<RestaurantRegistration/>}/>
-              <Route path="roomregistration" element={<RoomRegistration/>}/>
-              <Route path="roomregistration/:id" element={<RoomRegistration/>}/>
-              <Route path="postReview" element={<PostReview/>}/>
-              <Route path="postReview/:id" element={<PostReview/>}/>
-              <Route path="postReviewPhoto" element={<PostReviewPhoto/>}/>
-              <Route path="postReviewPhoto/:id" element={<PostReviewPhoto/>}/>
-              <Route path="success" element={<PostSuccess/>}/>
+            <Route path="*" element={<PageNotFound />} />
+            <Route path="/" element={isloaded && <Main socket={socket} />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Singup />}>
+              <Route path="agreement" element={<Agreement />} />
+              <Route path="essential" element={<Essential />} />
+              <Route path="basicInfo" element={<BasicInfo />} />
+              <Route path="faceCustom" element={<FaceCustom />} />
+              <Route path="completion" element={<Completion />} />
             </Route>
-          <Route path="/roomshare" element={<RoomShare />}>
-            <Route path="codesearch" element={<CodeSearch />} />
-            <Route path="codesearch/:code" element={<CodeSearch />} />
-            <Route path="noentry" element={<NoEntry />} />
-          </Route>
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/mypage_edit" element={<MypageEdit />}>
-            <Route path ="character_edit" element={<CharacterEdit />} />
-            <Route path ="change_password" element={<ChangePassword />} />
-            <Route path ="change_personalinformation" element={<EditPersonalInformation />} />
-            <Route path ="myreview" element={<Myreview />} />
-          </Route>
-        </Routes>
-      </AppLayout>
+            <Route path="/finduser" element={<FindUser />} />
+            <Route
+              path="/finduser/findpwdescription"
+              element={<FindPwDescription />}
+            />
+            <Route
+              path="/finduser/findiddescription"
+              element={<FindIdDescription />}
+            />
+            <Route path="/makeroom" element={<MakeRoom socket={socket} />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="review" element={<ReviewPage />} />
+            <Route path="review/:id" element={<ReviewPage />} />
+            <Route path="/storepost" element={<StorePost />}>
+              <Route
+                path="restaurantregistration"
+                element={<RestaurantRegistration />}
+              />
+              <Route path="roomregistration" element={<RoomRegistration />} />
+              <Route
+                path="roomregistration/:id"
+                element={<RoomRegistration />}
+              />
+              <Route path="postReview" element={<PostReview />} />
+              <Route path="postReview/:id" element={<PostReview />} />
+              <Route path="postReviewPhoto" element={<PostReviewPhoto />} />
+              <Route path="postReviewPhoto/:id" element={<PostReviewPhoto />} />
+              <Route path="success" element={<PostSuccess />} />
+            </Route>
+            <Route path="/roomshare" element={<RoomShare />}>
+              <Route path="codesearch" element={<CodeSearch />} />
+              <Route path="codesearch/:code" element={<CodeSearch />} />
+              <Route path="noentry" element={<NoEntry />} />
+            </Route>
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage_edit" element={<MypageEdit />}>
+              <Route path="character_edit" element={<CharacterEdit />} />
+              <Route path="change_password" element={<ChangePassword />} />
+              <Route
+                path="change_personalinformation"
+                element={<EditPersonalInformation />}
+              />
+              <Route path="myreview" element={<Myreview />} />
+            </Route>
+            <Route path="/none" element={<None />} />
+          </Routes>
+        </AppLayout>
+      </AppContainer>
+      {/* </ BodyContainer> */}
     </>
   );
 }
+
+const AppContainer = styled.div`
+    background-color: #fff;
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    min-height: 100vh;
+  @media ${device.pc} {
+    width: 480px;
+    margin: auto;  
+    min-height :100vh ;
+    height: 100%;
+  }
+`;
+const BodyContainer = styled.div`
+      position: fixed;
+      overflow: auto;
+      width: 100%;
+      height: 100%;
+      background-image: url(${props => props.BackgroundImage});
+      background-size: cover;
+      ::after {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 1;
+        top: 344px;
+        right: 330px;
+        width: 300px;
+        height: 114px;
+        background-size: cover;
+        background-image: url(${props => props.BackgroundLogo});
+      }
+`;
 
 export default App;

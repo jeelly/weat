@@ -158,6 +158,12 @@ const SearchBar = (props) => {
 };
 
 const SearchWrap = styled.aside`
+@media ${device.pc} {
+    right: ${(props) => (props.serchBarPosition ? "30.5%" : "-10%")};
+    transform: translate(50%,0);
+    box-shadow:none;
+    opacity: ${(props) => (props.serchBarPosition ? "1" : "0")};
+  }
   position: fixed;
   top: 0;
   right: ${(props) => (props.serchBarPosition ? 0 : "-280px")};
