@@ -25,7 +25,7 @@ const Emoji = ({id, detail}) => {
   return (
     <Picker
       onEmojiClick={id ? EditonEmojiClick : onEmojiClick}
-      pickerStyle={{ width: "100%", height:'291px', position: "absolute", bottom:'0', zIndex:2}}
+      pickerStyle={{ width: "100%", height:'291px', position: "absolute", bottom:'0', zIndex:2, maxWidth:'480px'}}
       groupVisibility={{
         flags: false,
       }}

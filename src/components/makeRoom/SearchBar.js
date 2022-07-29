@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import close from "../../img/close.svg";
-import search from "../../img/search.svg";
+// import search from "../../img/search.svg";
 import check from "../../img/icon/check.png";
 import { ReactComponent as Face } from "../../img/characterface.svg";
+import { ReactComponent as Search } from "../../img/search.svg";
 
 import { friendDB, addFriends } from "../../redux/modules/roomMakingSlice";
 import { eyeList } from "../../components/signup/FaceResource";
 import { roomInviteDB } from "../../redux/modules/postSlice";
 import { VioletRoundTextBtn } from "../../css/Style";
+import { device } from "../../css/GlobalStyles";
 
 const SearchBar = (props) => {
   const dispatch = useDispatch();
@@ -19,6 +21,19 @@ const SearchBar = (props) => {
   const me = useSelector((state) => state.loggedIn.userInfo);
   const [searchInput, setSearchInput] = useState("");
   const [checkedInputs, setCheckedInputs] = useState([]);
+  const guestId = checkedInputs.map((data) => data.split(",")[0]);
+
+  /////소켓
+  const inviteMember = () => {
+    console.log(me.userId, guestId, props.id);
+    props.socket?.emit("inviteMember", {
+      userId: me.userId,
+      guestName: guestId,
+      roomId: props.id,
+    });
+  };
+
+  ////////
 
   //검색 키워드
   const onChangeInputValue = (e) => {
@@ -44,7 +59,7 @@ const SearchBar = (props) => {
   const userSelector = (e) => {
     if (e.target.value.split(",")[0] === me.userId) {
       e.target.checked = false;
-      return alert("나 자신은 초대할 수 없어요 :(");
+      return alert("나 자신은 초대할 수 없어요");
     }
     if (e.target.checked) {
       return setCheckedInputs([...checkedInputs, e.target.value]);
@@ -56,12 +71,15 @@ const SearchBar = (props) => {
   const Inviting = async () => {
     const userId = checkedInputs.map((data) => data.split(",")[0]);
     const user_data = checkedInputs.map((data) => data.split(","));
+    // console.log(userId)
 
     if (!props.id) {
       await dispatch(addFriends(checkedInputs));
+      await inviteMember();
       props.setSerchBar(false);
     } else {
       await dispatch(roomInviteDB(props.id, { guestId: userId }, user_data));
+      await inviteMember();
       props.setSerchBar(false);
     }
   };
@@ -86,7 +104,9 @@ const SearchBar = (props) => {
               placeholder="유저 검색 가능"
               onChange={onChangeInputValue}
             />
-            <button onClick={userSearching} />
+            <button onClick={userSearching}>
+              <Search fill="black" />
+            </button>
           </label>
         </SerchBar>
         <UserListWrap>
@@ -126,7 +146,7 @@ const SearchBar = (props) => {
       </section>
       <WhiteShadow>
         <InvitationButton onClick={Inviting}>
-          선택 멤버 초대하기{" "}
+          선택 멤버 초대하기
           <span>
             {checkedInputs.length}
             <span>/20</span>
@@ -199,8 +219,6 @@ const SerchBar = styled.div`
       }
     }
     button {
-      background-image: url(${search});
-      background-size: cover;
       width: 24px;
       height: 24px;
       border: none;
@@ -212,25 +230,9 @@ const SerchBar = styled.div`
 const UserListWrap = styled.div`
   height: 100vh;
   overflow: scroll;
-  div {
-    p {
-      :first-child {
-        font-family: "AppleSDGothicNeoB";
-        font-size: 14px;
-        line-height: 160%;
-        color: var(--DARKEST);
-      }
-      :last-child {
-        font-family: "AppleSDGothicNeoT";
-        font-weight: 600;
-        font-size: 12px;
-        line-height: 14px;
-        color: var(--DEFAULT);
-        padding-top: 4px;
-      }
-    }
-  }
-  li {
+  ul {
+    padding-bottom: 230px;
+    li {
     display: grid;
     grid-template-columns: 44px 1fr;
     padding: 12px 0;
@@ -243,8 +245,29 @@ const UserListWrap = styled.div`
       justify-content: space-between;
       align-items: center;
       padding: 0 10px;
+      div {
+        p {
+          :first-child {
+            font-family: "AppleSDGothicNeoB";
+            font-size: 14px;
+            line-height: 160%;
+            color: var(--DARKEST);
+          }
+          :last-child {
+            font-family: "AppleSDGothicNeoT";
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 14px;
+            color: var(--DEFAULT);
+            padding-top: 4px;
+          }
+        }
+      }
     }
   }
+  }
+
+  
 `;
 
 const UserFace = styled.div`
@@ -313,16 +336,14 @@ const CheckBox = styled.input`
   position: relative;
   ::after {
     content: url(${(props) => props.check});
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 24px;
     height: 24px;
-    
-
   }
-  :checked{
-    background-color:var(--BLACK);
-    }
+  :checked {
+    background-color: var(--BLACK);
+  }
 `;
 export default SearchBar;
