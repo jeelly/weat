@@ -62,6 +62,7 @@ const BottomNaviWrap = styled.div`
         justify-content: center;
         align-items: center;
         padding-top:3px;
+        cursor: pointer;
         p {
           font-family: "AppleSDGothicNeoSB";
           font-size: 12px;

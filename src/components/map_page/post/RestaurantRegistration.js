@@ -21,11 +21,11 @@ const RestaurantRegistration = () => {
     const userInfo = useSelector(state => state.loggedIn.userInfo);
     const modalRD = useSelector(state => state.map.modalNum);
 
-    // useEffect(()=> {
-    //     if(data.length===0){
-    //         navigate('/map')
-    //     }
-    // },[])
+    useEffect(()=>{
+        if(data.length===0) {
+            navigate('/map')
+        }
+    },[])
     // const { mutate } = useMutation(CreateRestaurant, {
     //     onSuccess: () => {
     //       QueryClient.invalidateQueries("/api/store/write") //여기 꼭 키값 넣어야함 안넣으면 데이터 다 날라감
@@ -38,7 +38,7 @@ const RestaurantRegistration = () => {
       };
 
     const Phone = () => {
-        return 'tel' + data.phone
+        return 'tel:' + data.phone
     }
 
     const SearchModal = async () => {
@@ -96,7 +96,7 @@ const RestaurantRegistration = () => {
                     </li>
                     <li>
                         <b>정보</b>
-                        <p>{data.category_name.map((category, idx) => (
+                        <p>{data.length !==0 && data.category_name.map((category, idx) => (
                             <span key={idx}>{data.category_name.length === idx+1 ? category : category + '>'}</span>
                         ))}</p>
                     </li>

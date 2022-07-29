@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import del from '../../img/EditDel.svg';
 import no_image from '../../img/fixed/no_image.svg'
 import arrow from '../../img/Detail_Item_arrow.svg';
 import location from '../../img/fixed/location_icon.svg';
 
-const RestaurantList = ({storeList, id, listPage}) => {
+const RestaurantList = ({ id, listPage}) => {
+    const { storeList} = useSelector(state => state.post.detail);
+
     return (
         <Container>
                     <RestaurantInfo>

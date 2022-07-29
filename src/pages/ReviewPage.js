@@ -130,6 +130,7 @@ const FooterBtn = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
+    z-index:1;
     a {
         text-decoration:none;
         font-family: 'AppleSDGothicNeoSB';

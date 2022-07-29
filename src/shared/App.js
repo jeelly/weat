@@ -234,6 +234,7 @@ function App() {
               <Route path="postReviewPhoto" element={<PostReviewPhoto/>}/>
               <Route path="postReviewPhoto/:id" element={<PostReviewPhoto/>}/>
               <Route path="success" element={<PostSuccess/>}/>
+              <Route path="success/:id" element={<PostSuccess/>}/>
             </Route>
           <Route path="/roomshare" element={<RoomShare />}>
             <Route path="codesearch" element={<CodeSearch />} />

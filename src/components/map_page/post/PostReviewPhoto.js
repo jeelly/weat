@@ -10,7 +10,7 @@ import Rating from '../../star_rating/Rating';
 import { useSelector } from 'react-redux';
 import instance from '../../../shared/axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateRestaurantDB = (data) => {
     return instance.post("/api/store/write", data);
@@ -23,6 +23,8 @@ const CraeteReviewDB = (data) => {
   }
 
 const PostReviewPhoto = () => {
+    const { id } = useParams();
+
     let navigate = useNavigate();
     const postData = useSelector((state)=> state.post.postData);
     const [modal, setModal] = useState(false);
@@ -36,6 +38,12 @@ const PostReviewPhoto = () => {
 
     const QueryClient = useQueryClient();  //캐싱된 데이터 후처리 리듀서 느낌
 
+    useEffect(()=>{
+        if(!id && postData.first.length===0) {
+            navigate('/map')
+        }
+    },[])
+
     const upload_data = {
         ...postData.tag,
         star:parseInt(star),
@@ -48,19 +56,19 @@ const PostReviewPhoto = () => {
     const CreateRestaurant = useMutation(CreateRestaurantDB, {
         onSuccess: (response) => {
             upload_data['storeId'] = response.data.storeId
-            QueryClient.invalidateQueries("/api/store/write") //여기 키값 넣어야함
+            QueryClient.invalidateQueries("Bubble") //여기 키값 넣어야함
             RestaurantRoomSave.mutate({selectedRooms:postData.registration, storeId:response.data.storeId});
             CraeteReview.mutate(upload_data);
         }
     });
     const RestaurantRoomSave = useMutation(RestaurantRoomSaveDB, {
         onSuccess: () => {
-          QueryClient.invalidateQueries("/api/store/write")
+          QueryClient.invalidateQueries("room")
         }
     });
     const CraeteReview = useMutation(CraeteReviewDB, {
         onSuccess: () => {
-          QueryClient.invalidateQueries("/api/store/write") 
+          QueryClient.invalidateQueries("review") 
         }
     });
 
@@ -103,7 +111,6 @@ const PostReviewPhoto = () => {
                 "content-type": "multipart/form-data",
             },
         };
-
         const formData = new FormData();
         // for(let i=0; i<image.length;i++) {
         //     formData.append('image', image[0]);
@@ -114,21 +121,34 @@ const PostReviewPhoto = () => {
             instance
             .post("api/upload/image", formData, config)            
             .then((response) => {
-                console.log('==============')
-                console.log(response)
                 upload_data['imgURL'] = response.data.imgUrl
-                CreateRestaurant.mutate(postData.first);
-                // const url = response.data; // 이미지 주소 넣기
+                console.log(id)
+                console.log(!id)
+                if(!id){
+                    CreateRestaurant.mutate(postData.first);
+                }else {
+                    upload_data['storeId'] = id
+                    CraeteReview.mutate(upload_data);
+                }
             })
             .catch(function(error) {
                 console.log(error);
-                CreateRestaurant.mutate(postData.first);
+                if(!id){
+                    CreateRestaurant.mutate(postData.first);
+                }else {
+                    upload_data['storeId'] = id
+                    CraeteReview.mutate(upload_data);
+                }
             })
     };
     
     const upload = async () => {
         await imageUpload();
-        await navigate('/storepost/success')
+        if(!id){
+            await navigate('/storepost/success')
+        }else {
+            await navigate(`/storepost/success/${id}`)
+        }
     }
 
     const onSortEnd = (oldIndex, newIndex) => {

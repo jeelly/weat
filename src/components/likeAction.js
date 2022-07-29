@@ -3,6 +3,7 @@ import { loadMyReviewDB } from "../redux/modules/myReviewSlice";
 
 
 export const likeAction = async (madiId, likeDone, dispatch) => {
+
     try {      
         if(likeDone){
             const res = await instance.delete(`/api/like/${madiId}`);
@@ -11,11 +12,10 @@ export const likeAction = async (madiId, likeDone, dispatch) => {
             
         }else if(!likeDone){
             const res = await instance.post(`/api/like/${madiId}`);  
-            dispatch(loadMyReviewDB()) 
-            console.log(res)           
-            
+            dispatch(loadMyReviewDB())
+            console.log(res)
         } 
     } catch (e) {
       console.log(e);
     }
-  }; 
+  };

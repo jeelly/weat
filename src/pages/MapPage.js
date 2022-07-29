@@ -6,10 +6,11 @@ import styled from "styled-components";
 import SearchModal from "../components/map_page/SearchModal";
 import instance from "../shared/axios";
 import { useQuery } from 'react-query';
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import BottomNavi from "../components/BottomNavi";
 import { device } from "../css/GlobalStyles";
-
+import house from "../img/fixed/house.svg"
+import alert from "../img/fixed/alert.svg"
 const getStoreAllList = (MyLatLng) => {
   // console.log('====')
   return instance.get(`/api/store/map/`);
@@ -52,6 +53,8 @@ const MapPage = () => {
   return (
     <>
     <Container>
+      <StyleLink house={house} to='/'/>
+      <AlertModal alert={alert} to='/'/>
       <Outlet/>
         <MapModal/>
         <SearchModal store_query={store_all_query.data}/>
@@ -70,4 +73,30 @@ const Container = styled.div`
   @media ${device.pc} {
     overflow:hidden;
   }
+`
+const StyleLink = styled(Link)`
+  position:absolute;
+  height:22px;
+  width:24px;
+  background-image:url(${({house})=> house });
+  background-repeat:no-repeat;
+  background-position:center;
+  top:15px;
+  left:16px;
+  z-index:2;
+`
+
+const AlertModal = styled.button`
+  position:absolute;
+  border:none;
+  background-color:transparent;
+  width:24px;
+  height:24px;
+  background-image:url(${({alert})=> alert });
+  background-repeat:no-repeat;
+  background-position:center;
+  top:15px;
+  right:19.2px;
+  z-index:2;
+  cursor:pointer;
 `

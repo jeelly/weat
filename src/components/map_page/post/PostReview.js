@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { FooterBtn } from '../../../css/Style';
 import purple_plus from '../../../img/fixed/purple_plus.svg'
@@ -10,11 +10,12 @@ import TasteTagItem from './TasteTagItem';
 import InputModal from './InputModal';
 import { postData, tagData } from '../../../redux/modules/postSlice';
 const PostReview = () => {
+    const { id } = useParams();
+    const postData = useSelector((state)=> state.post.postData);
     const dispatch = useDispatch()
     let navigate = useNavigate();
     const [modal, setModal] = useState(false);
     const [inputContent, setInputContent] = useState('');
-
     const tastesData = ['매콤','달콤','깔끔','느끼','짭짤한','향신료','새콤','건강한'];
     const atmosData = ['데이트코스','뷰맛집','인생샷','노포느낌','아기자기','이국적인','아재스타일','회식장소','고급'];
     const [tastes, setTastes] = useState(tastesData);
@@ -22,6 +23,12 @@ const PostReview = () => {
     const [menuArr, setMenuArr] = useState([]);
     const [tastesArr, setTastesArr] = useState([]);
     const [atmosArr, setAtomosArr] = useState([]);
+
+    useEffect(()=>{
+        if(!id && postData.first.length===0) {
+            navigate('/map')
+        }
+    },[])
 
     const ModalOpen = (content) => {
         setInputContent(content)
@@ -38,7 +45,7 @@ const PostReview = () => {
         }
     }
 
-    // X버튼 클릭 시 이미지 삭제
+    // X버튼 클릭 시  삭제
     const handleDeleteImage = (idx) => {
         setMenuArr(menuArr.filter((l, index) => index !== idx));
     };
@@ -50,7 +57,11 @@ const PostReview = () => {
             tagPoint:atmosArr
         }
         await dispatch(tagData(tag))
-        navigate('/storepost/PostReviewPhoto')
+        if(!id){
+            navigate('/storepost/PostReviewPhoto')
+        }else {
+            navigate(`/storepost/PostReviewPhoto/${id}`)
+        }
     }
     return (
         <Container>

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const RegistrationItem = ({room, statusIcon, roomArr, setRoomArr, reset}) => {
+const RegistrationItem = ({saveDone, room, statusIcon, roomArr, setRoomArr, reset}) => {
     const [toggle, setToggle] = useState(false);
 
     useEffect(()=>{
         setToggle(false)
     },[reset])
+    
+    useEffect(()=> {
+        if(!saveDone) return;
+        SelectRoom(room.roomId)
+    },[])
 
+    console.log(roomArr)
+    console.log(toggle)
     const SelectRoom = (roomId) => {
         if(roomArr.indexOf(roomId) === -1) {
             setToggle(true)
@@ -44,7 +51,7 @@ const ContentItem = styled.li`
     justify-content:space-between;
     align-items:center;
     margin-bottom:12px;
-    border:${({toggle}) => toggle? '2px solid #7F5FFF' : 'none'}
+    border:${({toggle}) => toggle ? '2px solid #7F5FFF' : 'none'}
 `
 const ItemWrap = styled.div`
     display:flex;

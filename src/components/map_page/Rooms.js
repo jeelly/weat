@@ -6,6 +6,7 @@ import circle_owner from '../../img/circle__owner.svg';
 import circle_private from '../../img/circle_private.svg';
 import circle_guest from '../../img/circle_guest.svg';
 import { loadRoomTagIconDB } from '../../redux/modules/mapSlice';
+import { useParams } from 'react-router-dom';
 
 const Rooms = ({room, idx}) => {
     const dispatch = useDispatch()
