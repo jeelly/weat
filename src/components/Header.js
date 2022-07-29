@@ -68,7 +68,7 @@ const Header = ({id, status, roomName, socket}) => {
 
   // 헤더 예외처리
   const noneHeader = () => {
-    if(url.indexOf('noentry') > 0 || url.indexOf('mypage') > 0 || url.indexOf('login') > 0){
+    if(url.indexOf('noentry') > 0 || url.indexOf('mypage') > 0 || url.indexOf('login') > 0 || url.indexOf('none') > 0){
       return 'none'      
     }else if(url.indexOf('map') > 0) {
         return 'none'
@@ -83,7 +83,7 @@ const Header = ({id, status, roomName, socket}) => {
 
 
   const notiModalOpen = () => {
-    setModal(true)
+    setModal(modal?false:true)
     localStorage.setItem("newNoti", 0);    
   }
 

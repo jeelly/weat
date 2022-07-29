@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../shared/axios";
-
+import {useNavigate} from 'react-router-dom'
 import LikeToggleBtn from "../components/LikeToggleBtn";
 
 import { loadMyReviewDB } from "../redux/modules/myReviewSlice";
@@ -17,8 +17,10 @@ import { ReactComponent as Trash } from "../img/trash.svg";
 import { ReactComponent as Face } from "../img/characterface.svg";
 import { ReactComponent as Flag } from "../img/icon/flagIcon.svg";
 import { device } from "../css/GlobalStyles";
+import AlertModal from "../components/mypageEdit/AlertModal";
 
 const ReviewModal = ({ reviewInfo, modalAction }) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const startList = [1, 2, 3, 4, 5];
 
@@ -41,7 +43,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
       console.log(e);
     }
   };
-console.log(reviewInfo)
+
   const userEye = (eye) => {
     if (eye === "type1") {
       return eyeList.filter((row) => row.includes(`${eye}.`) && row);
@@ -50,19 +52,38 @@ console.log(reviewInfo)
     }
   };
 
+  const deleteReview = async () => {
+    try{
+      const {data} = await instance.delete(`/api/store/matmadi/${reviewInfo.madiId}`)
+      matmadiInfo()
+      modalAction();
+      navigate('/mypage_edit/myreview')
+      console.log(data)
+    }catch(e){
+      console.log(e)
+    }
+  }
+
   useEffect(() => {
     matmadiInfo();
     dispatch(loadMyReviewDB());
-  }, [reviewInfo, dispatch]);
-  console.log(review);
-  return (
+  }, [reviewInfo, dispatch, modalAction]);
+
+  const [alertModal, setAlertModal] = useState(false)
+  const [alertModalType, setAlertModalType] = useState("")
+  const alertModalOpen = (boolean, type = null) =>{
+    setAlertModalType(type)
+    setAlertModal(boolean)    
+  }
+  
+  return (<>
     <ReviewModalWrap>
       {review && (
         <>
           <ReviewModalHeader>
-            <Modify />
+            <Modify  onClick={() => alertModalOpen(true, "none")}/>
             <div>
-              <Trash />
+              <Trash  onClick={deleteReview}/>
               <CloseBtn
                 fill="#fff"
                 onClick={() => {
@@ -105,14 +126,17 @@ console.log(reviewInfo)
                 ))}
               </p>
             </div>
-            <p className="comment"> &#34;{review.comment}&#34;</p>
+            {review.comment && <p className="comment"> &#34;{review.comment}&#34;</p>}
           </div>
           <div className="scoreBox">
             <Score review={review} />
           </div>
         </>
       )}
+      
     </ReviewModalWrap>
+    {alertModal && <AlertModal type={alertModalType} alertModalOpen={alertModalOpen}/>}
+    </>
   );
 };
 

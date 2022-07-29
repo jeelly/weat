@@ -5,8 +5,11 @@ import LikeToggleBtn from "../LikeToggleBtn";
 import ReviewModal from "../ReviewModal";
 import { loadMyReviewDB } from "../../redux/modules/myReviewSlice";
 import { useDispatch, useSelector } from "react-redux/es/exports";
+import none from "../../img/none.svg";
+import { useNavigate } from "react-router-dom";
 
 const Myreview = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const startList = [1, 2, 3, 4, 5];
   const [reviewInfo, setReviewInfo] = useState(null);
@@ -20,7 +23,7 @@ const Myreview = () => {
     setReviewInfo(item);
     modalAction();
   };
-
+  console.log(myReview);
   useEffect(() => {
     dispatch(loadMyReviewDB());
   }, []);
@@ -34,9 +37,9 @@ const Myreview = () => {
           </span>
         </div>
         <section className="reviewListBox">
-          <ul className="reviewList">
-            {myReview &&
-              myReview.map((item, idx) => (
+          {myReview.length > 0 ? (
+            <ul className="reviewList">
+              {myReview.map((item, idx) => (
                 <Items img={item.imgURL[0]} key={item.madiId}>
                   <section
                     className="reviewItemBox"
@@ -52,7 +55,7 @@ const Myreview = () => {
                               fill={idx < item.star ? "#000" : "#fff"}
                               stroke="#000"
                               key={item.madiId + "Star" + idx}
-                              style={{margin:'0 2px'}}
+                              style={{ margin: "0 2px" }}
                             />
                           ))}
                         </p>
@@ -69,7 +72,14 @@ const Myreview = () => {
                   </LikeBtn>
                 </Items>
               ))}
-          </ul>
+            </ul>
+          ) : (
+            <ReviewNone>
+              <img src={none} alt="" />
+              <div>작성한 리뷰가 없네요 :(</div>
+              <p onClick={()=>{navigate('/map')}}>맛방 추가하고 리뷰 남기기</p>
+            </ReviewNone>
+          )}
         </section>
       </MyreviewWrap>
       {modalOpen && (
@@ -193,4 +203,25 @@ const LikeBtn = styled.span`
   transform: translate(-50%, 0);
 `;
 
+const ReviewNone = styled.div`
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+  div {
+    font-family: "AppleSDGothicNeoSB";
+    font-size: 20px;
+    color: #d8d8d8;
+    margin-top:50px;
+  }
+  p {
+    border-bottom: 1px solid #777;
+    color: #777;
+    margin-top: 15px;
+    cursor: pointer;
+  }
+`;
 export default Myreview;
