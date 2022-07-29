@@ -5,6 +5,8 @@ import { Container } from "../css/Style";
 import close from "../img/close.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { addNotiList } from "../redux/modules/socketSlice";
+import {device} from '../css/GlobalStyles'
+import noneImg from '../img/none.svg'
 
 const NoticeModal = ({ modal, setModal, socket }) => {
   const navigate = useNavigate('')
@@ -35,22 +37,22 @@ const NoticeModal = ({ modal, setModal, socket }) => {
     setModal(false)
     localStorage.setItem("newNoti", 0);  
   }
-
+console.log(notiListSort)
 
 //소켓 알림 삭제
-// const notiDelete = (e) => {
-//   console.log( e.target.id)
-//   socket.emit('delete', e.target.id)
-//   notiItemList()
-// }
-// const notiItemList = async () => {
-//   await socket?.emit("getAlert", { receiverId: userInfo.userId });
-//   await socket?.on("getNotification", (data) => {
-//     console.log('모달에있는 로직')
-//     console.log(data)
-//     dispatch(addNotiList(data.findAlertDB));
-//   });
-// };
+const notiDelete = (e) => {
+  console.log( e.target.id)
+  socket.emit('delete', e.target.id)
+  notiItemList()
+}
+const notiItemList = async () => {
+  await socket?.emit("getAlert", { receiverId: userInfo.userId });
+  await socket?.on("getNotification", (data) => {
+    console.log('모달에있는 로직')
+    console.log(data)
+    dispatch(addNotiList(data.findAlertDB));
+  });
+};
   return (
     <Modal modal={modal}>
       <NewContainer>
@@ -60,7 +62,9 @@ const NoticeModal = ({ modal, setModal, socket }) => {
         >
           닫기 버튼
         </CloseBtn>
-        {notiListSort.map((listItem, idx) => (
+        
+        {notiListSort.length > 0 ?
+        notiListSort.map((listItem, idx) => (
           <ContentItem key={listItem._id} onClick={()=>{navigate(`/detail/${listItem.roomId}`)}}>
             <ContentText>
               <span className="name">{listItem.senderName}</span>님이 
@@ -71,7 +75,14 @@ const NoticeModal = ({ modal, setModal, socket }) => {
             {/* <button id={listItem._id} onClick={notiDelete}>X</button> */}
             <ContentTime>{listItem.createdAt}</ContentTime>
           </ContentItem>
-        ))}
+        ))
+        : <Notinone>
+          <img src={noneImg} alt="" />
+          <p>아직 알림이 없네요</p>
+        </Notinone>
+      
+      
+      }
       </NewContainer>
     </Modal>
   );
@@ -87,7 +98,12 @@ const NewContainer = styled(Container)`
   display: none;
 }`;
 const Modal = styled.article`
-  /* display: ${({ modal }) => (modal ? "block" : "none")}; */
+  @media ${device.pc} {
+    right: ${({ modal }) => (modal ? "30.5%" : "-10%")};
+    transform: translate(50%,0);
+    box-shadow:none;
+    opacity: ${({ modal }) => (modal ? "1" : "0")};
+  }
   width: 280px;
   height: 100vh;
   background-color: var(--LIGHTEST);
@@ -98,8 +114,9 @@ const Modal = styled.article`
   position: fixed;
   top: 0;
   right: ${({ modal }) => (modal ? 0 : "-280px")};
-  transition: right 0.5s;
-  z-index: 101;
+  transition: right 0.5s, opacity 0.8s;
+  z-index: -1;
+  
 `;
 const CloseBtn = styled.button`
   background-image: url(${({ close }) => close});
@@ -149,6 +166,26 @@ const ContentTime = styled.p`
   line-height: 14px;
   color: var(--OVERLAY3);
 `;
+
+const Notinone = styled.div`
+width:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top:100px;
+  font-family: "AppleSDGothicNeoSB";
+  color:#D8D8D8;
+  img {
+    width: 60px;
+    margin-bottom:20px;
+    
+  }
+
+
+
+
+`
 
 // const ContentItem = styled.div`
 //   &::after {

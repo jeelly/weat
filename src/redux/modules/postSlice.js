@@ -11,6 +11,7 @@ export const loadRoomDB = () => {
       const rooms = response.data.myRooms;
       const roms_total = response.data.total;
       dispatch(loadRoom({rooms, roms_total}));
+      
     }catch (error) {
       console.log(error);
     }
@@ -27,9 +28,14 @@ export const loadRoomDetailDB = (id) => {
       const detail = response_room_detail.data.result;
       const users = response_detail_users.data.userInfo;
       const storeList = response_detail_storeList.data.theStoreList;
+      console.log()
       dispatch(loadRoomDetail({detail, users, storeList}));
+      
     }catch (error) {
-      console.log(error);
+      if(error.response.data.errorMessage === '회원님이 포함되어있지 않은 방입니다.' ){
+        window.location.replace('/none')
+        
+      }
     }
   };
 };
@@ -167,6 +173,7 @@ const postSlice = createSlice({
     },
     //방 디테일정보 불러오기 
     loadRoomDetail: (state, action) => {
+      console.log(action.payload)
       state.detail = action.payload
       state.detail_isloaded = true
     },

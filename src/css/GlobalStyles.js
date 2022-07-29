@@ -1,5 +1,9 @@
 import styled, { createGlobalStyle } from "styled-components";
 
+export const device = {
+  pc: `(min-width: 735px)`,
+};
+
 const GlobalStyles = createGlobalStyle`
     :root{
       --BLACK: #000;
@@ -32,7 +36,6 @@ const GlobalStyles = createGlobalStyle`
     * {
       margin: 0;
       padding: 0;
-      /* text-align: center; */
       box-sizing: border-box;
     }
     html{
@@ -43,6 +46,12 @@ const GlobalStyles = createGlobalStyle`
       ::-webkit-scrollbar {
         display: none;
       }
+      #root {
+        height: 100%;
+    min-height: 100vh;
+    background-color: #fff;
+      }
+      
     }
     p,h1,h2,h3,h4{padding:0; margin:0;}
     ul,li,ol {
@@ -54,10 +63,5 @@ export const Container = styled.div`
   padding: 0 16px;
   /* width: 100%; */
 `;
-
-export const device = {
-  pc: `(min-width: 735px)`,
-};
-
 
 export default GlobalStyles;
