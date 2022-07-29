@@ -9,7 +9,6 @@ import location from '../../img/fixed/location_icon.svg';
 
 const RestaurantList = ({ id, listPage}) => {
     const { storeList } = useSelector(state => state.post.detail);
-
     return (
         <Container>
                     <RestaurantInfo>

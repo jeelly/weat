@@ -8,6 +8,9 @@ import { useSelector } from "react-redux";
 
 const RestaurantList = ({id, listPage, status}) => {
     const { storeList } = useSelector((state) => state.post.detail);
+    console.log(storeList)
+    console.log('=-==================')
+    console.log(storeList)
     let navigate = useNavigate();
     return (
         <Container status={status}>
