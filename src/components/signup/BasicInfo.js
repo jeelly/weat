@@ -25,7 +25,7 @@ const BasicInfo = () => {
   const [sec, setSec] = useState(0);
   const time = useRef(180);
   const timerId = useRef(null);
-console.log(authNum)
+  console.log(authNum);
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
     setauthBtnDisable("");
@@ -37,7 +37,6 @@ console.log(authNum)
     setUserNum(0);
   }, []);
 
- 
   const onChangeUserNum = useCallback(
     (e) => {
       setUserNum(e.target.value);
@@ -62,7 +61,7 @@ console.log(authNum)
     try {
       const response = await instance.post("/api/users/mail", { email });
       await setAuthNum(response.data.authNum);
-      await alert(`${email}로 인증번호가 발송되었어요!`)
+      await alert(`${email}로 인증번호가 발송되었어요!`);
     } catch (e) {
       return alert(e.response.data.errorMessage);
     }
@@ -85,7 +84,7 @@ console.log(authNum)
       if (authNum == userNum) {
         clearInterval(timerId.current);
         setAuthInputDisable(true);
-        alert('인증완료')
+        alert("인증완료");
         setAuthNumError("");
       } else {
         setAuthInputDisable(false);
@@ -105,7 +104,7 @@ console.log(authNum)
       setauthBtnDisable(false);
     }
   }, [sec]);
-  
+
   //데이터 저장 후 이동
   const userInfo = { name, birthDay, email };
   const submit = useCallback(() => {
@@ -137,6 +136,7 @@ console.log(authNum)
       window.removeEventListener("scroll", scrollEvent);
     };
   });
+
 
   return (
     <div>
@@ -177,9 +177,16 @@ console.log(authNum)
           <label htmlFor="">Name</label>
           <input type="text" placeholder="김한나" onChange={onChangeName} />
         </section>
-        <section>
-          <label htmlFor="">Birth date</label>
-          <input type="date" onChange={onChangeDate} />
+        <section className="BirthDateSection">
+          <label htmlFor="date">
+            Birth date
+          </label>
+          <input
+            type="date"
+            id="date"
+            className="date"
+            onChange={onChangeDate}
+          />
         </section>
       </InputBox>
       <Description style={style}>
@@ -211,7 +218,7 @@ const InfoMessage = styled.section`
 `;
 
 const InputBox = styled.div`
-  padding-bottom: 72px;
+  padding-bottom: 70px;
   section {
     display: flex;
     flex-direction: column;
@@ -227,6 +234,7 @@ const InputBox = styled.div`
       padding-left: 14px;
     }
     input {
+      width: 100%;
       font-family: "AppleSDGothicNeoL";
       font-size: 14px;
       line-height: 22px;
@@ -236,6 +244,7 @@ const InputBox = styled.div`
       border-radius: 50px;
       margin-bottom: 10px;
       outline: none;
+      position: relative;
       :focus {
         border: 2px solid var(--LIGHTER);
       }
@@ -244,6 +253,19 @@ const InputBox = styled.div`
         color: var(--DEFAULT);
       }
     }
+    input.date::-webkit-calendar-picker-indicator {
+      background: transparent;
+      bottom: 0;
+      color: transparent;
+      cursor: pointer;
+      height: auto;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: auto;
+    }
+
     .authNum {
       display: flex;
       justify-content: space-between;
@@ -263,6 +285,9 @@ const InputBox = styled.div`
     input {
       height: 48px;
     }
+  }
+  section.BirthDateSection {
+    padding-bottom: 70px;
   }
 `;
 const Time = styled.span`
