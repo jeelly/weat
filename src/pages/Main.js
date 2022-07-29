@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 import BottomNavi from '../components/BottomNavi';
+import EventModal from '../components/main/EventModal';
 
 const Main = ({socket}) => {
     const navigate = useNavigate()
@@ -47,6 +48,7 @@ const Main = ({socket}) => {
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
             {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
+            <EventModal/>
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>

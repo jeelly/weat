@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addNotiList } from "../redux/modules/socketSlice";
 import {device} from '../css/GlobalStyles'
 import noneImg from '../img/none.svg'
-
+import alert_banner from '../img/alert_banner.jpg'
 const NoticeModal = ({ modal, setModal, socket }) => {
   const navigate = useNavigate('')
   const dispatch = useDispatch()
@@ -55,6 +55,9 @@ const notiItemList = async () => {
 };
   return (
     <Modal modal={modal}>
+      <ImgWrap target="_black" href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform">
+        <img src={alert_banner} alt="이벤트배너"/>
+      </ImgWrap>
       <NewContainer>
         <CloseBtn
           close={close}
@@ -77,7 +80,7 @@ const notiItemList = async () => {
           </ContentItem>
         ))
         : <Notinone>
-          <img src={noneImg} alt="" />
+          <img src={noneImg} alt=""/>
           <p>아직 알림이 없네요</p>
         </Notinone>
       
@@ -89,6 +92,16 @@ const notiItemList = async () => {
 };
 
 export default NoticeModal;
+const ImgWrap = styled.a`
+  position:absolute;
+  bottom:-4px;
+  left:0;
+    /* overflow:hidden; */
+    img {
+        width:100%;
+        object-fit:contain;
+    }
+`
 
 const NewContainer = styled(Container)`
   padding-top: 56px;
