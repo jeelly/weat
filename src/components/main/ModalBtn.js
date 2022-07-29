@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModalBtnAnimationOne, ModalBtnAnimationTwo, ModalBtnAnimationThree  } from '../../css/animation/ModalBtnAnimation'
 import { useDispatch } from 'react-redux';
 import { itemAnimation } from '../../redux/modules/postSlice';
+import { device } from '../../css/GlobalStyles';
 
 const ModalBtn = () => {
     const dispatch = useDispatch();
@@ -55,6 +56,11 @@ const CreateBtn = styled.button`
     position:fixed;
     right:16px;
     bottom:88px;
+    @media ${device.pc} {
+        right:50%;
+        transform:translateX(300%);
+        margin-right:16px;
+    }
 `
 
 const CreateModal = styled.div`
@@ -71,6 +77,11 @@ const CreateModal = styled.div`
     }
     button:nth-child(1) {
         animation:${ModalBtnAnimationThree} 0.3s linear forwards;
+    }
+    @media ${device.pc} {
+        width:480px;
+        right:50%;
+        transform:translateX(50%);
     }
 `
 

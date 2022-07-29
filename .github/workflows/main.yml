@@ -46,7 +46,7 @@ jobs:
           REACT_APP_REGION: ${{ secrets.REACT_APP_REGION }}
       
       - name: Install Dependencies   
-        run: npm install
+        run: npm install --save --legacy-peer-deps ' 
 
       - name: Build                   
         run: CI=false npm run build
