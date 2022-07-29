@@ -36,6 +36,8 @@ jobs:
           echo "REACT_APP_ACCESS_KEY=$REACT_APP_ACCESS_KEY" >> .env.production
           echo "REACT_APP_SECRET_ACCESS_KEY=$REACT_APP_SECRET_ACCESS_KEY" >> .env.production
           echo "REACT_APP_REGION=$REACT_APP_REGION" >> .env.production
+          echo "REACT_APP_KAKAO_KEY=$REACT_APP_KAKAO_KEY" >> .env.production
+          echo "REACT_APP_KAKAO_MAP_KEY=$REACT_APP_KAKAO_MAP_KEY" >> .env.production
           
         env:
           REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
@@ -44,6 +46,8 @@ jobs:
           REACT_APP_ACCESS_KEY: ${{ secrets.REACT_APP_ACCESS_KEY }}
           REACT_APP_SECRET_ACCESS_KEY: ${{ secrets.REACT_APP_SECRET_ACCESS_KEY }}
           REACT_APP_REGION: ${{ secrets.REACT_APP_REGION }}
+          REACT_APP_KAKAO_KEY: ${{ secrets.REACT_APP_KAKAO_KEY }}
+          REACT_APP_KAKAO_MAP_KEY: ${{ secrets.REACT_APP_KAKAO_MAP_KEY }}
       
       - name: Install Dependencies   
         run: npm install --force
@@ -62,5 +66,7 @@ jobs:
         uses: chetan/invalidate-cloudfront-action@master
         env:
           DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}
+          REACT_APP_KAKAO_KEY: ${{ secrets.REACT_APP_KAKAO_KEY }}
+          REACT_APP_KAKAO_MAP_KEY: ${{ secrets.REACT_APP_KAKAO_MAP_KEY }}
           PATHS: '/*'
         continue-on-error: true
