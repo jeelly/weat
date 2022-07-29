@@ -17,7 +17,7 @@ const RestaurantList = ({id, listPage, status}) => {
                             <ListLink to={`/listpage/${id}`} >All</ListLink>
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
-                            {storeList.map((store, idx)=> (
+                            {storeList && storeList.map((store, idx)=> (
                                 <RestaurantItem key={id} onClick={()=> navigate(`/review/${store.storeId}`)}>
                                     <li>
                                     <ImgWrap>

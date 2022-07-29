@@ -8,17 +8,17 @@ import arrow from '../../img/Detail_Item_arrow.svg';
 import location from '../../img/fixed/location_icon.svg';
 
 const RestaurantList = ({ id, listPage}) => {
-    const { storeList} = useSelector(state => state.post.detail);
+    const { storeList } = useSelector(state => state.post.detail);
 
     return (
         <Container>
                     <RestaurantInfo>
                         <header>
-                            <Total>Total <span>{storeList.length}</span></Total>
+                            <Total>Total <span>{storeList && storeList.length}</span></Total>
                             <ListLink to={`/editlistpage/${id}`} >All</ListLink>
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
-                        {storeList.map((store, idx)=> (
+                        {storeList && storeList.map((store, idx)=> (
                                 <RestaurantItem key={id}>
                                     <li>
                                     <ImgWrap>

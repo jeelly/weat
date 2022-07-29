@@ -10,7 +10,6 @@ import Header from '../components/Header';
 const ListPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const {storeList} = useSelector(state => state.post.detail);
     const [isloaded, setIsloaded] = useState(false);
     const {detail} = useSelector(state => state.post.detail);
     
@@ -32,7 +31,7 @@ const ListPage = () => {
     return (
         <NewContainer status={detail.status}>
             <Header id={id} status={detail.status} roomName={detail.roomName}/>
-            {isloaded && <RestaurantList storeList={storeList} listPage={true}/>}
+            {isloaded && <RestaurantList listPage={true}/>}
         </NewContainer>
     );
 };

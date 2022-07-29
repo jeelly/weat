@@ -10,7 +10,7 @@ import Header from '../components/Header';
 const EditListPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const {storeList, detail} = useSelector(state => state.post.detail);
+    const {detail} = useSelector(state => state.post.detail);
     const [isloaded, setIsloaded] = useState(false);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const EditListPage = () => {
     return (
         <NewContainer>
             <Header id={id} status={detail.status} roomName={detail.roomName}/>
-            {isloaded && <RestaurantList storeList={storeList} listPage={true}/>}
+            {isloaded && <RestaurantList listPage={true}/>}
         </NewContainer>
     );
 };
