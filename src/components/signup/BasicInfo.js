@@ -26,7 +26,7 @@ const BasicInfo = () => {
   const [sec, setSec] = useState(0);
   const time = useRef(180);
   const timerId = useRef(null);
-  console.log(authNum);
+  
   const onChangeEmail = useCallback((e) => {
     setEmail(e.target.value);
     setauthBtnDisable("");
@@ -61,11 +61,11 @@ const BasicInfo = () => {
     }
     try {
       const response = await instance.post("/api/users/mail", { email });
-      console.log(response)
+
       await setAuthNum(response.data.authNum);
       await alert(`${email}로 인증번호가 발송되었어요!`);
     } catch (e) {
-      return console.log(e);
+      // return console.log(e);
     }
     auth();
   };
