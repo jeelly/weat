@@ -73,14 +73,16 @@ function App() {
 
   // 소켓 서버 변수에 지정
   const [socket, setSocket] = useState(null);
+  const usrToken = window.localStorage.getItem('token')
   useEffect(() => {
+    if(window.localStorage.getItem('token')){
     setSocket(io("https://realprojectapiserver.com"));
     if (!localStorage.getItem("newNoti")) {
       localStorage.setItem("newNoti", 0);
     }
-    return disconnectSocket();
-  }, []);
-
+    return disconnectSocket();}
+  }, [usrToken]);
+  
   //소켓 연결 끊기
   const disconnectSocket = () => {
     socket?.on("disconnect", () => {
@@ -109,11 +111,9 @@ function App() {
   const [newNotification, setNewNotification] = useState([]);
   const newInvited = () => {
     socket?.on("newInviteDB", (noti) => {
-      console.log(noti);
       if (noti) {
         counter();
         setNewNotification((prev) => [...prev, ...noti.findUserAlertDB]);
-        console.log(window.localStorage.getItem("token"));
       }
     });
   };
@@ -122,7 +122,6 @@ function App() {
   const [newStore, setNewStore] = useState([]);
   const addStore = () => {
     socket?.on("AddStore", (data) => {
-      // console.log(data);
       if (data) {
         counter();
         setNewStore((prev) => [...prev, data]);
@@ -135,7 +134,6 @@ function App() {
   const notiList = async () => {
     await socket?.emit("getAlert", { receiverId: userInfo.userId });
     await socket?.on("getNotification", (data) => {
-      // console.log(data);
       setNotifications(data.findAlertDB);
     });
   };
