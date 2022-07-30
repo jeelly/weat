@@ -67,7 +67,7 @@ const ReviewModal = ({ reviewInfo, modalAction }) => {
   useEffect(() => {
     matmadiInfo();
     dispatch(loadMyReviewDB());
-  }, [reviewInfo, dispatch, modalAction]);
+  }, [reviewInfo, dispatch]);
 
   const [alertModal, setAlertModal] = useState(false)
   const [alertModalType, setAlertModalType] = useState("")
