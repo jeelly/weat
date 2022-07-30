@@ -37,7 +37,6 @@ const NoticeModal = ({ modal, setModal, socket }) => {
     setModal(false)
     localStorage.setItem("newNoti", 0);  
   }
-console.log(notiListSort)
 
 //소켓 알림 삭제
 const notiDelete = (e) => {
