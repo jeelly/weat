@@ -58,6 +58,7 @@ const FaceCustom = () => {
         });
         return navigate("/signup/completion");
       } catch (e) {
+        alert(e.response.data.errorMessage)
         console.log(e);
       }
     }
