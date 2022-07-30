@@ -109,7 +109,6 @@ const Mypage = () => {
             <li>
               {/* 광고 */}
               <a target="_black" href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform">의견보내기🎁</a> 
-              {/* 광고 */}
             </li>
             <li>
               <span>개인정보처리 방침</span> <span onClick={() => alertModalOpen(true, "secession")}>회원탈퇴</span>
