@@ -39,7 +39,7 @@ const ReviewPage = () => {
     // const Bubble_query = useQuery(["Bubble"], getBubbleList , {
     const Bubble_query = useQuery(["Bubble"], getBubbleList , {
           onSuccess: (data) => {
-            console.log(data.data);
+            // console.log(data.data);
           }
     });
     // const Review_query = useQuery(["review"], getReviewList , {
@@ -47,43 +47,31 @@ const ReviewPage = () => {
             refetchOnWindowFocus: false,
             retry:10,
             onSuccess: (data) => {
-            console.log(data);
           }
     });
     const Room_query = useQuery(["room"], getRoomList , {
             refetchOnWindowFocus: false,
             retry:10,
             onSuccess: (data) => {
-            console.log(data);
           }
     });
     const MenuList = useQuery(["Menu"], getMenuList , {
         refetchOnWindowFocus: false,
             retry: 10,
             onSuccess: (data) => {
-            console.log(data.data);
           }
     });
     const Tag_query = useQuery(["tag"], getTagList , {
         refetchOnWindowFocus: false,
             retry: 10,
             onSuccess: (data) => {
-            console.log(data.data);
         }
     });
 
-    
-    // useEffect(()=> {
-    //     getMenuList(id)
-    //     getReviewList(id)
-    //     getTagList(id)
-    //     getBubbleList(id)
-    // },[])
-
-    console.log(Bubble_query)
-    console.log(Review_query)
-    console.log(MenuList)
-    console.log(Tag_query)
+    // console.log(Bubble_query)
+    // console.log(Review_query)
+    // console.log(MenuList)
+    // console.log(Tag_query)
 
 
     const ReviewCheck = () => {
@@ -92,7 +80,6 @@ const ReviewPage = () => {
             return check[0]?.nickname;
         }
     }
-    console.log(ReviewCheck())
     // console.log(Room_query.data.data.total)
     // console.log(Room_query.data.data.myRooms)
 
@@ -105,8 +92,6 @@ const ReviewPage = () => {
     // const myRooms = () => {
     //     return Room_query.status === 'success' && Room_query.data.data.myRooms.filter((l)=> l.saveDone)
     // }
-    // console.log(myRooms)
-    console.log(Room_query.status)
     return (
         <Container>
             {Room_query.status === 'success' && <Header Room_query={Room_query}/>}

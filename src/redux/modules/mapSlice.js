@@ -6,7 +6,6 @@ export const loadStoreRoomDB = () => {
   return async function (dispatch) {
     try{
       const response = await instance.get(`/api/store`);
-      console.log(response.data.myRooms)
       dispatch(loadStoreRoom(response.data.myRooms));
     }catch (error) {
       console.log(error);
@@ -19,7 +18,6 @@ export const loadMyStoreDB = (store) => {
   return async function (dispatch) {
     try{
       const response = await instance.get(`/api/store/${store.storeId}`);
-      console.log('aaa',response)
       dispatch(loadMyStore({store:store, response:response.data.result}));
     }catch (error) {
       console.log(error);
@@ -29,13 +27,10 @@ export const loadMyStoreDB = (store) => {
 
 // 특정 맛방의 맛집 전체 조회
 export const loadRoomTagIconDB = (id) => {
-  console.log(id)
   return async function (dispatch) {
     try{
       const response_room_detail = await instance.get(`/api/store/${id}/tagicon`);
       const detail = response_room_detail.data.result;
-      console.log("==============================")
-      console.log(detail)
       dispatch(loadRoomTagIcon(detail));
     }catch (error) {
       console.log(error);
@@ -56,22 +51,18 @@ const mapSlice = createSlice({
     },
     reducers: {
       loadStoreRoom: (state, action) => {
-        console.log(action.payload)
         state.loadStoreRoom = action.payload;
       },
       // 특정 맛방의 맛집 전체 조회
       loadRoomTagIcon: (state, action) => {
-        console.log(action.payload)
         state.loadRoomTagIcon = action.payload;
       },
       //검색해서 클릭한 맛집 데이터
       loadMyStore: (state, action) => {
-        console.log(action.payload)
         state.loadMyStore = [{...action.payload.response, ...action.payload.store}];
       },
       //검색해서 클릭한 등록 안된 맛집 데이터
       loadFirstStore: (state, action) => {
-        console.log(action.payload)
         state.loadFirstStore = [action.payload];
       },
       //현재위치저장
