@@ -19,7 +19,6 @@ import PageNotFound from "../pages/PageNotFound";
 import Main from "../pages/Main";
 import ListPage from "../pages/ListPage";
 import Detail from "../pages/Detail";
-import Post from "../pages/Post";
 import MakeRoom from "../pages/MakeRoom";
 import FaceCustom from "../components/signup/FaceCustom";
 import Agreement from "../components/signup/Agreement";
@@ -214,7 +213,6 @@ function App() {
 
             <Route path="*" element={<PageNotFound />} />
             <Route path="/" element={isloaded && <Main socket={socket} />} />
-            <Route path="/post" element={<Post />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Singup />}>
               <Route path="agreement" element={<Agreement />} />
