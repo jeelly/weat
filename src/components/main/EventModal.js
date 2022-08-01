@@ -48,7 +48,7 @@ const EventBnWrap = styled.aside`
         img{
             width: 100%;
             box-shadow: var(--SHADOW2);
-            border-radius: 20px;
+            border-radius: 10px;
         }
         
     }
