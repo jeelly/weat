@@ -183,6 +183,7 @@ function App() {
   };
   //데이터 불러오기
   useEffect(() => {
+    window.sessionStorage.setItem('eventBn', true)
     const load = async () => {
       await setIsLoading(true);
       await generalLogin();
