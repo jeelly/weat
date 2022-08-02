@@ -95,6 +95,7 @@ const Room = styled.label`
     border-radius:100px;
     box-shadow:var(--SHADOW2);
     margin:30px 4px 80px 4px;    
+    cursor:pointer;
 `
 
 const Container = styled.div`

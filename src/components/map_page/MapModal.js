@@ -7,10 +7,19 @@ import {ReactComponent as MyTag} from '../../img/my_tag.svg'
 import {ReactComponent as MyLocationIcon} from '../../img/my_location.svg'
 import { useSelector } from 'react-redux';
 import { device } from '../../css/GlobalStyles';
+import TagTap from './TagTap';
 
 const MapModal = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
     const modalNum = useSelector(state => state.map.modalNum);
-    console.log(modalNum===0)
+    const filterActive = useSelector(state => state.map.tagFilterActive);
+    console.log('==============')
+    console.log(filterActive)
+
+    useEffect(()=> {
+        if(filterActive.length===0) return;
+        setActiveIndex(filterActive.active)
+    },[filterActive])
 
     useEffect(()=> {
         if(!modalNum===0) return;
@@ -21,12 +30,11 @@ const MapModal = () => {
         0 === 2 ? setCColor('#eee') : setCColor('#999')
     },[modalNum])
 
-    const [activeIndex, setActiveIndex] = useState(0);
     
     useEffect(()=> {
         
     },[])
-    const tabClickHandler= async (index)=>{
+    const tabClickHandler = async (index)=>{
         await setActiveIndex(index)
         console.log(activeIndex, index)
         index === 0 ? setAColor('#eee') : setAColor('#999')
@@ -62,7 +70,7 @@ const MapModal = () => {
                 <ToggleBtn key="2" onClick={()=>tabClickHandler(activeIndex===2?4:2)}><MyTag fill={cColor}/></ToggleBtn>
             ),
             tabCont:(
-                <ContentWrap><TagTap><h3>준비중입니다</h3></TagTap></ContentWrap>
+                <ContentWrap><TagTap/></ContentWrap>
             )
         }
     ];
@@ -115,6 +123,7 @@ const ToggleBtn = styled.div`
     height:16px;
     background-color:transparent;
     margin-right:41.67px;
+    cursor:pointer;
     &:last-child {
         margin-right:0;
     }
@@ -128,15 +137,3 @@ const ContentWrap = styled.li`
     left:3.333%;
 `
 
-const TagTap = styled.li`
-    background-color:black;
-    width:200px;
-    height:200px;
-    margin-bottom:100px;
-    margin-left:150px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0.6;
-    color:white;
-`

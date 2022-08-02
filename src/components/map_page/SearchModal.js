@@ -70,4 +70,5 @@ const SearchBtn = styled.button`
     background-image:url(${({search_icon}) => search_icon});
     background-repeat:no-repeat;
     background-position:center;
+    cursor:pointer;
 `

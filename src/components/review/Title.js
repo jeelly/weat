@@ -45,6 +45,7 @@ const PlaceName = styled.li`
     font-size: 24px;
     line-height: 29px;
     color:var(--BLACK);
+    text-align:center;
 `
 const AddressName = styled.li`
     font-family: 'AppleSDGothicNeoM';
