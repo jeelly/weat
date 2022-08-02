@@ -13,8 +13,8 @@ import { eyeList } from "../../components/signup/FaceResource";
 import { BlackButton } from "../../css/Style";
 //액션함수
 import { addFace } from "../../redux/modules/signupSlice";
-import { loginCheck } from "../../redux/modules/userSlice";
-import { loginUserCheck } from "../../redux/modules/userSlice";
+import { loginCheck, loginUserCheck } from "../../redux/modules/userSlice";
+
 //axios
 import {instance, getAuthorizationHeader} from "../../shared/axios";
 
@@ -22,15 +22,16 @@ const FaceCustom = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [hex, setHex] = useState("#23C7C7");
-  const [nickname, setNickname] = useState("");
+  const userNickname = useSelector(state => state.loggedIn.userInfo.nickname) 
+  const [nickname, setNickname] = useState(userNickname ? userNickname : '');  
   const [eyeItem, setEyeItem] = useState(eyeList[2]);
+  
   const eye = eyeItem.split(".")[0].split("/").slice(-1).join();
 
   const userSignupData = useSelector((state) => state.userSignup);
   const snsUserData = useSelector((state) => state.loggedIn.userInfo);
   const userToken = window.localStorage.getItem('token')
   const url = window.location.href
-
   const userInfo = {
     nickname: nickname,
     eyes: eye,
@@ -40,7 +41,6 @@ const FaceCustom = () => {
   const buttonAction = useCallback(async () => {
     const reg_nickname = /^[ㄱ-ㅎ가-힣0-9a-zA-Z]{3,10}$/;
     if (!reg_nickname.test(nickname)) {
-      console.log(nickname);
       return alert("닉네임 한글/영문 3~10자리!");
     }
     dispatch(addFace(userInfo));
@@ -68,17 +68,27 @@ const FaceCustom = () => {
         name: snsUserData.name,
         provider: snsUserData.provider,
         userId: snsUserData.userId,
-        nickname:nickname,
+        nickname : nickname,        
         faceColor: hex,
         eyes: eye,
       }
+      const viewUserInfo = {
+        customerId:snsUserData.customerId,
+        email: snsUserData.email,
+        name: snsUserData.name,
+        provider: snsUserData.provider,
+        userId: snsUserData.userId,
+        nickname : nickname,        
+        faceColor: hex,
+        eyes: eye,
+      }
+      dispatch(loginUserCheck(viewUserInfo));  
+      snsLoginUserData.nickname === userNickname && delete snsLoginUserData.nickname 
       try {
         const response = await instance.put("/api/users/edit", snsLoginUserData ,{ 
           headers: { Authorization: getAuthorizationHeader() }
         });
-        console.log(response)
         dispatch(loginCheck(true));
-        dispatch(loginUserCheck(snsLoginUserData));  
         if(url.includes('character_edit'))  {
           navigate('/mypage')
         }else{
@@ -89,7 +99,7 @@ const FaceCustom = () => {
       }
     }
   }, [nickname, eyeItem, hex,snsUserData]);
-console.log()
+
   //닉네임 셋팅
   const nicknameSetting = useCallback((e) => {
     setNickname(e.target.value);
