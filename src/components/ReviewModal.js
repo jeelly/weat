@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../shared/axios";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import LikeToggleBtn from "./LikeToggleBtn";
-import { useQuery } from 'react-query';
+import { useQuery } from "react-query";
 
 import { loadMyReviewDB } from "../redux/modules/myReviewSlice";
 
@@ -19,108 +19,116 @@ import { ReactComponent as Face } from "../img/characterface.svg";
 import { ReactComponent as Flag } from "../img/icon/flagIcon.svg";
 import { device } from "../css/GlobalStyles";
 import AlertModal from "./mypageEdit/AlertModal";
+import { likeAction } from "./likeAction";
 
 const ReviewModal = ({ data, modalAction }) => {
-    const startList = [1, 2, 3, 4, 5];
+  const dispatch = useDispatch();
+  const startList = [1, 2, 3, 4, 5];
   const matmadi = data;
-  const [matmadiData, setMatmadiData] = useState(null)
-  console.log(data)
+  const [matmadiData, setMatmadiData] = useState(null);
+  const {userInfo} = useSelector(state => state.loggedIn)
+console.log(userInfo)
+console.log(matmadiData)
 
-  //눈
+  //눈w
   const userEye = (eye) => {
     return eyeList.filter((row) => row.includes(eye) && row);
   };
 
-  const reviewData = async () =>{
-    try{
-        const {data} = await instance.get(`/api/store/matmadi/${matmadi}`)
-        setMatmadiData(data.result)
-    }catch(e){
-        console.log(e)
+  const reviewData = async () => {
+    try {
+      const { data } = await instance.get(`/api/store/matmadi/${matmadi}`);
+      setMatmadiData(data.result);
+    } catch (e) {
+      console.log(e);
     }
-  }
-  
-  useEffect(()=>{
-    reviewData()
-  },[])
+  };
 
-  const [alertModal, setAlertModal] = useState(false)
-  const [alertModalType, setAlertModalType] = useState("")
-  const alertModalOpen = (boolean, type = null) =>{
-    setAlertModalType(type)
-    setAlertModal(boolean)    
-  }
+  useEffect(() => {
+    reviewData();
+  }, []);
 
-  return (<>
-    <ReviewModalWrap>
-      {matmadiData && (
-        <>
-          <ReviewModalHeader>
-            <Modify onClick={() => alertModalOpen(true, "none")}/>
-            <div>
-              <Trash/>
-              <CloseBtn
-                fill="#fff"
-                onClick={() => {
-                  modalAction();
-                }}
+  const [alertModal, setAlertModal] = useState(false);
+  const [alertModalType, setAlertModalType] = useState("");
+  const alertModalOpen = (boolean, type = null) => {
+    setAlertModalType(type);
+    setAlertModal(boolean);
+  };
+
+  return (
+    <>
+      <ReviewModalWrap>
+        {matmadiData && (
+          <>
+            <ReviewModalHeader>
+              {(userInfo.nickname === matmadiData.nickname) && <Modify onClick={() => alertModalOpen(true, "none")} />}
+              <div className="trashBox">
+                {(userInfo.nickname === matmadiData.nickname) &&<Trash />}
+                <CloseBtn
+                  fill="#fff"
+                  onClick={() => {
+                    modalAction();
+                  }}
+                />
+              </div>
+            </ReviewModalHeader>
+            <Writer eyes={userEye(matmadiData.eyes)}>
+              <section className="userProfileSection">
+                <div className="face">
+                  <Flag className="flag" fill="#fff" />
+                  <Face fill={matmadiData.faceColor} />
+                </div>
+                <div className="userNameBox">
+                  <p>{matmadiData.nickname}</p>
+                  <p>{matmadiData.createdAt}</p>
+                </div>
+              </section>
+              <LikeToggleBtn
+                likeDone={matmadiData.likeDone}
+                likeNum={matmadiData.likeNum}
+                madiId={matmadi}
+                reviewData={reviewData}
               />
-            </div>
-          </ReviewModalHeader>
-          <Writer eyes={userEye(matmadiData.eyes)}>
-            <section className="userProfileSection">
-              <div className="face">
-                <Flag className="flag" fill="#fff" />
-                <Face fill={matmadiData.faceColor}/>
-              </div>
-              <div className="userNameBox">
-              <p>{matmadiData.nickname}</p>
-                <p>{matmadiData.createdAt}</p>
-              </div>
-            </section>
-            <LikeToggleBtn
-              likeDone={matmadiData.likeDone}
-              likeNum={matmadiData.likeNum}
-              madiId={matmadiData.madiId}
-              reviewData={() => reviewData}
-            />
-          </Writer>
-          <div>
-            <SlickSlider reviewImg={matmadiData.imgURL}/>
-          </div>
-          <div className="storeInfo">
-            <p className="storeName"></p>
+            </Writer>
             <div>
-              <p className="star">
-                {startList.map((star, idx) => (
-                  <StarIcon
-                    fill={idx < matmadiData.star ? "#fff" : "transparent"}
-                    stroke="#fff"
-                    key={matmadiData.madiId + "Star" + idx}
-                    style={{ margin: "0 2px" }}
-                  />
-                ))}
-              </p>
+              <SlickSlider reviewImg={matmadiData.imgURL} />
             </div>
-            {matmadiData.comment && <p className="comment"> &#34;{matmadiData.comment}&#34;</p>}
-          </div>
-          <div className="scoreBox">
-            <Score review={matmadiData} />
-          </div>
-        </>
+            <div className="storeInfo">
+              <p className="storeName"></p>
+              <div>
+                <p className="star">
+                  {startList.map((star, idx) => (
+                    <StarIcon
+                      fill={idx < matmadiData.star ? "#fff" : "transparent"}
+                      stroke="#fff"
+                      key={matmadiData.madiId + "Star" + idx}
+                      style={{ margin: "0 2px" }}
+                    />
+                  ))}
+                </p>
+              </div>
+              {matmadiData.comment && (
+                <p className="comment"> &#34;{matmadiData.comment}&#34;</p>
+              )}
+            </div>
+            <div className="scoreBox">
+              <Score review={matmadiData} />
+            </div>
+          </>
+        )}
+      </ReviewModalWrap>
+      {alertModal && (
+        <AlertModal type={alertModalType} alertModalOpen={alertModalOpen} />
       )}
-      
-    </ReviewModalWrap>
-    {alertModal && <AlertModal type={alertModalType} alertModalOpen={alertModalOpen}/>}
     </>
   );
 };
 
 const ReviewModalWrap = styled.div`
-@media ${device.pc} {
+  @media ${device.pc} {
     width: 480px;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
   }
   position: fixed;
   top: 0;
@@ -161,6 +169,9 @@ const ReviewModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
   div {
+    justify-content: end;
+    display: flex;
+    width: 100%;
     svg {
       margin-left: 35px;
     }

@@ -6,8 +6,9 @@ import { useMutation, useQueryClient } from 'react-query';
 import instance from "../shared/axios";
 
 const LikeToggleBtn = ({likeDone, likeNum, madiId, Review, reviewData}) => {
+  console.log(reviewData)
   const QueryClient = useQueryClient();  //캐싱된 데이터 후처리 리듀서 느낌
-console.log(reviewData)
+  
   const MadiLikeToggleDB = () => {
     return instance.post(`/api/like/${madiId}`);
   }
@@ -35,6 +36,7 @@ const LikeDel = useMutation(MadiLikeDelDB, {
       onClick={() => {
         if(!Review) {
           likeAction(madiId, likeDone, dispatch, QueryClient, useMutation);
+          reviewData && reviewData()
         }else 
         {
           if(!likeDone){
@@ -58,6 +60,7 @@ const LikeWrap = styled.div`
   left: 50%;
   top: calc(44% - 16px);
   transform: translate(-50%, 0); */
+  cursor: pointer;
   width: 78px;
   height: 32px;
   border-radius: 500px;
