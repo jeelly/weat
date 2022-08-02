@@ -52,6 +52,7 @@ import PostSuccess from "../components/map_page/post/PostSuccess";
 import None from "../components/None";
 import BackgroundLogo from "../img/logo_type_background.svg";
 import BackgroundImage from '../img/backgroundImg.svg'
+import Record from "../pages/Record";
 
 import { io } from "socket.io-client";
 import { addNotiList } from "../redux/modules/socketSlice";
@@ -198,7 +199,7 @@ function App() {
     <BodyContainer BackgroundImage={BackgroundImage} BackgroundLogo={BackgroundLogo} />
       <AppContainer>
         <AppLayout socket={socket}>
-          {isLoading ? <Splash /> : ""}
+          {/* {isLoading ? <Splash /> : ""} */}
           <Routes>
             <Route path="/detail" element={<Detail />} />
             <Route path="/detail/:id" element={<Detail socket={socket} />} />
@@ -265,6 +266,7 @@ function App() {
               />
               <Route path="myreview" element={<Myreview />} />
             </Route>
+            <Route path="/record" element={<Record />} />
             <Route path="/none" element={<None />} />
           </Routes>
         </AppLayout>
