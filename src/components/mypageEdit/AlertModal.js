@@ -29,7 +29,7 @@ const AlertModal = ({ type, alertModalOpen }) => {
 
   const logoutAction = () => {
     window.localStorage.removeItem("token");
-    navigate("/login");
+    window.location.replace('/login')
   };
 
   const secessionAction = async () =>{
