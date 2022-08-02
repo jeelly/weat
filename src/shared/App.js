@@ -285,6 +285,7 @@ const AppContainer = styled.div`
     margin: auto;  
     min-height :100vh ;
     height: 100%;
+    box-shadow: var(--SHADOW2);
   }
 `;
 const BodyContainer = styled.div`
