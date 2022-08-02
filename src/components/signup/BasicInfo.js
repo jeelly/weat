@@ -65,7 +65,8 @@ const BasicInfo = () => {
       await setAuthNum(response.data.authNum);
       await alert(`${email}로 인증번호가 발송되었어요!`);
     } catch (e) {
-      // return console.log(e);
+      alert(e.response.data.errorMessage)
+      return console.log(e);
     }
     auth();
   };
