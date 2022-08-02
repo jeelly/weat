@@ -130,6 +130,7 @@ const Keyword = ({detail_data, myLocation}) => {
         if (!map) return
         console.log(detail_data)
         if (detail_data.length === 0) {
+          window.alert('해당 방에 맛집이 없습니다 ;(')
           setState(myLocation)
           const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
           bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))

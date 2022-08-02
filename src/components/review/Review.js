@@ -9,7 +9,8 @@ import { device } from '../../css/GlobalStyles';
 import ReviewModal from '../ReviewModal';
 
 const createArray = () => [...Array(5)];
-const Review = ({data}) => {
+const Review = ({data, Bubble_query}) => {
+    console.log(Bubble_query)
     const [toggleArr, setToggleArr] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     // const [color, setColor] = useState()
@@ -46,16 +47,19 @@ console.log(data)
                 <ReviewTagWrap>
                     {data.map((arr, idx)=>(
                         <div key={arr.madiId} onClick={()=>{modalAction(arr.madiId)}}>
-                        <LikeWrap onClick={()=>{Likecolor(idx)}}>
+                        <LikeWrap onClick={(e)=>{
+                            e.stopPropagation();
+                            Likecolor(idx)
+                            }}>
                         <LikeToggleBtn likeNum={arr.likeNum} madiId={arr.madiId} Review='review' likeDone={arr.likeDone}/>
                         </LikeWrap>
-                        <ReviewItem key={idx} flag={flag} toggleArr={toggleArr.includes(idx)}>
+                        <ReviewItem key={idx} flag={flag} toggleArr={arr.nickname === Bubble_query.nickname}>
                             <ImgWrap>
                                 {arr.imgURL.length===0?null:<img src={arr.imgURL[0]} alt='음식사진'/>}
                             </ImgWrap>
                             <RankWrap>
                                 {createArray().map((star, i)=> (
-                                    <StarIcon key={i} selected={arr.star > i} color={!arr.likeDone ? 'black' : '#fff'} size='16px'/>
+                                    <StarIcon key={i} selected={arr.star > i} color={arr.nickname === Bubble_query.nickname? 'black' : '#fff'} size='16px'/>
                                 ))}
                             </RankWrap>
                             {arr.comment && <p>"{arr.comment}"</p>}
@@ -116,17 +120,13 @@ const ReviewTagWrap = styled.ul`
     overflow:auto;
     white-space:nowrap;
     &::-webkit-scrollbar {
-    height:2px;
-    margin:20px 0;
-    position:absolute;
-    top:0;
-    left:0;
+    height:5px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color:rgba(255,255,255,0.6);
+        background-color:rgba(0,0,0,0.6);
     }
     &::-webkit-scrollbar-track {
-        background-color:rgba(0,0,0,0.4);
+        background-color:rgba(0,0,0,0.1);
     }
     > div {
         position:relative;
@@ -134,18 +134,10 @@ const ReviewTagWrap = styled.ul`
     }
     @media ${device.pc} {
         &::-webkit-scrollbar {
-        height:8px;
+        height:5px;
         position:absolute;
         top:0;
         left:0;
-        }
-        &::-webkit-scrollbar-thumb {
-            /* background:transparent; */
-            background-color:rgba(255,255,255,0.6);
-        }
-        &::-webkit-scrollbar-track {
-            background-color:rgba(0,0,0,0.4);
-            /* background:transparent; */
         }
     }
 `
@@ -177,6 +169,7 @@ const ReviewItem = styled.li`
         color:${({toggleArr})=> toggleArr ? '#eee' : '#000'};
         width:161px;
         overflow:hidden; 
+        text-align:center;
         text-overflow:ellipsis; 
         white-space:nowrap;
     }

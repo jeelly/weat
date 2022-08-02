@@ -143,6 +143,12 @@ const PostReviewPhoto = () => {
     };
     
     const upload = async () => {
+        if(star===0 && ratingTasty===0 && ratingPrice===0 && ratingService===0) {
+            return window.alert("평점을 선택해 주세요!")
+        }
+        if(comment==="") {
+            return window.alert("후기를 입력해 주세요!")
+        }
         await imageUpload();
         if(!id){
             await navigate('/storepost/success')
@@ -277,6 +283,7 @@ const ImgWrap = styled.div`
     margin-left:8px;
     margin-bottom:8px;
     position:relative;
+    z-index:10;
     img {
         border-radius: 20px;
         pointer-events: none;

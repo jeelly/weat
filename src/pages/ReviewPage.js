@@ -102,7 +102,7 @@ const ReviewPage = () => {
                     <StoreInfo data={Bubble_query.data.data.result}/>
                 </>
             }
-            {Review_query.status === 'success'  && <Review data={Review_query.data.data.result}/>}
+            {Review_query.status === 'success'  && <Review Bubble_query={Bubble_query.data.data.result} data={Review_query.data.data.result}/>}
             {Tag_query.status ==='success' && <TasteTag data={Tag_query.data.data.result}/>}
             {MenuList.status === 'success' && <Menu data={MenuList.data.data.result}/>}
             <FooterBtn>

@@ -32,7 +32,7 @@ const PostSuccess = () => {
                     <CharacterWrap eye={userEye()[0]}>
                         <NewCharacterface fill={user.faceColor}/>
                     </CharacterWrap>
-                    {!id ? <p><span>{postData.storeName}</span>의 첫 발견자는 <br/> <b>{user.nickname}</b> 님이에요 :)</p> 
+                    {!id ? <p><span>{postData.storeName}</span> <br/> 첫 발견자는 <br/> <b>{user.nickname}</b> 님이에요 :)</p> 
                     : <p><span>{postData.storeName}</span>에 <br/> <b>{user.nickname}</b> 님의 <br/> 소중한 리뷰가 추가되었어요:)</p> }
                 </Content>
                 <NewFooterBtn onClick={()=> {navigate('/')}}>

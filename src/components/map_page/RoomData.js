@@ -22,25 +22,47 @@ const RoomData = () => {
 export default RoomData;
 
 const RoomWrap = styled.div`
+    height:108px;
     display:flex;
     width:${({rooms_length})=>rooms_length===0 ? 0 : rooms_length===1 ? '33vw' : rooms_length===2 ? '66vw' : '95.556vw'};
     width:95.556vw;
     position:absolute;
-    bottom:74px;
+    bottom:168px;
     left:4.444%;
     white-space: nowrap;
     overflow-x:overlay;
-    @media ${device.pc} {
-        width:57vw;
-    }
-    &::-webkit-scrollbar {
-        height:140px;
+    /* &::-webkit-scrollbar {
+        height:8px;
     }
     &::-webkit-scrollbar-thumb {
         background-color:transparent;
+        background-color:gray;
     }
     &::-webkit-scrollbar-track {
         background-color:transparent;
+        background-color:black;
         transform: matrix(1, 0, 0, -1, 0, 0);
+    }
+    @media ${device.pc} {
+        width:57vw;
+        &::-webkit-scrollbar {
+            height:8px;    
+            transform: scaleX(-1);
+        }
+    } */
+    &::-webkit-scrollbar {
+    height:5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color:rgba(0,0,0,0.6);
+    }
+    &::-webkit-scrollbar-track {
+        background-color:rgba(0,0,0,0.2);
+    }
+    @media ${device.pc} {
+        width:463px;
+        &::-webkit-scrollbar {
+        height:5px;
+        }
     }
 `
