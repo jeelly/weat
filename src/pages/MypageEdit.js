@@ -14,7 +14,7 @@ const MypageEdit = () => {
           src={close}
           alt=""
           onClick={() => {
-            navigate("/mypage");
+            navigate(-1);
           }}
         />
       </Goback>

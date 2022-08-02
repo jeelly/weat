@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import instance from "../shared/axios";
 import {useNavigate} from 'react-router-dom'
-import LikeToggleBtn from "./LikeToggleBtn";
-import { useQuery } from 'react-query';
+import LikeToggleBtn from "../components/LikeToggleBtn";
 
 import { loadMyReviewDB } from "../redux/modules/myReviewSlice";
 
 import { useDispatch, useSelector } from "react-redux";
-import { eyeList } from "./signup/FaceResource";
+import { eyeList } from "../components/signup/FaceResource";
 import SlickSlider from "./SlickSlider";
 import Score from "./Score";
 import { ReactComponent as StarIcon } from "../img/icon/starIcon.svg";
@@ -18,31 +17,57 @@ import { ReactComponent as Trash } from "../img/trash.svg";
 import { ReactComponent as Face } from "../img/characterface.svg";
 import { ReactComponent as Flag } from "../img/icon/flagIcon.svg";
 import { device } from "../css/GlobalStyles";
-import AlertModal from "./mypageEdit/AlertModal";
+import AlertModal from "../components/mypageEdit/AlertModal";
 
-const ReviewModal = ({ data, modalAction }) => {
-    const startList = [1, 2, 3, 4, 5];
-  const matmadi = data;
-  const [matmadiData, setMatmadiData] = useState(null)
-  console.log(data)
+const ReviewModal = ({ reviewInfo, modalAction }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const startList = [1, 2, 3, 4, 5];
 
-  //눈
-  const userEye = (eye) => {
-    return eyeList.filter((row) => row.includes(eye) && row);
+  const { myReview } = useSelector((state) => state.myReviewList);
+  const filtering = (id) => {
+    if (id.madiId === reviewInfo.madiId) {
+      return id;
+    }
+  };
+  const reviewItem = myReview.filter(filtering);
+
+  const [review, setReview] = useState(null);
+  const matmadiInfo = async () => {
+    try {
+      const { data } = await instance.get(
+        `/api/store/matmadi/${reviewInfo.madiId}`
+      );
+      setReview(data.result);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const reviewData = async () =>{
+  const userEye = (eye) => {
+    if (eye === "type1") {
+      return eyeList.filter((row) => row.includes(`${eye}.`) && row);
+    } else {
+      return eyeList.filter((row) => row.includes(eye) && row);
+    }
+  };
+
+  const deleteReview = async () => {
     try{
-        const {data} = await instance.get(`/api/store/matmadi/${matmadi}`)
-        setMatmadiData(data.result)
+      const {data} = await instance.delete(`/api/store/matmadi/${reviewInfo.madiId}`)
+      matmadiInfo()
+      modalAction();
+      navigate('/mypage_edit/myreview')
+      console.log(data)
     }catch(e){
-        console.log(e)
+      console.log(e)
     }
   }
-  
-  useEffect(()=>{
-    reviewData()
-  },[])
+
+  useEffect(() => {
+    matmadiInfo();
+    dispatch(loadMyReviewDB());
+  }, [reviewInfo, dispatch]);
 
   const [alertModal, setAlertModal] = useState(false)
   const [alertModalType, setAlertModalType] = useState("")
@@ -50,15 +75,15 @@ const ReviewModal = ({ data, modalAction }) => {
     setAlertModalType(type)
     setAlertModal(boolean)    
   }
-
+  
   return (<>
     <ReviewModalWrap>
-      {matmadiData && (
+      {review && (
         <>
           <ReviewModalHeader>
-            <Modify onClick={() => alertModalOpen(true, "none")}/>
+            <Modify  onClick={() => alertModalOpen(true, "none")}/>
             <div>
-              <Trash/>
+              <Trash  onClick={deleteReview}/>
               <CloseBtn
                 fill="#fff"
                 onClick={() => {
@@ -67,45 +92,44 @@ const ReviewModal = ({ data, modalAction }) => {
               />
             </div>
           </ReviewModalHeader>
-          <Writer eyes={userEye(matmadiData.eyes)}>
+          <Writer eyes={userEye(review.eyes)}>
             <section className="userProfileSection">
               <div className="face">
                 <Flag className="flag" fill="#fff" />
-                <Face fill={matmadiData.faceColor}/>
+                <Face fill={review.faceColor} />
               </div>
               <div className="userNameBox">
-              <p>{matmadiData.nickname}</p>
-                <p>{matmadiData.createdAt}</p>
+                <p>{review.nickname}</p>
+                <p>{review.createdAt}</p>
               </div>
             </section>
             <LikeToggleBtn
-              likeDone={matmadiData.likeDone}
-              likeNum={matmadiData.likeNum}
-              madiId={matmadiData.madiId}
-              reviewData={() => reviewData}
+              likeDone={reviewItem[0].LikeDone}
+              likeNum={reviewItem[0].LikeNum}
+              madiId={reviewItem[0].madiId}
             />
           </Writer>
           <div>
-            <SlickSlider reviewImg={matmadiData.imgURL}/>
+            <SlickSlider reviewImg={review.imgURL} />
           </div>
           <div className="storeInfo">
-            <p className="storeName"></p>
+            <p className="storeName">{review.storeName}</p>
             <div>
               <p className="star">
                 {startList.map((star, idx) => (
                   <StarIcon
-                    fill={idx < matmadiData.star ? "#fff" : "transparent"}
+                    fill={idx < review.star ? "#fff" : "transparent"}
                     stroke="#fff"
-                    key={matmadiData.madiId + "Star" + idx}
+                    key={review.madiId + "Star" + idx}
                     style={{ margin: "0 2px" }}
                   />
                 ))}
               </p>
             </div>
-            {matmadiData.comment && <p className="comment"> &#34;{matmadiData.comment}&#34;</p>}
+            {review.comment && <p className="comment"> &#34;{review.comment}&#34;</p>}
           </div>
           <div className="scoreBox">
-            <Score review={matmadiData} />
+            <Score review={review} />
           </div>
         </>
       )}
@@ -128,7 +152,6 @@ const ReviewModalWrap = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 100;
   .storeInfo {
     width: 100%;
     display: flex;

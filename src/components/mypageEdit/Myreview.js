@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as StarIcon } from "../../img/icon/starIcon.svg";
 import LikeToggleBtn from "../LikeToggleBtn";
-import ReviewModal from "../ReviewModal";
+import MyReviewModal from "../MyReviewModal";
 import { loadMyReviewDB } from "../../redux/modules/myReviewSlice";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import none from "../../img/none.svg";
@@ -83,7 +83,7 @@ const Myreview = () => {
         </section>
       </MyreviewWrap>
       {modalOpen && (
-        <ReviewModal reviewInfo={reviewInfo} modalAction={modalAction} />
+        <MyReviewModal reviewInfo={reviewInfo} modalAction={modalAction} />
       )}
     </>
   );
