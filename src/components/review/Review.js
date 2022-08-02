@@ -123,22 +123,14 @@ const ReviewTagWrap = styled.ul`
     height:5px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color:rgba(0,0,0,0.6);
+        background-color:rgba(125, 125, 125,0.4);
     }
     &::-webkit-scrollbar-track {
-        background-color:rgba(0,0,0,0.1);
+        background-color:rgba(125, 125, 125,0.2);
     }
     > div {
         position:relative;
         height:272px;
-    }
-    @media ${device.pc} {
-        &::-webkit-scrollbar {
-        height:5px;
-        position:absolute;
-        top:0;
-        left:0;
-        }
     }
 `
 

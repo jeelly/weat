@@ -666,7 +666,7 @@ const SpeechBubble =styled.div`
 
 const RoomSpeechBubble = styled(SpeechBubble)`
   /* bottom:89px; */
-  bottom:236px;
+  bottom:246px;
     /* &:hover {
       width:3000px;
       background-color:red;

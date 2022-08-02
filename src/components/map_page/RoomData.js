@@ -27,7 +27,7 @@ const RoomWrap = styled.div`
     width:${({rooms_length})=>rooms_length===0 ? 0 : rooms_length===1 ? '33vw' : rooms_length===2 ? '66vw' : '95.556vw'};
     width:95.556vw;
     position:absolute;
-    bottom:168px;
+    bottom:148px;
     left:4.444%;
     white-space: nowrap;
     overflow-x:overlay;
@@ -54,10 +54,10 @@ const RoomWrap = styled.div`
     height:5px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color:rgba(0,0,0,0.6);
+        background-color:rgba(125, 125, 125,0.4);
     }
     &::-webkit-scrollbar-track {
-        background-color:rgba(0,0,0,0.2);
+        background-color:rgba(125, 125, 125,0.2);
     }
     @media ${device.pc} {
         width:463px;
