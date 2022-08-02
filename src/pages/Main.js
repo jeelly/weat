@@ -20,6 +20,7 @@ const Main = ({socket}) => {
     const rooms = useSelector(state => state.post.rooms);
     const [room, setRoom] = useState(rooms);
     const user = useSelector(state => state.loggedIn);
+    const [eventBn, setEventBn] = useState(window.sessionStorage.getItem('eventBn'))
 
     const snsUserCheck = () => {
         if(user.userInfo.provider && !user.userInfo.faceColor){
@@ -34,11 +35,12 @@ const Main = ({socket}) => {
 
     useEffect(() => {
         setRoom(rooms)
-      }, [_rooms, socket]);
-      
+      }, [_rooms, socket]);     
 
 
-      
+      const bnClose = () => {
+        setEventBn(window.sessionStorage.removeItem('eventBn'))
+    }
       
     return (
         <NewContainer>
@@ -48,7 +50,7 @@ const Main = ({socket}) => {
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
             {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
-            <EventModal/>
+            {eventBn &&<EventModal bnClose={bnClose}/>}
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>

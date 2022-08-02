@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Container } from "../css/GlobalStyles";
 import home from "../img/home.svg";
 import bell from "../img/bell.svg";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector, useDispatch } from "react-redux/es/exports";
 import NoticeModal from "../components/NoticeModal";
 import { ReactComponent as Characterface } from "../img/characterface.svg";
 import { eyeList } from "../components/signup/FaceResource";
@@ -12,14 +12,23 @@ import myReview from "../img/myReview.svg";
 import mailOpen from "../img/mailOpen.svg";
 import AlertModal from "../components/mypageEdit/AlertModal";
 import BottomNavi from '../components/BottomNavi';
+import {loggedInDB} from '../redux/modules/userSlice'
 
 const Mypage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
   const [alertModal, setAlertModal] = useState(false)
   const [alertModalType, setAlertModalType] = useState("")
   const { userInfo } = useSelector((state) => state.loggedIn);
   let notiCount = localStorage.getItem("newNoti");
+
+  useEffect(()=>{   
+    console.log('다시 안그려?') 
+    dispatch(loggedInDB())
+  },[userInfo, dispatch])
+
+
   const notiModalOpen = () => {
     setModal(true);
     localStorage.setItem("newNoti", 0);
@@ -28,12 +37,14 @@ const Mypage = () => {
   const userEye = (eye) => {
     return eyeList.filter((row) => row.includes(`${userInfo.eyes}.`) && row);
   };
-
+console.log(userInfo)
   
   const alertModalOpen = (boolean, type = null) =>{
     setAlertModalType(type)
     setAlertModal(boolean)    
   }
+
+  
 
   return (
     <>
@@ -106,9 +117,8 @@ const Mypage = () => {
             <li onClick={() => alertModalOpen(true, "none")}>
               <span>FAQ</span>
             </li>
-            <li>
-              {/* 광고 */}
-              <a target="_black" href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform">의견보내기🎁</a> 
+            <li onClick={() => window.location.href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform"}>
+              <span>의견보내기🎁</span> 
             </li>
             <li>
               <span>개인정보처리 방침</span> <span onClick={() => alertModalOpen(true, "secession")}>회원탈퇴</span>
