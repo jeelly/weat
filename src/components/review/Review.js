@@ -6,16 +6,17 @@ import {ReactComponent as Characterface} from '../../img/characterface.svg';
 import { eyeList } from "../../components/signup/FaceResource";
 import LikeToggleBtn from '../LikeToggleBtn';
 import { device } from '../../css/GlobalStyles';
+import ReviewModal from '../ReviewModal';
 
 const createArray = () => [...Array(5)];
 const Review = ({data}) => {
     const [toggleArr, setToggleArr] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
     // const [color, setColor] = useState()
     // const [fontcolor, setFontColor] = useState()
     const SearchUserEye = (eyes) => {
         return eyeList.filter((row) => row.includes(eyes) && row);
     };
-
     const Likecolor = (idx) => {
         if(toggleArr.includes(idx)) {
             setToggleArr(toggleArr.filter((l)=> l !== idx))
@@ -31,13 +32,20 @@ const Review = ({data}) => {
         })
     },[])
 
+    const [id, setId] = useState()
+    const modalAction = (matmadiId) => {
+        setId(matmadiId)
+        setModalOpen(!modalOpen);
+      };
+console.log(data)
     return (
+        <>
         <Container>
             <h3>맛 마디</h3>
             <ReviewContainer>
                 <ReviewTagWrap>
                     {data.map((arr, idx)=>(
-                        <div key={arr.madiId}>
+                        <div key={arr.madiId} onClick={()=>{modalAction(arr.madiId)}}>
                         <LikeWrap onClick={()=>{Likecolor(idx)}}>
                         <LikeToggleBtn likeNum={arr.likeNum} madiId={arr.madiId} Review='review' likeDone={arr.likeDone}/>
                         </LikeWrap>
@@ -50,19 +58,23 @@ const Review = ({data}) => {
                                     <StarIcon key={i} selected={arr.star > i} color={!arr.likeDone ? 'black' : '#fff'} size='16px'/>
                                 ))}
                             </RankWrap>
-                            <p>"{arr.comment}"</p>
+                            {arr.comment && <p>"{arr.comment}"</p>}
                         </ReviewItem>
                         <UserInfo>
                             <CharacterfaceWrap eyes={SearchUserEye(arr.eyes)}>
                                 <NewCharacterface fill={arr.faceColor} />
                             </CharacterfaceWrap>
-                            <p>{arr.nickname}님의 발견!</p>
+                            <p>{arr.nickname}</p>
                         </UserInfo>
                         </div>
                     ))}
                 </ReviewTagWrap>
             </ReviewContainer>
         </Container>
+        {modalOpen && (
+        <ReviewModal data={id} modalAction={modalAction} />
+      )}
+        </>
     );
 };
 
@@ -163,6 +175,10 @@ const ReviewItem = styled.li`
         font-size: 14px;
         line-height: 160%;
         color:${({toggleArr})=> toggleArr ? '#eee' : '#000'};
+        width:161px;
+        overflow:hidden; 
+        text-overflow:ellipsis; 
+        white-space:nowrap;
     }
     &::after {
         content:'';

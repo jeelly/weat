@@ -31,9 +31,9 @@ const BottomNavi = () => {
             <Gps fill={colorChange('map')} />
             <p style={{color: colorChange('map')}} >맛지도</p>
           </li>
-          <li  onClick={() => alertModalOpen(true, "none")}>
-            <Bookmark fill="black" />
-            <p>먹기록</p>
+          <li  onClick={() => {navigate('/record')}}>
+            <Bookmark fill={colorChange('record')}/>
+            <p style={{color: colorChange('record')}}>먹기록</p>
           </li>
           <li onClick={()=>{navigate('/mypage')}}>
             <Profile fill={colorChange('mypage')} />

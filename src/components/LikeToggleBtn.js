@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { useMutation, useQueryClient } from 'react-query';
 import instance from "../shared/axios";
 
-const LikeToggleBtn = ({likeDone, likeNum, madiId, Review}) => {
+const LikeToggleBtn = ({likeDone, likeNum, madiId, Review, reviewData}) => {
   const QueryClient = useQueryClient();  //캐싱된 데이터 후처리 리듀서 느낌
-
+console.log(reviewData)
   const MadiLikeToggleDB = () => {
     return instance.post(`/api/like/${madiId}`);
   }
@@ -43,6 +43,7 @@ const LikeDel = useMutation(MadiLikeDelDB, {
             LikeDel.mutate();
           }
         }
+        
       }}
       color={likeDone ? "#7F5FFF" : "#999"}
     >
