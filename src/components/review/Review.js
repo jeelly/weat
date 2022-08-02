@@ -59,7 +59,7 @@ console.log(data)
                             </ImgWrap>
                             <RankWrap>
                                 {createArray().map((star, i)=> (
-                                    <StarIcon key={i} selected={arr.star > i} color={arr.nickname === Bubble_query.nickname? 'black' : '#fff'} size='16px'/>
+                                    <StarIcon key={i} selected={arr.star > i} color={arr.nickname === Bubble_query.nickname? '#fff' : '#000'} size='16px'/>
                                 ))}
                             </RankWrap>
                             {arr.comment && <p>"{arr.comment}"</p>}
