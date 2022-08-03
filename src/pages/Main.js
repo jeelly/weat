@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ReactPortal } from '..';
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {Container} from '../css/Style'
 
 import MainModal from '../components/main/MainModal';
@@ -14,8 +14,10 @@ import { useNavigate } from 'react-router-dom';
 import BottomNavi from '../components/BottomNavi';
 import EventModal from '../components/main/EventModal';
 import Header from '../components/Header';
+import { itemAnimation } from '../redux/modules/postSlice';
 
 const Main = ({socket}) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate()
     const _rooms = useSelector(state => state.post._rooms);
     const rooms = useSelector(state => state.post.rooms);
@@ -52,7 +54,12 @@ const Main = ({socket}) => {
             <ReactPortal>
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
-            {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
+            {rooms.length === 0 ? <MainDefault/> : <PostList 
+            onClose={async() => {
+                console.log('a')
+                dispatch(itemAnimation(false))
+            }}socket={socket}
+            />}
             {eventBn &&<EventModal bnClose={bnClose}/>}
             <ModalBtn/>
             <BottomNavi />
