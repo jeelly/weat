@@ -48,7 +48,8 @@ const MapSearch = ({store_query, toggle}) => {
     useEffect(() => {
         // if (!map) return
         const ps = new kakao.maps.services.Places()
-        ps.keywordSearch(searchData , (data, status, _pagination) => {  
+        ps.keywordSearch(searchData+'음식점', (data, status, _pagination) => {  
+          console.log(data)
           if (status === kakao.maps.services.Status.OK) {
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
@@ -135,7 +136,7 @@ const MapSearch = ({store_query, toggle}) => {
               </li>
             </SearchDataWrap> :
             <SearchDataWrap>
-              {hadStores.filter((arr, idx) => idx < 4).map((store)=> (
+              {hadStores.map((store)=> (
                 <li 
                 key={store.storeId}
                 onClick={async()=> {
