@@ -13,8 +13,6 @@ const RegistrationItem = ({saveDone, room, statusIcon, roomArr, setRoomArr, rese
         SelectRoom(room.roomId)
     },[])
 
-    console.log(roomArr)
-    console.log(toggle)
     const SelectRoom = (roomId) => {
         if(roomArr.indexOf(roomId) === -1) {
             setToggle(true)

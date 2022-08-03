@@ -22,14 +22,12 @@ import { useQuery } from 'react-query';
 const { kakao } = window;
 
 const Keyword = ({detail_data, myLocation}) => {
-    console.log(myLocation)
     const modalRef = useRef(null);
     const dispatch = useDispatch();
     let navigate = useNavigate();
     const searchStore = useSelector(state => state.map.loadMyStore);
     const firstSearchStore = useSelector(state => state.map.loadFirstStore);
     const FilterTagData = useSelector(state => state.map.tagFilterData);
-    console.log(FilterTagData)
     const [markers, setMarkers] = useState([])
     const [info, setInfo] = useState()
     const [myMarkers, setMyMarkers] = useState([])
@@ -63,10 +61,9 @@ const Keyword = ({detail_data, myLocation}) => {
     }, {
       refetchOnWindowFocus:false,
       onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       }
     });
-    console.log(store_query)
 
     //내위치 받아와서 띄워주기
     useEffect(()=> {
@@ -87,7 +84,7 @@ const Keyword = ({detail_data, myLocation}) => {
           })
           setMyMarkers(markers)
           setMarkers([])
-    },[map, myLocation])
+    },[map])
     
     //내위치 받아와서 띄워주기
     useEffect(()=> {
@@ -100,7 +97,6 @@ const Keyword = ({detail_data, myLocation}) => {
       let markers = []
 
       store_query.data.data.storeMap.map((data) => {
-        console.log(data)
         markers.push({
           position: {
             lat: data.lat,
@@ -122,13 +118,12 @@ const Keyword = ({detail_data, myLocation}) => {
       })
       setMyLocationMarkers(markers)
       map.setBounds(bounds)
-  },[store_query.data])
+  },[store_query.data, myLocation])
 
   
     //방목록에서 좌표찍기
     useEffect(()=>{
         if (!map) return
-        console.log(detail_data)
         if (detail_data.length === 0) {
           window.alert('해당 방에 맛집이 없습니다 ;(')
           setState(myLocation)
@@ -147,7 +142,6 @@ const Keyword = ({detail_data, myLocation}) => {
           // LatLngBounds 객체에 좌표를 추가합니다
           const bounds = new kakao.maps.LatLngBounds()
           let markers = []
-          console.log(detail_data)
           detail_data.map((data) => {
             markers.push({
               position: {
@@ -176,7 +170,6 @@ const Keyword = ({detail_data, myLocation}) => {
     //필터 좌표찍기
     useEffect(()=>{
       if (!map) return
-      console.log(detail_data)
       if (FilterTagData.length === 0) {
         window.alert('해당 카테고리에 맛집이 없습니다 ;(')
         setState(myLocation)
@@ -228,7 +221,6 @@ const Keyword = ({detail_data, myLocation}) => {
             // LatLngBounds 객체에 좌표를 추가합니다
             const bounds = new kakao.maps.LatLngBounds()
             let markers = []
-            console.log(searchStore)
             searchStore.map((data) => {
               markers.push({
                 position: {
@@ -263,7 +255,6 @@ const Keyword = ({detail_data, myLocation}) => {
             // LatLngBounds 객체에 좌표를 추가합니다
             const bounds = new kakao.maps.LatLngBounds()
             let markers = []
-            console.log(firstSearchStore)
             firstSearchStore.map((data) => {
               markers.push({
                 position: {
@@ -306,7 +297,6 @@ const Keyword = ({detail_data, myLocation}) => {
         )
       }
 
-      console.log(searchStore[0])
       const SearchModal = (props) => {
         // const modalRef = useRef(null);
         useClickOutside(modalRef, () => {
@@ -335,7 +325,6 @@ const Keyword = ({detail_data, myLocation}) => {
         useClickOutside(modalRef, () => {
           props.onClose();
         });
-        console.log(detail_data)
         if (detail_data.length===0) return;
         return (
           <RoomSpeechBubble ref={modalRef} speech_bubble={speech_bubble} onClick={async()=>{
@@ -359,8 +348,6 @@ const Keyword = ({detail_data, myLocation}) => {
         )
       }
 
-
-      console.log(info)
       
       const MyLocationStoreModal = (props) => {
         useClickOutside(modalRef, () => {
@@ -426,8 +413,7 @@ const Keyword = ({detail_data, myLocation}) => {
       await dispatch(firstPost(data))
       navigate('/storepost/restaurantregistration')
     }
-    console.log(myLocationMarkers)
-    console.log(info)
+
     return (
       <>
         <Map  // 로드뷰를 표시할 Container
@@ -448,7 +434,6 @@ const Keyword = ({detail_data, myLocation}) => {
                 <SearchLocationicon eye={userEye(marker.userInfo.eyes)} onClick={() => {setInfo(marker);}}>
                   <CharacterfaceIcon fill={marker.userInfo.faceColor}/>
                 </SearchLocationicon>
-                {/* <FirstLocationicon black_flag={black_flag} onClick={() => {setInfo(marker); console.log('작동');}}/> */}
               </CustomOverlayMap>
               {info && info.content === marker.content && (
                 <RoomStoreModal
@@ -547,7 +532,6 @@ const Keyword = ({detail_data, myLocation}) => {
                 <SearchLocationicon eye={userEye(marker.userInfo.eyes)} onClick={() => {setFilterInfo(marker);}}>
                   <CharacterfaceIcon fill={marker.userInfo.faceColor}/>
                 </SearchLocationicon>
-                {/* <FirstLocationicon black_flag={black_flag} onClick={() => {setInfo(marker); console.log('작동');}}/> */}
               </CustomOverlayMap>
               {filterInfo && filterInfo.storeId === marker.storeId && (
                 <TagFilterStoreModal

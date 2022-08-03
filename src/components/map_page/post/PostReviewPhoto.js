@@ -52,13 +52,11 @@ const PostReviewPhoto = () => {
         ratingService:parseInt(ratingService),
         comment:comment,
     }
-    console.log(upload_data)
     const CreateRestaurant = useMutation(CreateRestaurantDB, {
         onSuccess: (response) => {
             upload_data['storeId'] = response.data.storeId
             QueryClient.invalidateQueries("Bubble") //여기 키값 넣어야함
             RestaurantRoomSave.mutate({selectedRooms:postData.registration, storeId:response.data.storeId});
-            console.log(upload_data)
             CraeteReview.mutate(upload_data);
         }
     });
@@ -116,14 +114,13 @@ const PostReviewPhoto = () => {
         for(let i=0; i<image.length;i++) {
             formData.append('image', image[i]);
         }
-            // console.log(image[0])
             // formData.append('image',image[0]);
             // image.forEach((item) => formData.append("image", item));
             instance
             .post("api/upload/image", formData, config)            
             .then((response) => {
                 upload_data['imgURL'] = response.data.imgUrl
-                console.log(response)
+                // console.log(response)
                 if(!id){
                     CreateRestaurant.mutate(postData.first);
                 }else {

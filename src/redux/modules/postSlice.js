@@ -28,7 +28,6 @@ export const loadRoomDetailDB = (id) => {
       const detail = response_room_detail.data.result;
       const users = response_detail_users.data.userInfo;
       const storeList = response_detail_storeList.data.theStoreList;
-      console.log()
       dispatch(loadRoomDetail({detail, users, storeList}));
       
     }catch (error) {
@@ -114,7 +113,6 @@ export const roomInviteDB = (id, userId, data) => {
 
 //룸에서 스토어 찾아 지우기
 export const RoomDelStoreDB = (storeId, roomId) => {     
-  console.log(storeId, roomId)
   return async function (dispatch) {
     try{
       const res = await instance.delete(`api/rooms/${roomId}/removal/${storeId}`);
@@ -164,12 +162,10 @@ const postSlice = createSlice({
     //아이템 애니메이션
     itemAnimation: (state, action) => {
       state.itemAnimation = action.payload;
-      console.log(state.itemAnimation)
     },
     //수정창 모달창
     editModal: (state, action) => {
       state.editModal = action.payload;
-      console.log(action.payload)
     },
     //맴버 삭제
     memberdel: (state, action) => {
@@ -188,7 +184,6 @@ const postSlice = createSlice({
     },
     //방 디테일정보 불러오기 
     loadRoomDetail: (state, action) => {
-      console.log(action.payload)
       state.detail = action.payload
       state.detail_isloaded = true
     },

@@ -11,8 +11,6 @@ import { RoomDelStoreDB } from '../../redux/modules/postSlice';
 const RestaurantList = ({ id, listPage}) => {
     const dispatch = useDispatch();
     const { storeList } = useSelector(state => state.post.detail);
-    const a = useSelector(state => state.post.detail);
-    console.log(a)
     const delStore = (storeId) => {
         dispatch(RoomDelStoreDB(storeId, id))
     }
@@ -25,7 +23,7 @@ const RestaurantList = ({ id, listPage}) => {
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
                         {storeList && storeList.map((store, idx)=> (
-                                <RestaurantItem key={id}>
+                                <RestaurantItem key={`${store.storeId},${id}`}>
                                     <li>
                                     <ImgWrap>
                                         {store.imgURL.length === 0 ? <img src={no_image} alt='임시 이미지'/> : <RestaurantImg src={store.imgURL[0]} alt="음식사진"/>}

@@ -14,7 +14,6 @@ const { kakao } = window;
 const MapSearch = ({store_query, toggle}) => {
   const myLocation = useSelector(state => state.map.MyLatLng);
 
-  console.log(myLocation.center)
   function getDistanceFromLatLonInKm(lat1,lng1,lat2,lng2) {
     function deg2rad(deg) {
         return deg * (Math.PI/180)
@@ -53,7 +52,6 @@ const MapSearch = ({store_query, toggle}) => {
           if (status === kakao.maps.services.Status.OK) {
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
             // LatLngBounds 객체에 좌표를 추가합니다
-            console.log(data)
             const bounds = new kakao.maps.LatLngBounds()
             let markers = []
             const newdata = data.filter((arr) => {
@@ -85,10 +83,6 @@ const MapSearch = ({store_query, toggle}) => {
       }, [map, searchData])
 
       let hadStores = []
-      // console.log(store_query?.data.storeMap)
-      console.log('===================')
-      console.log(markers)
-      // console.log([37.51332614542552, 126.93732590421996].join(""))
       store_query?.data.storeMap.filter((marker, idx) => {
         let flag = false;
         markers.forEach((my_store) => {
@@ -100,11 +94,10 @@ const MapSearch = ({store_query, toggle}) => {
         })
         return flag
       })
-      // console.log(hadStores)
+
       const stores = markers.filter((marker, idx) => {
         let flag = true;
         hadStores.forEach((my_store) => {
-          console.log(marker)
           if(marker.position.lat === my_store.position.lat.toString() && 
           my_store.position.lng.toString() === marker.position.lng) {
             flag = false;
@@ -121,7 +114,6 @@ const MapSearch = ({store_query, toggle}) => {
         dispatch(loadFirstStore(data))
       }
 
-      console.log(stores)
     return (
         <Container onKeyPress={onCheckEnter}>
           <SearchAreaWrap>

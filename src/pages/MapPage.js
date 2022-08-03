@@ -24,7 +24,7 @@ const MapPage = () => {
 
   const store_all_query = useQuery(["store_all_list"], getStoreAllList , {
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
     }
   });
 

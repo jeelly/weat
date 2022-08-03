@@ -13,8 +13,6 @@ const MapModal = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const modalNum = useSelector(state => state.map.modalNum);
     const filterActive = useSelector(state => state.map.tagFilterActive);
-    console.log('==============')
-    console.log(filterActive)
 
     useEffect(()=> {
         if(filterActive.length===0) return;
@@ -36,7 +34,6 @@ const MapModal = () => {
     },[])
     const tabClickHandler = async (index)=>{
         await setActiveIndex(index)
-        console.log(activeIndex, index)
         index === 0 ? setAColor('#eee') : setAColor('#999')
         index === 1 ? setBColor('#eee') : setBColor('#999')
         index === 2 ? setCColor('#eee') : setCColor('#999')

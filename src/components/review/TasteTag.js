@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StoreInfo = ({data}) => {
-    console.log(data)
+
     return (
         <Content>
                 <ContentTitle>

@@ -42,7 +42,7 @@ const RoomRegistration = () => {
         refetchOnWindowFocus: false,
         retry:10,
         onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       }
     });
 
@@ -82,13 +82,7 @@ const RoomRegistration = () => {
     }
 
     const rooms = SaveDone_query?.data?.data?.myRooms;
-    console.log(rooms)
-    // console.log(SaveDone_query.status)
-    // const [rooms, setRooms] = useState([])
-    // useEffect(()=> {
-    //     if(SaveDone_query.status === 'success')
-    //     setRooms(SaveDone_query.data.data.myRooms) 
-    // },[])
+    
     return (
         <div>
             {/* <Modal content='맛방에 등록하시겠습니까?' nav='/storepost/PostReview' modal={modal} setModal={setModal} okBtn={upload}/> */}

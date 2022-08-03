@@ -10,7 +10,6 @@ import ReviewModal from '../ReviewModal';
 
 const createArray = () => [...Array(5)];
 const Review = ({data, Bubble_query}) => {
-    console.log(Bubble_query)
     const [toggleArr, setToggleArr] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     // const [color, setColor] = useState()
@@ -38,7 +37,7 @@ const Review = ({data, Bubble_query}) => {
         setId(matmadiId)
         setModalOpen(!modalOpen);
       };
-console.log(data)
+
     return (
         <>
         <Container>

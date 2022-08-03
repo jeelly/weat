@@ -14,8 +14,6 @@ const PostSuccess = () => {
     let navigate = useNavigate();
     const postData = useSelector((state)=> state.post.postData.first);
     const user = useSelector(state => state.loggedIn.userInfo);
-    console.log(user.nickname)
-    console.log(postData.storeName)
 
     const userEye = () => {
         return eyeList.filter((row) => row.includes(user.eyes) && row);
