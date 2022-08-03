@@ -13,6 +13,7 @@ import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 import BottomNavi from '../components/BottomNavi';
 import EventModal from '../components/main/EventModal';
+import Header from '../components/Header';
 
 const Main = ({socket}) => {
     const navigate = useNavigate()
@@ -43,6 +44,8 @@ const Main = ({socket}) => {
     }
       
     return (
+        <>
+        <Header socket={socket}/>
         <NewContainer>
             <UserInfo user={user.userInfo ?? ''}/>
             <Convenience roomsLength={rooms.length}/>
@@ -54,6 +57,7 @@ const Main = ({socket}) => {
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>
+        </>
     );
 };
 

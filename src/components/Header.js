@@ -65,7 +65,7 @@ const Header = ({id, status, roomName, socket}) => {
       return false
     }    
   }
-
+  console.log(url)
   // 헤더 예외처리
   const noneHeader = () => {
     if(url.indexOf('noentry') > 0 
@@ -80,7 +80,7 @@ const Header = ({id, status, roomName, socket}) => {
       return 'none'
     }else if(url.indexOf('review') > 0) {
       return 'none'
-    } else{
+    }else{
       return 'flex'
     }
   }

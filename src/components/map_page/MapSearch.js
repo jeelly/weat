@@ -57,7 +57,7 @@ const MapSearch = ({store_query, toggle}) => {
             let markers = []
             const newdata = data.filter((arr) => {
               const category = arr.category_name.split('>')
-              return category[0].includes('음식점')
+              return category[0].includes('음식점' || '카페')
             })
             for (let i = 0; i < newdata.length; i++) {
                 // @ts-ignore
