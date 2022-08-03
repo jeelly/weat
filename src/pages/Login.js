@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 
 //이미지
 import logo from "../img/logo_type2.svg";
-import googleIcon from "../img/googleLogin.svg";
-import kakaoIcon from "../img/kakaoLogin.svg";
+import googleBtn from "../img/googleLoginBtn.svg";
+import kakaoBtn from "../img/kakaoLoginBtn.svg";
 
 //
 import instance from "../shared/axios";
@@ -95,26 +95,21 @@ const Login = () => {
           <p onClick={() => navigate("/signup/agreement")}>회원가입</p>
         </section>
         <section className="snsLogin">
-          <div>
-            <a
-              href="http://realprojectapiserver.com/api/auth/google"
-              alt="구글 로그인"
-            >
-              <img src={googleIcon} alt="" />
-              <p>
-                <span>구글메일</span>로 로그인
-              </p>
-            </a>
-          </div>
+          
           <div>
             <a
               href="http://realprojectapiserver.com/api/auth/kakao"
               alt="카카오 로그인"
             >
-              <img src={kakaoIcon} alt="" />
-              <p>
-                <span>카카오톡</span>으로 로그인
-              </p>
+              <img src={kakaoBtn} alt="" />
+            </a>
+          </div>
+          <div>
+            <a
+              href="http://realprojectapiserver.com/api/auth/google"
+              alt="구글 로그인"
+            >
+              <img src={googleBtn} alt="" />
             </a>
           </div>
         </section>
@@ -177,34 +172,25 @@ const LoginContainer = styled.div`
     }
   }
   .snsLogin {
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    div {
-      padding-top: 40px;
-      a {
-        display: block;
-        text-decoration: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        img {
-          width: 60px;
-        }
-
-        p {
-          font-family: "AppleSDGothicNeoT";
-          font-style: normal;
-          font-size: 14px;
-          line-height: 22px;
-          color: var(--WHITE);
-          padding-top: 16px;
-          span {
-            font-family: "AppleSDGothicNeoUL";
-          }
-        }
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 300px));
+    gap:12px;
+    align-items: center;
+    justify-content: center;
+    padding:30px 14px;
+    a{
+      display:block;
+      width:100%;
+      height:45px;
+      img{
+        width: 100%;
+        
       }
     }
+        
+      
+    
   }
 `;
 const Button = styled(BlackButton)`
