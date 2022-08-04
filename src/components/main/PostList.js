@@ -127,7 +127,7 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
                                 />
                             ) 
                             : (
-                                    <PostLink to={`/detail/${item.roomId}`} key={item.roomId} {...backspaceLongPress}>
+                                    <PostLink to={`/detail/${item.roomId}`} key={item.roomId}>
                                             <PostItem>
                                                     <PostItemInner itemAnimationRD={toggle} color={item.status}>       
                                                         <li>
