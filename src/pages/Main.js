@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 import BottomNavi from '../components/BottomNavi';
-import EventModal from '../components/main/EventModal';
+// import EventModal from '../components/main/EventModal';
 
 const Main = ({socket}) => {
     const navigate = useNavigate()
@@ -38,9 +38,9 @@ const Main = ({socket}) => {
       }, [_rooms, socket]);     
 
 
-      const bnClose = () => {
-        setEventBn(window.sessionStorage.removeItem('eventBn'))
-    }
+    //   const bnClose = () => {
+    //     setEventBn(window.sessionStorage.removeItem('eventBn'))
+    // }
       
     return (
         <NewContainer>
@@ -50,7 +50,7 @@ const Main = ({socket}) => {
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
             {rooms.length === 0 ? <MainDefault/> : <PostList socket={socket}/>}
-            {eventBn &&<EventModal bnClose={bnClose}/>}
+            {/* {eventBn &&<EventModal bnClose={bnClose}/>} */}
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>

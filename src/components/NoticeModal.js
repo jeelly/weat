@@ -54,9 +54,9 @@ const notiItemList = async () => {
 };
   return (
     <Modal modal={modal}>
-      <ImgWrap target="_black" href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform">
+      {/* <ImgWrap target="_black" href="https://docs.google.com/forms/d/e/1FAIpQLSeOzr5Ppeu0BGJIuxBldO7LoFd_VUOeL0ZGzDk0SkP8jBZl8Q/viewform">
         <img src={alert_banner} alt="이벤트배너"/>
-      </ImgWrap>
+      </ImgWrap> */}
       <NewContainer>
         <CloseBtn
           close={close}
