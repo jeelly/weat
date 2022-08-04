@@ -48,7 +48,7 @@ const Record = () => {
       setMatchCount(data);
       console.log(data)
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
 
@@ -75,7 +75,6 @@ const Record = () => {
     try {
       const { data } = await instance.get("/api/analyze/tag");
       const { TheResult } = data;
-      console.log(TheResult);
       const small = TheResult.filter((v) => v.tagNum === 1).map(
         (item, idx) => item.tagName
       );
@@ -85,17 +84,15 @@ const Record = () => {
       const large = TheResult.filter((v) => v.tagNum >= 4).map(
         (item, idx) => item.tagName
       );
-      console.log(small);
       setTagData({
         medium: medium,
         large: large,
         small: small,
       });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   };
-  console.log(tagData);
   useEffect(() => {
     analyzeDB();
     matchDB();
