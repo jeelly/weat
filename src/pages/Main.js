@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import Convenience from '../components/main/Convenience';
 import { useNavigate } from 'react-router-dom';
 import BottomNavi from '../components/BottomNavi';
-import EventModal from '../components/main/EventModal';
 import Header from '../components/Header';
 import { itemAnimation } from '../redux/modules/postSlice';
 
@@ -41,9 +40,9 @@ const Main = ({socket}) => {
       }, [_rooms, socket]);     
 
 
-      const bnClose = () => {
-        setEventBn(window.sessionStorage.removeItem('eventBn'))
-    }
+    //   const bnClose = () => {
+    //     setEventBn(window.sessionStorage.removeItem('eventBn'))
+    // }
       
     return (
         <>
@@ -54,13 +53,14 @@ const Main = ({socket}) => {
             <ReactPortal>
                 {rooms.length === 0 ? <MainModal/> : null}
             </ReactPortal>
+
             {rooms.length === 0 ? <MainDefault/> : <PostList 
             onClose={async() => {
                 console.log('a')
                 dispatch(itemAnimation(false))
             }}socket={socket}
             />}
-            {eventBn &&<EventModal bnClose={bnClose}/>}
+
             <ModalBtn/>
             <BottomNavi />
         </NewContainer>

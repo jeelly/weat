@@ -144,6 +144,7 @@ const Navi = styled.div`
   justify-content: space-between;
   align-items: center;
   p {
+    cursor: pointer;
     :last-child {
       position: relative;
     }

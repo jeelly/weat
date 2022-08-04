@@ -158,6 +158,9 @@ const LoginContainer = styled.div`
     display: flex;
     justify-content: space-between;
     color: var(--WHITE);
+    p{
+      cursor: pointer;
+    }
     p:first-child {
       font-family: "AppleSDGothicNeoUL";
       font-style: normal;
