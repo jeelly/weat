@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 const RestaurantList = ({id, listPage, status}) => {
     const { storeList } = useSelector((state) => state.post.detail);
     let navigate = useNavigate();
+
     return (
         <Container status={status}>
                     <RestaurantInfo>
@@ -18,7 +19,7 @@ const RestaurantList = ({id, listPage, status}) => {
                         </header>
                         <RestaurantItemWrap listPage={listPage}>
                             {storeList && storeList.map((store, idx)=> (
-                                <RestaurantItem key={id} onClick={()=> navigate(`/review/${store.storeId}`)}>
+                                <RestaurantItem key={`${store.storeId},${id}`} onClick={()=> navigate(`/review/${store.storeId}`)}>
                                     <li>
                                     <ImgWrap>
                                         {store.imgURL.length === 0 ? <img src={no_image} alt='임시 이미지'/> : <RestaurantImg src={store.imgURL[0]} alt="음식사진"/>}

@@ -42,7 +42,7 @@ const RoomRegistration = () => {
         refetchOnWindowFocus: false,
         retry:10,
         onSuccess: (data) => {
-        console.log(data);
+        // console.log(data);
       }
     });
 
@@ -82,13 +82,7 @@ const RoomRegistration = () => {
     }
 
     const rooms = SaveDone_query?.data?.data?.myRooms;
-    console.log(rooms)
-    // console.log(SaveDone_query.status)
-    // const [rooms, setRooms] = useState([])
-    // useEffect(()=> {
-    //     if(SaveDone_query.status === 'success')
-    //     setRooms(SaveDone_query.data.data.myRooms) 
-    // },[])
+    
     return (
         <div>
             {/* <Modal content='맛방에 등록하시겠습니까?' nav='/storepost/PostReview' modal={modal} setModal={setModal} okBtn={upload}/> */}
@@ -98,9 +92,13 @@ const RoomRegistration = () => {
                         <p><span>{roomArr.length}</span>/{rooms.length}</p>
                         <button onClick={resetBtn}>Reset</button>
                     </Nav>
-                    {rooms.map((room, idx)=> (    
+                    {rooms.length!==0 ? rooms.map((room, idx)=> (    
                         <RegistrationItem key={room.roomId} saveDone={room.saveDone} room={room} statusIcon={statusIcon} roomArr={roomArr} setRoomArr={setRoomArr} reset={reset}/>
-                    ))}
+                    )) : 
+                    <div>
+                        <h3>만들어진 방이 없어요!</h3>
+                    </div>
+                    }
                 </ul>}
             </ContentWrap>
             {!id ? <FooterBtn onClick={upload}><p>다 음</p></FooterBtn> : <PurPleBtn onClick={successBtn} >저 장</PurPleBtn>}
@@ -114,6 +112,12 @@ export default RoomRegistration;
 const ContentWrap = styled.article`
     padding:0 4.444%;
     padding-bottom:88px;
+    ul > div {
+        display:flex;
+        align-items: center;
+        justify-content:center;
+        height:500px;
+    }
 `
 
 const Nav = styled.li`

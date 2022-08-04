@@ -6,8 +6,8 @@ const MyLocation = () => {
     const dispatch = useDispatch()
     const [state, setState] = useState({
         center: {
-          lat: 33.450701,
-          lng: 126.570667,
+          lat: 0,
+          lng: 0,
         },
         errMsg: null,
         isLoading: true,
@@ -30,6 +30,10 @@ const MyLocation = () => {
                     setState((prev) => ({
                     ...prev,
                     errMsg: err.message,
+                    center: {
+                        lat: 33.450701,
+                        lng: 126.570667,
+                    },
                     isLoading: false,
                     }))
                 }
@@ -45,7 +49,8 @@ const MyLocation = () => {
     }, [])
     
     useEffect(()=> {
-        dispatch(MyLatLng(state))
+        if(state.center.lat===0) return;
+        dispatch(MyLatLng({center:state.center, loading:true}))
     },[state])
 }
 export default MyLocation;

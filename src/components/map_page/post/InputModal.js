@@ -11,15 +11,26 @@ const InputModal = ({content, modal, setModal, okBtn}) => {
     const [text, setText] = useState("");
 
     const onChange = (e) => {
-            setText(e.target.value);  
+        setText(e.target.value);  
     };   
 
+    const onCheckEnter = async (e) => {
+        if(e.key === 'Enter') {
+            await okBtn({value:text, content:content});
+            await setModal(false);
+            setText("");
+        }
+    }
+
+    const maxLength = () => {
+        return content.includes('추천메뉴')?20:6;
+    }
     return (
         <ReactPortal>
                     <DelModalWrap modal={modal}>
-                        <DelModal>
+                        <DelModal onKeyPress={onCheckEnter}>
                             <h3>{content}</h3>
-                            <input type="text" onChange={onChange} value={text}/>
+                            <input maxLength={maxLength()} type="text" onChange={onChange} value={text}/>
                             <div>
                                 <button onClick={()=>{ setModal(false);}}>NO</button>
                                 <button onClick={async ()=>{

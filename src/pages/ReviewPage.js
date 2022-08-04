@@ -12,6 +12,7 @@ import Header from '../components/review/Header';
 import square from '../img/fixed/square.svg'
 import pen from '../img/fixed/pen.svg'
 import { useSelector } from 'react-redux';
+import BottomNavi from '../components/BottomNavi';
 
 const ReviewPage = () => {
     const { id } = useParams();
@@ -101,13 +102,14 @@ const ReviewPage = () => {
                     <StoreInfo data={Bubble_query.data.data.result}/>
                 </>
             }
-            {Review_query.status === 'success'  && <Review data={Review_query.data.data.result}/>}
+            {Review_query.status === 'success'  && <Review Bubble_query={Bubble_query.data.data.result} data={Review_query.data.data.result}/>}
             {Tag_query.status ==='success' && <TasteTag data={Tag_query.data.data.result}/>}
             {MenuList.status === 'success' && <Menu data={MenuList.data.data.result}/>}
             <FooterBtn>
                  <Link to={`/storepost/RoomRegistration/${id}`}><img src={square} alt="맛방에 저장"/>맛방에 저장</Link>
                  {ReviewCheck() !==  userId ? <Link to={`/storepost/PostReview/${id}`}><img src={pen} alt="리뷰 남기기"/>리뷰 남기기</Link> : <Link to={`/review/${id}`}><span><img src={pen} alt="리뷰 남기기"/>리뷰 완료</span></Link>}
             </FooterBtn>
+            <BottomNavi />
         </Container>
     );
 };
@@ -118,7 +120,7 @@ const FooterBtn = styled.div`
     position:fixed;
     width: 279px;
     height: 48px;
-    bottom:22px;
+    bottom:88px;
     left:50%;
     transform:translateX(-50%);
     background-color:var(--BLACK);

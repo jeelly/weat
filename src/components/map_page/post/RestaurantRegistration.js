@@ -61,7 +61,6 @@ const RestaurantRegistration = () => {
             lat :data.position.lat,
             tag:category
         }
-        console.log(upload_data)
         await dispatch(FirstRestaruantData(upload_data))
         navigate('/storepost/RoomRegistration')
     }

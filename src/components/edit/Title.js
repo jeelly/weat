@@ -91,7 +91,7 @@ const Title = ({detail, id}) => {
               ) : (
                 <>
                     <img src={EditEmoji} alt="" />
-                    <Emoji type="text" value={detail.emoji}/>
+                    <Emoji type="text" defaultValue={detail.emoji}/>
                     <BlackPlusBtn src={black_round_plus} alt="검정색원형버튼"></BlackPlusBtn>
                 </>
               )}

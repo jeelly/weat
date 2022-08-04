@@ -38,16 +38,32 @@ export const loadRoomTagIconDB = (id) => {
   };
 };
 
+// 필터로 조회
+export const FilterSearchDB = (data) => {
+  return async function (dispatch) {
+    try{
+      const response = await instance.post(`/api/store/map`, data);
+      dispatch(FilterSearch(response.data.storeMap));
+    }catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 const mapSlice = createSlice({
     name: "map",
     initialState: {
         modalNum:false,
         loadMyStore:[],
         loadFirstStore:[],
-        MyLatLng:[],
+        MyLatLng:{
+          loading:false
+        },
         loadStoreRoom:[],
         firstPost:[],
-        loadRoomTagIcon:[]
+        loadRoomTagIcon:[],
+        tagFilterData:[],
+        tagFilterActive:[]
     },
     reducers: {
       loadStoreRoom: (state, action) => {
@@ -77,6 +93,11 @@ const mapSlice = createSlice({
       firstPost: (state, action) => {
         state.firstPost = action.payload;
       },
+      //검색한 맛집데이터 스토어에 저장
+      FilterSearch: (state, action) => {
+        state.tagFilterData = action.payload;
+        state.tagFilterActive = {active:4}
+      },
     },
   });
   
@@ -87,7 +108,8 @@ const mapSlice = createSlice({
     modalNum,
     loadStoreRoom,
     firstPost,
-    loadRoomTagIcon
+    loadRoomTagIcon,
+    FilterSearch
   } = mapSlice.actions;
   
   export default mapSlice.reducer;

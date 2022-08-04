@@ -15,26 +15,35 @@ import save_eye from '../../img/fixed/save_eye.svg';
 import star from '../../img/star.svg';
 import { eyeList } from "../../components/signup/FaceResource";
 import { firstPost } from '../../redux/modules/mapSlice';
+import instance from '../../shared/axios';
+import { useQuery } from 'react-query';
+
 
 const { kakao } = window;
 
-const Keyword = ({detail_data}) => {
+const Keyword = ({detail_data, myLocation}) => {
+    const modalRef = useRef(null);
     const dispatch = useDispatch();
     let navigate = useNavigate();
-    const myLocation = useSelector(state => state.map.MyLatLng);
     const searchStore = useSelector(state => state.map.loadMyStore);
     const firstSearchStore = useSelector(state => state.map.loadFirstStore);
-
+    const FilterTagData = useSelector(state => state.map.tagFilterData);
     const [markers, setMarkers] = useState([])
     const [info, setInfo] = useState()
-
     const [myMarkers, setMyMarkers] = useState([])
 
+    const [myLocationMarkers, setMyLocationMarkers] = useState([])
+    const [myLocationInfo, setMyLocationInfo] = useState()
+
     const [firstSearchMarkers, setFirstSearchMarkers] = useState([])
-    const [firstSearchInfo, setFirstSearchInfo] = useState()
 
     const [searchMarkers, setSearchMarkers] = useState([])
     const [searchMarkersInfo, setSearchMarkersInfo] = useState()
+
+
+    const [filterMarkers, setFilterMarkers] = useState([])
+    const [filterInfo, setFilterInfo] = useState()
+
 
     const [map, setMap] = useState()
     const [state, setState] = useState({
@@ -46,14 +55,23 @@ const Keyword = ({detail_data}) => {
         isLoading: true,
     })
 
+    const store_query = useQuery(["store_list"], () => {
+      const params = {lon:myLocation.center.lng, lat:myLocation.center.lat}
+      return instance.get(`/api/store/map`, {params});
+    }, {
+      refetchOnWindowFocus:false,
+      onSuccess: (data) => {
+        // console.log(data);
+      }
+    });
+
     //내위치 받아와서 띄워주기
     useEffect(()=> {
-        if(!map) return
+        if(!map) return;
         setState(myLocation)
         const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))
         map.setBounds(bounds)
-
         let markers = []
           markers.push({
             position: {
@@ -64,52 +82,50 @@ const Keyword = ({detail_data}) => {
             // address_name:data[i].address_name,
             // phone:data[i].phone
           })
-        setMyMarkers(markers)
-    },[map, myLocation])
-
-
-    //검색한 데이터 (현재 사용 X)
-    // useEffect(() => {
-    //     if (!map) return
-    //     if (!searchData) return
-    //     const ps = new kakao.maps.services.Places()
-    //     ps.keywordSearch(searchData , (data, status, _pagination) => {
-    //       if (status === kakao.maps.services.Status.OK) {
-    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-    //         // LatLngBounds 객체에 좌표를 추가합니다
-    //         const bounds = new kakao.maps.LatLngBounds()
-    //         let markers = []
-
-    //         for (let i = 0; i < data.length; i++) {
-    //           // @ts-ignore
-    //           markers.push({
-    //             position: {
-    //               lat: data[i].y,
-    //               lng: data[i].x,
-    //             },
-    //             content: data[i].place_name,
-    //             address_name:data[i].address_name,
-    //             phone:data[i].phone
-    //           })
-    //           // @ts-ignore
-    //           bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x))
-    //         }
-    //         setMarkers(markers)
-    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-    //         map.setBounds(bounds)
-    //       }
-    //     })
-    //   }, [map, searchData])
-
-
-
-    //방데이터로 좌표 띄워주기 
+          setMyMarkers(markers)
+          setMarkers([])
+    },[map])
     
+    //내위치 받아와서 띄워주기
+    useEffect(()=> {
+      if(!map) return;
+      if(store_query.status !== 'success') return;
+      setState(myLocation)
+      const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
+      bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))
+      map.setBounds(bounds)
+      let markers = []
+
+      store_query.data.data.storeMap.map((data) => {
+        markers.push({
+          position: {
+            lat: data.lat,
+            lng: data.lon
+          },
+          userInfo: {
+            eyes: data.eyes,
+            faceColor: data.faceColor,
+            nickname: data.nickname
+          },
+          storeId:data.storeId,
+          storeName: data.storeName,
+          address_name:data.address,
+          comment:data.comment,
+          // starAvg:data.starAvg,
+          tag:data.tag
+        })
+        bounds.extend(new kakao.maps.LatLng(data.lat,data.lon))
+      })
+      setMyLocationMarkers(markers)
+      map.setBounds(bounds)
+  },[store_query.data, myLocation])
+
+  
     //방목록에서 좌표찍기
     useEffect(()=>{
         if (!map) return
-        console.log(detail_data)
         if (detail_data.length === 0) {
+          window.alert('해당 방에 맛집이 없습니다 ;(')
           setState(myLocation)
           const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
           bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))
@@ -126,7 +142,6 @@ const Keyword = ({detail_data}) => {
           // LatLngBounds 객체에 좌표를 추가합니다
           const bounds = new kakao.maps.LatLngBounds()
           let markers = []
-          console.log(detail_data)
           detail_data.map((data) => {
             markers.push({
               position: {
@@ -152,6 +167,52 @@ const Keyword = ({detail_data}) => {
         }
       },[detail_data])
 
+    //필터 좌표찍기
+    useEffect(()=>{
+      if (!map) return
+      if (FilterTagData.length === 0) {
+        window.alert('해당 카테고리에 맛집이 없습니다 ;(')
+        setState(myLocation)
+        const bounds = new kakao.maps.LatLngBounds() // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(new kakao.maps.LatLng(state.center.lat, state.center.lng))
+        map.setBounds(bounds)
+        let markers = []
+          markers.push({
+            position: {
+              lat: myLocation.center.lat,
+              lng: myLocation.center.lng,
+            }
+          })
+        setMyMarkers(markers)
+      }else {
+        // LatLngBounds 객체에 좌표를 추가합니다
+        const bounds = new kakao.maps.LatLngBounds()
+        let markers = []
+        FilterTagData.map((data) => {
+          markers.push({
+            position: {
+              lat: data.lat,
+              lng: data.lon
+            },
+            userInfo: {
+              eyes: data.eyes,
+              faceColor: data.faceColor,
+              nickname: data.nickname
+            },
+            storeId:data.storeId,
+            storeName: data.storeName,
+            address_name:data.address,
+            comment:data.comment,
+            starAvg:data.starAvg,
+            tag:data.tag
+          })
+          bounds.extend(new kakao.maps.LatLng(data.lat,data.lon))
+        })
+        setFilterMarkers(markers)
+        setMyLocationMarkers([])
+        map.setBounds(bounds)
+      }
+    },[FilterTagData])
 
       //검색해서 클릭한 데이터로 좌표 띄워주기 
       useEffect(()=>{
@@ -160,7 +221,6 @@ const Keyword = ({detail_data}) => {
             // LatLngBounds 객체에 좌표를 추가합니다
             const bounds = new kakao.maps.LatLngBounds()
             let markers = []
-            console.log(searchStore)
             searchStore.map((data) => {
               markers.push({
                 position: {
@@ -195,7 +255,6 @@ const Keyword = ({detail_data}) => {
             // LatLngBounds 객체에 좌표를 추가합니다
             const bounds = new kakao.maps.LatLngBounds()
             let markers = []
-            console.log(firstSearchStore)
             firstSearchStore.map((data) => {
               markers.push({
                 position: {
@@ -218,7 +277,7 @@ const Keyword = ({detail_data}) => {
 
 
       const FirstSearchModal = (props) => {
-        const modalRef = useRef(null);
+        // const modalRef = useRef(null);
         useClickOutside(modalRef, () => {
           props.onClose();
         });
@@ -238,12 +297,10 @@ const Keyword = ({detail_data}) => {
         )
       }
 
-      console.log(searchStore[0])
       const SearchModal = (props) => {
-        const modalRef = useRef(null);
+        // const modalRef = useRef(null);
         useClickOutside(modalRef, () => {
           props.onClose();
-          navigate(`/review/${searchMarkersInfo.storeId}`)
         });
         if (searchStore.length===0) return;
         return (
@@ -265,15 +322,13 @@ const Keyword = ({detail_data}) => {
       }
 
       const RoomStoreModal = (props) => {
-        const modalRef = useRef(null);
         useClickOutside(modalRef, () => {
           props.onClose();
         });
-        console.log(detail_data)
         if (detail_data.length===0) return;
         return (
-          <RoomSpeechBubble speech_bubble={speech_bubble} ref={modalRef} onClick={async()=>{
-            await setInfo();
+          <RoomSpeechBubble ref={modalRef} speech_bubble={speech_bubble} onClick={async()=>{
+            // await setInfo();
             navigate(`/review/${info.storeId}`)
           }}>
             <li>
@@ -293,6 +348,59 @@ const Keyword = ({detail_data}) => {
         )
       }
 
+      
+      const MyLocationStoreModal = (props) => {
+        useClickOutside(modalRef, () => {
+          props.onClose();
+        });
+        // if (detail_data.length===0) return;
+        return (
+          <SpeechBubble ref={modalRef} speech_bubble={speech_bubble} onClick={async()=>{
+            // await setInfo();
+            navigate(`/review/${myLocationInfo.storeId}`)
+          }}>
+            <li>
+              <PlaceName>{myLocationInfo.storeName}</PlaceName>
+              <AddressName>"{myLocationInfo.comment}"</AddressName>
+            </li>
+            <SaveWrap>
+              <img src={save_eye} alt="세이브 눈 아이콘" />
+              <FirstSave>리뷰보기</FirstSave>
+            </SaveWrap>
+            <DiscoveryUserInfo>
+                    <CharacterfaceWrap eyes={userEye(myLocationInfo.userInfo.eyes)}><NewCharacterface fill={myLocationInfo.userInfo.faceColor} /></CharacterfaceWrap>
+                    <p>{myLocationInfo.userInfo.nickname}님의 발견!</p>
+            </DiscoveryUserInfo>
+          </SpeechBubble>
+        )
+      }
+
+      const TagFilterStoreModal = (props) => {
+        useClickOutside(modalRef, () => {
+          props.onClose();
+        });
+        // if (detail_data.length===0) return;
+        return (
+          <SpeechBubble ref={modalRef} speech_bubble={speech_bubble} onClick={async()=>{
+            // await setInfo();
+            navigate(`/review/${filterInfo.storeId}`)
+          }}>
+            <li>
+              <PlaceName>{filterInfo.storeName}</PlaceName>
+              <AddressName>"{filterInfo.comment}"</AddressName>
+            </li>
+            <SaveWrap>
+              <img src={save_eye} alt="세이브 눈 아이콘" />
+              <FirstSave>리뷰보기</FirstSave>
+            </SaveWrap>
+            <DiscoveryUserInfo>
+                    <CharacterfaceWrap eyes={userEye(filterInfo.userInfo.eyes)}><NewCharacterface fill={filterInfo.userInfo.faceColor} /></CharacterfaceWrap>
+                    <p>{filterInfo.userInfo.nickname}님의 발견!</p>
+            </DiscoveryUserInfo>
+          </SpeechBubble>
+        )
+      }
+
     const SearchUserEye = () => {
         return eyeList.filter((row) => row.includes(searchMarkers[0]?.userData?.eyes) && row);
       };
@@ -305,10 +413,10 @@ const Keyword = ({detail_data}) => {
       await dispatch(firstPost(data))
       navigate('/storepost/restaurantregistration')
     }
-    console.log(markers)
+
     return (
       <>
-        <Map // 로드뷰를 표시할 Container
+        <Map  // 로드뷰를 표시할 Container
           center={state.center}
           style={{
             width:"100%",
@@ -317,22 +425,22 @@ const Keyword = ({detail_data}) => {
           level={3}
           onCreate={setMap}
         >
+          {/* 방목록데이터 */}
           {markers.map((marker, i) => (
             <div
-              key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
+              key={marker.storeId}
             >
               <CustomOverlayMap position={marker.position}>
                 <SearchLocationicon eye={userEye(marker.userInfo.eyes)} onClick={() => {setInfo(marker);}}>
                   <CharacterfaceIcon fill={marker.userInfo.faceColor}/>
                 </SearchLocationicon>
-                {/* <FirstLocationicon black_flag={black_flag} onClick={() => {setInfo(marker); console.log('작동');}}/> */}
               </CustomOverlayMap>
               {info && info.content === marker.content && (
                 <RoomStoreModal
                   onClose={() => {
                     // if(!i===0) return;
-                    // setInfo();
-                    // setSearchMarkers({ position: [...markers.position] });
+                    setInfo();
+                    setMarkers({ position: [...markers.position] });
                   }}
                 />
               )}
@@ -367,7 +475,7 @@ const Keyword = ({detail_data}) => {
               key={`marker-${marker.content}-${marker.position.lat},${marker.position.lng}`}
             >
               <CustomOverlayMap position={marker.position}>
-                <FirstLocationicon black_flag={black_flag} onClick={() => {setInfo(marker); console.log('첫작동');}}/>
+                <FirstLocationicon black_flag={black_flag} onClick={() => {setInfo(marker);}}/>
               </CustomOverlayMap>
 
               {info && info.content === marker.content && (
@@ -388,10 +496,52 @@ const Keyword = ({detail_data}) => {
             >
               <CustomOverlayMap 
               position={marker.position}
-              onClick={() => {setInfo(marker); console.log('작동');}}
               >
                 <MyLocationIcon/>
               </CustomOverlayMap>
+            </div>
+          ))}
+
+          {myLocationMarkers.map((marker, i) => (
+            <div
+              key={marker.storeId}
+            >
+              <CustomOverlayMap position={marker.position}>
+                <SearchLocationicon eye={userEye(marker.userInfo.eyes)} onClick={() => {setMyLocationInfo(marker);}}>
+                  <CharacterfaceIcon fill={marker.userInfo.faceColor}/>
+                </SearchLocationicon>
+              </CustomOverlayMap>
+              {myLocationInfo && myLocationInfo.storeId === marker.storeId && (
+                <MyLocationStoreModal
+                  onClose={() => {
+                    // if(!i===0) return;
+                    setMyLocationInfo();
+                    setMyLocationMarkers({ position: [...myLocationMarkers.position] });
+                  }}
+                />
+              )}
+            </div>
+          ))}
+
+          {/* 필터 데이터 */}
+          {filterMarkers.map((marker, i) => (
+            <div
+              key={marker.storeId}
+            >
+              <CustomOverlayMap position={marker.position}>
+                <SearchLocationicon eye={userEye(marker.userInfo.eyes)} onClick={() => {setFilterInfo(marker);}}>
+                  <CharacterfaceIcon fill={marker.userInfo.faceColor}/>
+                </SearchLocationicon>
+              </CustomOverlayMap>
+              {filterInfo && filterInfo.storeId === marker.storeId && (
+                <TagFilterStoreModal
+                  onClose={() => {
+                    // if(!i===0) return;
+                    setFilterInfo();
+                    setFilterMarkers({ position: [...markers.position] });
+                  }}
+                />
+              )}
             </div>
           ))}
         </Map>
@@ -500,7 +650,7 @@ const SpeechBubble =styled.div`
 
 const RoomSpeechBubble = styled(SpeechBubble)`
   /* bottom:89px; */
-  bottom:236px;
+  bottom:246px;
     /* &:hover {
       width:3000px;
       background-color:red;
@@ -547,6 +697,8 @@ const AddressName = styled.p`
   font-size: 12px;
   line-height: 16px;
   color:var(--DEFAULT);
+  width:170px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 `
 
 const StarText = styled.p`
