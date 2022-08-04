@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {ReactComponent as Like} from '../../img/fixed/Like.svg'
+import instance from '../../shared/axios';
+import { useMutation, useQueryClient } from 'react-query';
 
 const MenuItem = ({data}) => {
-    const [toggle, setToggle] = useState(false);
+
+    const QueryClient = useQueryClient();
+    const menuLikeToggleDB = () => {
+        return instance.post(`/api/like/menu/${data.menuId}`);
+    }
+      const menuLikeDelDB = () => {
+          return instance.delete(`/api/like/menu/${data.menuId}`);
+    }
+
+    const LikeToggle = useMutation(menuLikeToggleDB, {
+        onSuccess: (response) => {
+            QueryClient.invalidateQueries("Menu") //여기 키값 넣어야함
+            
+        }
+     });
+      
+      const LikeDel = useMutation(menuLikeDelDB, {
+        onSuccess: (response) => {
+            QueryClient.invalidateQueries("Menu") //여기 키값 넣어야함
+            
+        }
+    });
+
+    const [toggle, setToggle] = useState(data.likeDone);
     const [toggleNum, setToggleNum] = useState(data.menuLikeNum);
 
     const likeToggle = () => {
         setToggle(toggle?false:true)
         setToggleNum(toggle && !isNaN(toggleNum)?toggleNum-1:toggleNum+1)
+        if(!data.likeDone){
+            LikeToggle.mutate();
+          }else {
+            LikeDel.mutate();
+        }
     }
     return (
         <MenuTag toggle={toggle}>

@@ -11,6 +11,7 @@ import {ReactComponent as Flag} from '../../img/fixed/blackFlag.svg';
 import { editModal } from '../../redux/modules/postSlice';
 import Member from './Member';
 import { eyeList } from "../../components/signup/FaceResource";
+import { device } from '../../css/GlobalStyles';
 
 const Members = ({users, setSerchBar}) => {
     const { memberCount, guestInfo, owner } = users;
@@ -154,7 +155,11 @@ const MembersInfo = styled.ul`
     background-color:rgba(0,0,0,0.2);
     transform: matrix(1, 0, 0, -1, 0, 0);
   }
-
+  @media ${device.pc} {
+        &::-webkit-scrollbar {
+        transform: scaleX(-1);
+        }
+    }
 
   li {
     position:relative;

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import positionShift from '../../img/positionShift.svg';
 import useLongPress from "../../hook/useLongPress";
 import { itemAnimation } from "../../redux/modules/postSlice"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import convenPrivate from '../../img/fixed/convenPrivate.svg';
 import convenOwner from '../../img/fixed/convenOwner.svg';
@@ -11,7 +11,9 @@ import convenGuest from '../../img/fixed/convenGuest.svg';
 
 const Convenience = ({roomsLength, longPressBackspaceCallback}) => {
     const dispatch = useDispatch();
+    const itemAnimationRD = useSelector(state => state.post.itemAnimation);
     const [toggle, setToggle] = useState(true)
+    
     const onLongPress = async () => {
         await setToggle(toggle? false : true)
         dispatch(itemAnimation(toggle))
@@ -19,6 +21,9 @@ const Convenience = ({roomsLength, longPressBackspaceCallback}) => {
     
     const backspaceLongPress = useLongPress(onLongPress, longPressBackspaceCallback, 5000);
     
+    useEffect(()=> {
+        setToggle(itemAnimationRD)
+    },[itemAnimationRD])
     return (
         <Container>
             <div>

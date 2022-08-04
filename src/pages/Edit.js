@@ -18,13 +18,18 @@ const Edit = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
-    const {detail, users } = useSelector(state => state.post.detail);
+    const {detail, users} = useSelector(state => state.post.detail);
     const isloaded = useSelector(state => state.post.detail_isloaded);
     const { emojiKey, tasteRoom } = useSelector(state => state.roomMaking);
     const [serchBar, setSerchBar] = useState(false);
     const inviteUser = useSelector(state => state.post.inviteUser);
     const modalRD = useSelector(state => state.map.modalNum); // 모달리덕스라는 뜻 
-
+    useEffect(() => {
+        if(detail.status === 'publicGuest') {
+            alert('방장만 수정할 수 있습니다!')
+            navigate('/')
+        }
+    },[])
     useEffect(() => {
         const detail_load = async () => {
             await dispatch(loadRoomDetailDB(id));

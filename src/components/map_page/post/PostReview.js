@@ -56,6 +56,12 @@ const PostReview = () => {
             tagTasty:tastesArr,
             tagPoint:atmosArr
         }
+        if(tastesArr.length===0) {
+            return window.alert("맛 태그를 최소 1개 선택해 주세요 :)")
+        }
+        if(atmosArr.length===0) {
+            return window.alert("분위기 태그를 최소 1개 선택해 주세요 :)")
+        }
         await dispatch(tagData(tag))
         if(!id){
             navigate('/storepost/PostReviewPhoto')

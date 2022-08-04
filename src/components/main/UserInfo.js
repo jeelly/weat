@@ -8,7 +8,6 @@ const UserInfo = ({user}) => {
     const userEye = (eye) => {
         return eyeList.filter((row) => row.includes(user.eyes) && row);
       };
-    console.log(userEye()[0])
     return (
         <article>
             <Container>

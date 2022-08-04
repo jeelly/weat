@@ -4,7 +4,7 @@ import { detailId } from '../../redux/modules/postSlice';
 import { useDispatch } from "react-redux";
 const Title = ({detail, id}) => {
     const dispatch = useDispatch();
-    console.log(detail)
+    
     useEffect(() => {
         dispatch(detailId({
             'id':id,

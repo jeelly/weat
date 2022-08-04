@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch }from 'react-redux'
 
@@ -11,14 +11,22 @@ import {useSelector} from 'react-redux'
 import SortableList, { SortableItem } from "react-easy-sort";
 import arrayMove from "array-move";
 import { Link } from 'react-router-dom';
-import { loadRoomDB, mainRoomListPutDB, roomDeleteDB, roomExitDB } from '../../redux/modules/postSlice';
+import { loadRoomDB, mainRoomListPutDB, roomDeleteDB, roomExitDB, itemAnimation } from '../../redux/modules/postSlice';
 import del from '../../img/EditDel.svg';
 import Modal from '../map_page/post/Modal';
+import { useClickOutside } from '../../hook/useClickOutside';
+import useLongPress from "../../hook/useLongPress";
 
-const PostList = () => {
+const PostList = ({onClose, longPressBackspaceCallback}) => {
+    const dragRef = useRef(null);
+
+    useClickOutside(dragRef, () => {
+        onClose();
+    });
+
     const dispatch = useDispatch();
     const rooms = useSelector(state => state.post.rooms);
-    const itemAnimation = useSelector(state => state.post.itemAnimation);
+    const itemAnimationRD = useSelector(state => state.post.itemAnimation);
     const [items, setItems] = React.useState(rooms)
     const [arrChange, setArrChange] = useState(false);
     const [privateColor, setPrivateColor] = useState("#FFBB55")
@@ -27,13 +35,25 @@ const PostList = () => {
     const [modal, setModal] = useState(false)
     const [id, setId] = useState()
     const [status, setStatus] = useState()
+    const [toggle, setToggle] = useState(true)
+
+    const onLongPress = async () => {
+        await setToggle(true)
+        dispatch(itemAnimation(toggle))
+    };
+
+    const backspaceLongPress = useLongPress(onLongPress, longPressBackspaceCallback, 5000);
+
+    useEffect(()=> {
+        setToggle(itemAnimationRD)
+    },[itemAnimationRD])
 
     useEffect(() => {
         setItems(rooms)
     }, [rooms]);
 
     useEffect(() => {
-        if(!itemAnimation) {
+        if(!itemAnimationRD) {
             return;
         }
         const roomId = items.map((a)=> (
@@ -64,53 +84,67 @@ const PostList = () => {
          setStatus(status)
         setModal(true)
     }
+
+    const DragItem = ({item}) => {
+        // useClickOutside(dragRef, () => {
+        //   onClose();
+        // });
+        // if (detail_data.length===0) return;
+        return (
+                <SortableItem key={item.roomId} >
+                    <Inner>
+                        <PostItem itemAnimationRD={itemAnimationRD}>
+                        {/* <Deletebtn onClick={()=> exitBtn(item.roomId, item.status)}>X</Deletebtn> */}
+                        <Deletebtn onClick={()=> modalOn(item.roomId, item.status)}>X</Deletebtn>
+                        <PostItemInner itemAnimationRD={itemAnimationRD} color={item.status}>
+                                <li>
+                                    <IconImg>{item.status === 'private' && <Private fill="#FFBB55"/>}</IconImg>
+                                    <IconImg>{item.status === 'publicOwner' && <Flag  fill="#FF7337"/>}</IconImg>
+                                    <IconImg>{item.status === 'publicGuest' && <Guest fill="#23C7C7"/>}</IconImg>
+                                </li>
+                                <li><h3>{item.roomName}</h3></li>
+                                <EmojiWrap>{item.emoji}</EmojiWrap>
+                                <li><p><span>{item.memberNum}</span>members</p></li>
+                            </PostItemInner>
+                        </PostItem>
+                    </Inner>
+                </SortableItem>
+        )
+      }
     return (
-            <Container
-            onSortEnd={onSortEnd}
-            className="list"
-            draggedItemClassName="dragged"
-            >
-            <Modal content="정말 맛방을 나가시겠어요? 그동안 모아뒀던 맛집들이 사라져요;(" modal={modal} setModal={setModal} okBtn={()=> exitBtn(id, status)} />
-                    {items.map((item, index) => (
-                        itemAnimation?
-                        (
-                            <SortableItem key={item.roomId}>
-                                <Inner>
-                                    <PostItem itemAnimation={itemAnimation}>
-                                    {/* <Deletebtn onClick={()=> exitBtn(item.roomId, item.status)}>X</Deletebtn> */}
-                                    <Deletebtn onClick={()=> modalOn(item.roomId, item.status)}>X</Deletebtn>
-                                    <PostItemInner itemAnimation={itemAnimation} color={item.status}>
-                                            <li>
-                                                <IconImg>{item.status === 'private' && <Private fill="#FFBB55"/>}</IconImg>
-                                                <IconImg>{item.status === 'publicOwner' && <Flag  fill="#FF7337"/>}</IconImg>
-                                                <IconImg>{item.status === 'publicGuest' && <Guest fill="#23C7C7"/>}</IconImg>
-                                            </li>
-                                            <li><h3>{item.roomName}</h3></li>
-                                            <EmojiWrap>{item.emoji}</EmojiWrap>
-                                            <li><p><span>{item.memberNum}</span>members</p></li>
-                                        </PostItemInner>
-                                    </PostItem>
-                                </Inner>
-                            </SortableItem>
-                        ) 
-                        : (
-                                <PostLink to={`/detail/${item.roomId}`} key={item.roomId}>
-                                        <PostItem>
-                                                <PostItemInner itemAnimation={itemAnimation} color={item.status}>       
-                                                    <li>
-                                                        <IconImg>{item.status === 'private' && <Private fill={privateColor}/>}</IconImg>
-                                                        <IconImg>{item.status === 'publicOwner' && <Flag  fill={ownerColor}/>}</IconImg>
-                                                        <IconImg>{item.status === 'publicGuest' && <Guest fill={guestColor}/>}</IconImg>
-                                                    </li>
-                                                    <li><h3>{item.roomName}</h3></li>
-                                                    <EmojiWrap>{item.emoji}</EmojiWrap>
-                                                    <li><p><span>{item.memberNum}</span>members</p></li>
-                                                </PostItemInner>
-                                        </PostItem>
-                                </PostLink>
-                        )
-                    ))}
-            </Container>
+            <div ref={dragRef}>
+                <Container
+                onSortEnd={onSortEnd}
+                className="list"
+                draggedItemClassName="dragged"
+                >
+                <Modal content="정말 맛방을 나가시겠어요? 그동안 모아뒀던 맛집들이 사라져요;(" modal={modal} setModal={setModal} okBtn={()=> exitBtn(id, status)} />
+                        {items.map((item, index) => (
+                            itemAnimationRD?
+                            (
+                                <DragItem 
+                                    item={item}
+                                />
+                            ) 
+                            : (
+                                    <PostLink to={`/detail/${item.roomId}`} key={item.roomId} {...backspaceLongPress}>
+                                            <PostItem>
+                                                    <PostItemInner itemAnimationRD={itemAnimationRD} color={item.status}>       
+                                                        <li>
+                                                            <IconImg>{item.status === 'private' && <Private fill={privateColor}/>}</IconImg>
+                                                            <IconImg>{item.status === 'publicOwner' && <Flag  fill={ownerColor}/>}</IconImg>
+                                                            <IconImg>{item.status === 'publicGuest' && <Guest fill={guestColor}/>}</IconImg>
+                                                        </li>
+                                                        <li><h3>{item.roomName}</h3></li>
+                                                        <EmojiWrap>{item.emoji}</EmojiWrap>
+                                                        <li><p><span>{item.memberNum}</span>members</p></li>
+                                                    </PostItemInner>
+                                            </PostItem>
+                                    </PostLink>
+                            )
+                        ))}
+                </Container>
+            </div>
     );
 };
 
@@ -139,7 +173,7 @@ const PostItem = styled.div`
     border-radius:20px;
     box-shadow:var(--SHADOW1);
     background-color:var(--WHITE);
-    animation:${({itemAnimation}) => itemAnimation ? ItemRotate : 'normal'} 0.4s 1s infinite linear alternate;
+    animation:${({itemAnimationRD}) => itemAnimationRD ? ItemRotate : 'normal'} 0.4s 1s infinite linear alternate;
     margin:0;
 `
 const PostLink = styled(Link)`
@@ -158,8 +192,8 @@ const PostItemInner = styled.ul`
     position:relative;
     transition:0.3s;
     &:hover {
-        background-color:${({itemAnimation, color}) => 
-            itemAnimation ? 
+        background-color:${({itemAnimationRD, color}) => 
+            itemAnimationRD ? 
             '': color === 'private' ? 
             '#FFBB55' : color === 'publicOwner' ? 
             '#FF7337' : '#23C7C7'

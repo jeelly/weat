@@ -15,7 +15,6 @@ const StorePost = () => {
             return 'none'
         }
       }
-      console.log(noneHeader())
     return (
         <>
         <Header xBtn={white_X_button} white_Btn={white_arrow_button} black_Btn={black_arrow_button} style={{display:noneHeader()}}>

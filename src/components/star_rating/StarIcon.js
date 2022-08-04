@@ -4,7 +4,7 @@ import {ReactComponent as Star} from '../../img/fixed/Star_Icon.svg';
 
 const StarIcon = ({selected = false, color, size}) => {
     return (
-      <StarStyle fill={selected ? color : "#fff"} stroke={color} size={size}/>
+      <StarStyle fill={selected ? color : "transparent"} stroke={color} size={size}/>
     );
 }
 

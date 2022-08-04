@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import MenuItem from './MenuItem';
 
 const Menu = ({data}) => {
-    console.log(data)
     return (
         <Container>
             <SubTitleWrap>

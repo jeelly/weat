@@ -52,7 +52,6 @@ const PostReviewPhoto = () => {
         ratingService:parseInt(ratingService),
         comment:comment,
     }
-    console.log(upload_data)
     const CreateRestaurant = useMutation(CreateRestaurantDB, {
         onSuccess: (response) => {
             upload_data['storeId'] = response.data.storeId
@@ -112,18 +111,16 @@ const PostReviewPhoto = () => {
             },
         };
         const formData = new FormData();
-        // for(let i=0; i<image.length;i++) {
-        //     formData.append('image', image[0]);
-        // }
-            // console.log(image[0])
-            formData.append('image',image[0]);
+        for(let i=0; i<image.length;i++) {
+            formData.append('image', image[i]);
+        }
+            // formData.append('image',image[0]);
             // image.forEach((item) => formData.append("image", item));
             instance
             .post("api/upload/image", formData, config)            
             .then((response) => {
                 upload_data['imgURL'] = response.data.imgUrl
-                console.log(id)
-                console.log(!id)
+                // console.log(response)
                 if(!id){
                     CreateRestaurant.mutate(postData.first);
                 }else {
@@ -143,6 +140,12 @@ const PostReviewPhoto = () => {
     };
     
     const upload = async () => {
+        if(star===0 && ratingTasty===0 && ratingPrice===0 && ratingService===0) {
+            return window.alert("평점을 선택해 주세요!")
+        }
+        if(comment==="") {
+            return window.alert("후기를 입력해 주세요!")
+        }
         await imageUpload();
         if(!id){
             await navigate('/storepost/success')
@@ -277,6 +280,7 @@ const ImgWrap = styled.div`
     margin-left:8px;
     margin-bottom:8px;
     position:relative;
+    z-index:10;
     img {
         border-radius: 20px;
         pointer-events: none;
