@@ -11,6 +11,7 @@ import { ReactComponent as Characterface } from "../img/characterface.svg";
 import { eyeList } from "../components/signup/FaceResource";
 import TasteTag from "../components/review/TasteTag";
 import BottomNavi from "../components/BottomNavi";
+import none from "../img/none.svg";
 
 const Record = () => {
   const navigate = useNavigate();
@@ -20,11 +21,7 @@ const Record = () => {
   const [reKing, setReKing] = useState(null);
   const [poKing, setPoKing] = useState(null);
   let notiCount = localStorage.getItem("newNoti");
-  const [tagData, setTagData] = useState({
-    medium: [],
-    large: [],
-    small: [],
-  });
+  const [tagData, setTagData] = useState(null);
   const notiModalOpen = () => {
     setModal(true);
     localStorage.setItem("newNoti", 0);
@@ -49,6 +46,7 @@ const Record = () => {
     try {
       const { data } = await instance.get("/api/analyze/match");
       setMatchCount(data);
+      console.log(data)
     } catch (e) {
       console.log(e);
     }
@@ -105,7 +103,7 @@ const Record = () => {
     postKing();
     tag();
   }, []);
-
+  
   return (
     <>
       <Container>
@@ -157,7 +155,7 @@ const Record = () => {
               </div>
               <div className="matchPoint">
                 <ul>
-                  {matchCount &&
+                  {matchCount  ? (
                     matchCount.map((item, idx) => (
                       <li key={`matchCount_${idx}`}>
                         <PointBar matchCount={item.matchCount}>
@@ -170,7 +168,14 @@ const Record = () => {
                           <div className="userNick">{item.nickname}</div>
                         </UserInfo>
                       </li>
-                    ))}
+                    ))
+                  ) : (
+                    <None>
+                      <img src={none} alt="" />
+                      <p>아직 겹치는 사람이 없어요 :(</p>
+                      <span onClick={()=>{navigate('/map')}}>맛집 리뷰 남기기</span>
+                    </None>
+                  )}
                 </ul>
               </div>
             </div>
@@ -199,25 +204,34 @@ const Record = () => {
                 <div className="subTitle">나의 최애 음식</div>
                 <p className="annotation">나도 몰랐던 나의 최애 음식!</p>
               </div>
-              <div className="tagBox">
-                {tagData.medium.map((medium, i) => (
-                  <>
-                    <p key={i} className="medium">
-                      {medium}
-                    </p>
-                  </>
-                ))}
-                {tagData.large.map((large, i) => (
-                  <p key={i} className="large">
-                    {large}
-                  </p>
-                ))}
-                {tagData.small.map((small, i) => (
-                  <p key={i} className="small">
-                    {small}
-                  </p>
-                ))}
-              </div>
+              {tagData ? (
+                  <div className="tagBox">
+                    {tagData.medium.map((medium, i) => (
+                      <>
+                        <p key={i} className="medium">
+                          {medium}
+                        </p>
+                      </>
+                    ))}
+                    {tagData.large.map((large, i) => (
+                      <p key={i} className="large">
+                        {large}
+                      </p>
+                    ))}
+                    {tagData.small.map((small, i) => (
+                      <p key={i} className="small">
+                        {small}
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  <None style={{paddingTop:'25px'}}>
+                      <img src={none} alt="" />
+                      <p>등록한 최애 음식이 없어요 :(</p>
+                      <span onClick={()=>{navigate('/map')}}>맛집 리뷰 남기기</span>
+                    </None>
+                
+                )}
             </div>
           </section>
         </RecordWrap>
@@ -535,5 +549,23 @@ const KingFace = styled.div`
   }
 `;
 
-const TagBox = styled.section``;
+const None = styled.div`
+  img {
+    width: 80px;
+  }
+  p {
+    font-family: "AppleSDGothicNeoSB";
+    font-size: 18px;
+    color: #d8d8d8;
+    margin-top: 20px;
+  }
+  span {
+    font-size: 14px;
+    border-bottom: 1px solid #777;
+    color: #777;
+    margin-top: 15px;
+    cursor: pointer;
+  }
+  padding-bottom: 17px;
+`;
 export default Record;
