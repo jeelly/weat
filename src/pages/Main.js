@@ -56,7 +56,6 @@ const Main = ({socket}) => {
 
             {rooms.length === 0 ? <MainDefault/> : <PostList 
             onClose={async() => {
-                console.log('a')
                 dispatch(itemAnimation(false))
             }}socket={socket}
             />}

@@ -9,6 +9,9 @@ import convenPrivate from '../../img/fixed/convenPrivate.svg';
 import convenOwner from '../../img/fixed/convenOwner.svg';
 import convenGuest from '../../img/fixed/convenGuest.svg';
 
+
+
+
 const Convenience = ({roomsLength, longPressBackspaceCallback}) => {
     const dispatch = useDispatch();
     const itemAnimationRD = useSelector(state => state.post.itemAnimation);

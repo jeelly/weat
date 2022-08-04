@@ -35,14 +35,18 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
     const [modal, setModal] = useState(false)
     const [id, setId] = useState()
     const [status, setStatus] = useState()
-    const [toggle, setToggle] = useState(true)
+    const [toggle, setToggle] = useState(itemAnimationRD)
 
     const onLongPress = async () => {
         await setToggle(true)
-        dispatch(itemAnimation(toggle))
+        dispatch(itemAnimation(true))
     };
 
     const backspaceLongPress = useLongPress(onLongPress, longPressBackspaceCallback, 5000);
+
+    // useEffect(()=> {
+    //     setToggle(true)
+    // },[onLongPress])
 
     useEffect(()=> {
         setToggle(itemAnimationRD)
@@ -53,7 +57,7 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
     }, [rooms]);
 
     useEffect(() => {
-        if(!itemAnimationRD) {
+        if(!toggle) {
             return;
         }
         const roomId = items.map((a)=> (
@@ -86,17 +90,13 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
     }
 
     const DragItem = ({item}) => {
-        // useClickOutside(dragRef, () => {
-        //   onClose();
-        // });
-        // if (detail_data.length===0) return;
         return (
                 <SortableItem key={item.roomId} >
                     <Inner>
-                        <PostItem itemAnimationRD={itemAnimationRD}>
+                        <PostItem itemAnimationRD={toggle}>
                         {/* <Deletebtn onClick={()=> exitBtn(item.roomId, item.status)}>X</Deletebtn> */}
                         <Deletebtn onClick={()=> modalOn(item.roomId, item.status)}>X</Deletebtn>
-                        <PostItemInner itemAnimationRD={itemAnimationRD} color={item.status}>
+                        <PostItemInner itemAnimationRD={toggle} color={item.status}>
                                 <li>
                                     <IconImg>{item.status === 'private' && <Private fill="#FFBB55"/>}</IconImg>
                                     <IconImg>{item.status === 'publicOwner' && <Flag  fill="#FF7337"/>}</IconImg>
@@ -120,7 +120,7 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
                 >
                 <Modal content="정말 맛방을 나가시겠어요? 그동안 모아뒀던 맛집들이 사라져요;(" modal={modal} setModal={setModal} okBtn={()=> exitBtn(id, status)} />
                         {items.map((item, index) => (
-                            itemAnimationRD?
+                            toggle?
                             (
                                 <DragItem 
                                     item={item}
@@ -129,7 +129,7 @@ const PostList = ({onClose, longPressBackspaceCallback}) => {
                             : (
                                     <PostLink to={`/detail/${item.roomId}`} key={item.roomId} {...backspaceLongPress}>
                                             <PostItem>
-                                                    <PostItemInner itemAnimationRD={itemAnimationRD} color={item.status}>       
+                                                    <PostItemInner itemAnimationRD={toggle} color={item.status}>       
                                                         <li>
                                                             <IconImg>{item.status === 'private' && <Private fill={privateColor}/>}</IconImg>
                                                             <IconImg>{item.status === 'publicOwner' && <Flag  fill={ownerColor}/>}</IconImg>

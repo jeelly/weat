@@ -61,9 +61,9 @@ console.log(matmadiData)
         {matmadiData && (
           <>
             <ReviewModalHeader>
-              {(userInfo.nickname === matmadiData.nickname) && <Modify onClick={() => alertModalOpen(true, "none")} />}
+              {/* {(userInfo.nickname === matmadiData.nickname) && <Modify onClick={() => alertModalOpen(true, "none")} />} */}
               <div className="trashBox">
-                {(userInfo.nickname === matmadiData.nickname) &&<Trash />}
+                {/* {(userInfo.nickname === matmadiData.nickname) &&<Trash />} */}
                 <CloseBtn
                   fill="#fff"
                   onClick={() => {
