@@ -114,6 +114,7 @@ padding-bottom: 70px;
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
     }
     .true {
       background-color: var(--BLACK);

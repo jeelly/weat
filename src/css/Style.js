@@ -25,6 +25,7 @@ export const BlackButton = styled.button`
   line-height: 26px;
   font-family: "Niramit", sans-serif;
   z-index: 2;
+  cursor: pointer;
   :disabled {
     background-color: var(--DEFAULT);
   }
@@ -51,6 +52,7 @@ export const VioletButton = styled.button`
   line-height: 26px;
   font-family: "Niramit", sans-serif;
   z-index: 2;
+  cursor: pointer;
 `;
 
 export const VioletRoundButton = styled.button`
@@ -81,6 +83,7 @@ export const VioletRoundTextBtn = styled.button`
   border: none;
   font-family: "AppleSDGothicNeoM";
   color: var(--WHITE);
+  cursor: pointer;
   :disabled {
     background-color: var(--LIGHTER);
   }
