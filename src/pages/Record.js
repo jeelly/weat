@@ -46,7 +46,7 @@ const Record = () => {
     try {
       const { data } = await instance.get("/api/analyze/match");
       setMatchCount(data);
-      console.log(data)
+
     } catch (e) {
       // console.log(e);
     }
@@ -435,6 +435,7 @@ const Navi = styled.div`
     :last-child {
       position: relative;
     }
+    cursor: pointer;
   }
 `;
 
