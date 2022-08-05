@@ -246,13 +246,16 @@ Error: Process completed with exit code 1.</br>
     <td align="center"><b>김보람</b></a></td>
     <td align="center">Member</td>
     <td align="left">
-       - 맛방(Room) CRUD<br> 
-       - 맛집 CRUD<br> 
-       - 좋아요 기능<br> 
-       - 맛집 태그 검색 필터링 <br> 
-       - DB 설계(NoSQL) <br> 
-       - 위도경도(GeoJson) CRUD <br> 
-       - AWS S3 Lambda 이미지 업로드 & 리사이징
+       - 로그인/회원가입<br> 
+- 소셜로그인(카카오, 구글)<br> 
+- 유저정보 찾기(아이디,비밀번호)<br> 
+- 유저 정보 수정 (프로필, 비밀번호)<br> 
+- 맛방만들기(사용자검색, 이모지피커사용)<br> 
+- 카카오 쉐어(맛방 공유하기)<br> 
+- 소켓 알림<br> 
+- 맛마디 좋아요<br> 
+- 맛기록 페이지<br> 
+- 마이페이지<br> 
    </td>
    <td align="center">https://github.com/Bo-oram</td>
   </tr>
