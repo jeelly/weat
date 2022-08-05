@@ -229,15 +229,29 @@ Error: Process completed with exit code 1.</br>
     <td align="center"><b>김영호</b></a></td>
     <td align="center">Vice Leader</td>
     <td align="left"> 
-       - 카카오, 구글 소셜 로그인 <br>
-       - 이메일 인증 <br>
-       - 유저 프로필 정보 관리 <br> 
-       - JWT토큰 인증관리 <br> 
-       - 사용자 기록 데이터 분석(먹기록)<br> 
-       - 맛방 detail CRUD <br> 
-       - 알림 기능(socket.io) <br> 
-       - EC2 t3 HTTPS 서버 배포 <br> 
-       - CICD 
+     - 맛방 CRUD
+     - 맛방 detail - CRUD
+     - 맛방 멤버 - 등록 ,삭제 
+     - 맛방 > 맛집 등록, 삭제
+     - 맛집 등록, 리뷰 작성
+     - S3 이미지 업로더 Multi
+     - 첨부사진 순서변경, 삭제
+     - 리뷰 좋아요
+     - 추천 메뉴 좋아요 
+    <details>
+    <summary>지도관련 기능(더보기)</summary>
+    <div markdown="1">
+      카카오맵API
+      지도에 현재 위치를 받아와서 반경 20km에 있는 맛집 보여주기
+      지도에 본인 맛방마다 속해있는 맛집 좌표로 마커 찍어주기
+      지도에 맛집 보여주기 태그 필터 검색 
+      카카오맵API에서 맛집을 검색해서 데이터베이스의 데이터 와 비교해서 등록한 맛집 표시
+      현재 위치를 기반으로 검색한 맛집과 거리 표시
+      검색한 데이터를 클릭 했을때 좌표 맵에 띄워 주기
+      좌표를 클릭 했을때 카카오에 등록 돼 있는 데이터를 불러와서 맛집 작성 페이지로 이동 
+      (등록 된 가게라면 리뷰 페이지로 이동)
+    </div>
+    </details>
       </td>
     <td align="center">https://github.com/jeelly</td>
 
