@@ -7,13 +7,11 @@ import notice from "../img/fixed/notice.svg";
 import NoticeModal from "./NoticeModal";
 import { useDispatch } from 'react-redux'
 import { editModal, detailId, roomExitDB } from "../redux/modules/postSlice";
-import { createBrowserHistory } from "history";
 import KakaoShare from "./KakaoShare";
 import Modal from "./map_page/post/Modal";
 
 
 const Header = ({id, status, roomName, socket}) => {
-  const history = createBrowserHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
