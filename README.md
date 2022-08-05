@@ -89,6 +89,7 @@
 - 먹기록 (사용자 기록 인포그래프)
 
 <img src="https://xoxokss.s3.ap-northeast-2.amazonaws.com/images/origin/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2022-08-05+%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB+1.10.41.png">
+<img src ="https://velog.velcdn.com/images/bo-oram/post/e8375327-df44-41d9-8c49-a5d84be8b1ee/image.png">
 
 <br>
 
